@@ -20,11 +20,10 @@ module.exports = {
     contributors: false,
     displayAllHeaders: false,
     docsBranch: 'main',
-    docsDir: 'docs',
     editLinks: true,
     editLinkText: 'Help us improve this page!',
     lastUpdated: false,
-    repo: 'alleyinteractive/mantle',
+    repo: 'alleyinteractive/mantle-docs',
     navbar: [
       { text: 'Home', link: '/', target: '_self', },
       { text: 'Alley', link: 'https://alley.co/', },
