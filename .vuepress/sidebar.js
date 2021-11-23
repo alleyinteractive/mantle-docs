@@ -58,10 +58,14 @@ module.exports = [
     children: prefix('testing', [
       'test-framework',
       'transition',
-      'requests',
-      'remote-requests',
-      'hooks',
       'continuous-integration',
+      'assertions',
+      'requests',
+      'hooks',
+      'cron',
+      'remote-requests',
+      'traits',
+      'users',
     ]),
   },
   {
