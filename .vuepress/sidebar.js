@@ -41,7 +41,7 @@ module.exports = [
     ]),
   },
   {
-    title: 'Features',
+    text: 'Features',
     collapsable: false,
     children: prefix('features', [
       'queue',
@@ -53,7 +53,7 @@ module.exports = [
     ]),
   },
   {
-    title: 'Testing',
+    text: 'Testing',
     collapsable: false,
     children: prefix('testing', [
       'test-framework',
@@ -65,7 +65,7 @@ module.exports = [
     ]),
   },
   {
-    title: 'Packages',
+    text: 'Packages',
     collapsable: false,
     children: prefix('packages', [
       'browser-testing',

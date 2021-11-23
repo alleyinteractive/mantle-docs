@@ -1,4 +1,4 @@
-# HTTP Requests
+# HTTP Tests
 
 [[toc]]
 
@@ -18,13 +18,14 @@ that some content is present in the response body or that some header was set.
 
 Request methods are HTTP verbs, `get()`, `post()`, `put()`, etc.
 
-## Examples
+## Making Requests
 
 As a basic example, here we create a post via its factory, then request it and
 assert we see the post's name (title):
 
 ```php
 $post = factory( Post::class )->create();
+
 $this->get( $post )
      ->assertSee( $post->name() );
 ```
@@ -46,7 +47,54 @@ $this->following_redirects()
      ->assertSee( 'Success!' );
 ```
 
-## Assertions
+## Testing JSON APIs
+
+Mantle includes several helpers for testing JSON APIs and their responses. For
+example, `assertJsonPath()` can be used to easily check the response back from a
+JSON API. This supports both custom routes and the WordPress REST API.
+JSON-requests can also be made via helper functions `json()`, `get_json()`,
+`post_json()`, and `put_json()`.
+
+The `assertJsonPath()` supports passing in a path to compare a specific element
+inside a JSON response. In the example below, we'll be retrieving the `id`
+element from the JSON object returned and comparing the value against an
+expected value.
+
+```php
+$post_id = static::factory()->post->create();
+
+$this->get( rest_url( "/wp/v2/posts/{$post_id}" ) )
+  ->assertJsonPath( 'id', $post_id );
+```
+
+### Asserting Exact JSON Matches
+
+As previously mentioned, the `assertJsonPath()` method may be used to assert
+that a specific JSON. There are also times when you wish to match the JSON
+response exactly. Using `assertJsonMissing()` Mantle will compare the response
+back and assert if the JSON returned matches the expected value.
+
+
+```php
+$this->get( rest_url( '/mantle/v1/example' ) )
+  ->assertJsonMissing( [
+    'key' => 'value',
+    // ...
+  ] );
+```
+
+`assertJsonMissingExact()` can also be used to assert that the response does not
+contain the exact JSON fragment.
+
+```php
+$this->get( rest_url( '/mantle/v1/example' ) )
+  ->assertOk()
+  ->assertJsonMissingExact( [
+    'invalid' => 'value',
+  ] );
+```
+
+## Available Assertions
 
 `Test_Response` provides many assertions to confirm aspects of the response
 return as expected.
@@ -63,6 +111,22 @@ return as expected.
 * `assertUnauthorized()` - Assert 401
 * `assertRedirect( $uri = null )` - Asserts that the response is 301 or 302, and
   also runs `assertLocation()` with the `$uri`
+
+### JSON Assertions
+
+* `assertJsonPath()` - Assert that the expected value and type exists at the
+  given path in the response.
+* `assertJsonPath()` - Assert that the expected value and type exists at the
+  given path in the response.
+* `assertExactJson()` - Assert that the response has the exact given JSON.
+* `assertJsonFragment()` - Assert that the response contains the given JSON
+  fragment.
+* `assertJsonMissing()` - Assert that the response does not contain the given
+  JSON fragment.
+* `assertJsonMissingExact()` - Assert that the response does not contain the
+  exact JSON fragment.
+* `assertJsonCount()` - Assert that the response JSON has the expected count of
+  items at the given key.
 
 ### Header Assertions
 
