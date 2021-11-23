@@ -8,6 +8,15 @@ Remote request mocks are a very common use case to test against when unit
 testing. Mantle gives you the ability to mock specific requests and fluently
 generate a response.
 
+By default Mantle won't mock any HTTP request but will actively notify you when
+one is being made inside a unit test.
+
+::: warning
+This only supports requests made via the [`WP_Http`
+API](https://developer.wordpress.org/reference/functions/wp_remote_request/)
+(`wp_remote_request()`, `wp_remote_get()`, `wp_remote_post()`, etc.)
+:::
+
 ## Faking All Requests
 
 Intercept all remote requests with a specified response code and body.
@@ -37,6 +46,7 @@ You can also pass an array with a set of responses (or a callback):
 
 ```php
 use Mantle\Testing\Mock_Http_Response;
+
 $this->fake_request(
   [
     'https://github.com/*'  => Mock_Http_Response::create()->with_body( 'github' ),
