@@ -44,7 +44,10 @@ installation. If a WordPress installation is found it will use that installation
 instead. For local development this is the most common use case if you're
 working on a package/plugin/theme inside of an existing WordPress installation.
 
-tip here about wp-tests-config.php
+::: tip Are you are running unit tests locally?
+
+Make sure you have a `wp-tests-config.php` file: [Generating a wp-tests-config.php](./test-framework.md#generating-a-wp-tests-config-php).
+:::
 
 If a WordPress installation is not found, common when a single plugin is checked
 out in a CI environment, Mantle will attempt to automatically install WordPress

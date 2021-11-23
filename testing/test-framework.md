@@ -73,3 +73,28 @@ the Mantle Test Framework without needing to rewrite any existing unit tests.
 The `Mantle\Testing\Framework_Test_Case` class should be extended from
 for any non-Mantle based project. For more information, see [Transitioning to
 Test Framework](./transition.md).
+
+## Running Tests
+
+Running tests locally can be done in seconds. If you're working on a plugin/theme in an existing WordPress installation Mantle will use that installation to run tests against. (Be sure to read ahead to [Generating a wp-tests-config.php](generating-a-wp-tests-config-php)) If you're working on a standalone project not located inside a WordPress project then Mantle will automatically install WordPress for you at `/tmp/wordpress`.
+
+### Generating a `wp-tests-config.php`
+
+When running WordPress inside an existing installation Mantle will attempt to use the existing installation with some default configuration values:
+
+```
+DB_NAME: wordpress_unit_tests
+DB_USER: root
+DB_PASSWORD: root
+DB_HOST: localhost
+DB_CHARSET: utf8
+```
+
+For most local developers this configuration will be correct and Mantle's unit
+tests will be able to be run. For others, you will need to create a
+`wp-tests-config.php` in your WordPress installation. You can copy [this
+file](https://github.com/alleyinteractive/mantle-framework/blob/HEAD/src/mantle/testing/wp-tests-config-sample.php)
+to the root of your WordPress installation and customize as needed.
+
+If you are using the Mantle Framework in your application, you can run `wp
+mantle test-config` to automatically generate this file for you.
