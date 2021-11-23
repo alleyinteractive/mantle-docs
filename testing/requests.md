@@ -72,7 +72,7 @@ JSON API. This supports both custom routes and the WordPress REST API.
 JSON-requests can also be made via helper functions `json()`, `get_json()`,
 `post_json()`, and `put_json()`.
 
-The `assertJsonPath()` supports passing in a path to compare a specific element
+The `assertJsonPath()` supports passing in a XPath to compare a specific element
 inside a JSON response. In the example below, we'll be retrieving the `id`
 element from the JSON object returned and comparing the value against an
 expected value.
