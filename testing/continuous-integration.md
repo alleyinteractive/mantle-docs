@@ -19,10 +19,10 @@ information.
 
 One difference to call out from core is that Mantle does not require the use of
 `bin/install-wp-tests.sh` to run tests in a CI environment. (If you don't know
-what that even is, you can skip ahead!) Mantle will automatically attempt to
-download and install WordPress behind the scenes so that your plugin/package can
-focus on other things. For majority of the use cases plugins/packages will be
-able to run `./vendor/bin/phpunit` and have their tests run automatically.
+what that is, skip ahead!) Mantle will automatically attempt to download and
+install WordPress behind the scenes so that your plugin/package can focus on
+other things. For majority of the use cases plugins/packages will be able to run
+`./vendor/bin/phpunit` and have their tests run automatically.
 
 ## Environment Variables
 
