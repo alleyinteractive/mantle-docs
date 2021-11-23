@@ -47,6 +47,23 @@ $this->following_redirects()
      ->assertSee( 'Success!' );
 ```
 
+### Asserting HTML Responses
+
+HTML responses can be tested against using various methods to assert the
+response, including `assertSee()`, `assertElementExists()`, and
+`assertElementMissing()`.
+
+The `assertElementExists()` and `assertElementMissing()` methods use
+[DOMXPath](https://www.php.net/manual/en/class.domxpath.php) to validate if a
+element exists on the page.
+
+```php
+$this->get( '/example' )
+  ->assertOk()
+  ->assertSee( 'mantle' )
+  ->assertElementExists( '//script[@data-testid="example-script"]' );
+```
+
 ## Testing JSON APIs
 
 Mantle includes several helpers for testing JSON APIs and their responses. For
@@ -111,6 +128,10 @@ return as expected.
 * `assertUnauthorized()` - Assert 401
 * `assertRedirect( $uri = null )` - Asserts that the response is 301 or 302, and
   also runs `assertLocation()` with the `$uri`
+* `assertElementExists( string $expression )` - Assert that a given XPath exists
+  in the response.
+* `assertElementMissing( string $expression )` - Assert that a given XPath does
+  not exists in the response.
 
 ### JSON Assertions
 
