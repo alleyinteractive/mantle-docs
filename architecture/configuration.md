@@ -57,10 +57,10 @@ variables such as server-level or system-level environment variables.
 
 For most WordPress installations, all files static files will be exposed to the
 web server and accessible by the end user. Placing a `.env` file in your
-plugin's folder is not sure since that file can be accessed by anybody on the
-internet with an unique interest in your site.
+plugin's folder is not secure since that file can be accessed by anybody on the
+internet with a unique interest in your site.
 
-Mantle supports placing the `.env` file in more secure locations in you
+Mantle supports placing the `.env` file in more secure locations in your
 WordPress application. For WordPress VIP users, the `.env` file can be placed
 inside your [private
 directory](https://docs.wpvip.com/technical-references/vip-codebase/private-directory/)
