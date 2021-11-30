@@ -47,7 +47,11 @@ class Product extends Post implements Registrable {
 ```
 
 The model should automatically be registered with Mantle. Models are discovered
-from the `app/models` directory in your application.
+from the `app/models` directory in your application. Mantle will discover your
+models after updating composer and generating a new model. They can be manually
+discovered by running the model discovery command:
+
+    wp mantle model:discover
 
 ### Manual Model Registration
 
@@ -55,11 +59,10 @@ In the event you don't wish to use Mantle's built-in model registration, models
 can be registered by your application's service provider. This is helpful to
 allow manual control over the models that are registered on your site.
 
-First, disable the automatic registration of models. Generate a new service provider to manage your models:
+First, disable the automatic registration of models. Generate a new service
+provider to manage your models:
 
-```bash
-wp mantle make:provider Model_Service_Provider
-```
+    wp mantle make:provider Model_Service_Provider
 
 Add `App\Providers\Model_Service_Provider::class` to your `config/app.php` file:
 
