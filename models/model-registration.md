@@ -10,9 +10,7 @@ websites.
 Models can auto-register the object type they represent (a post type for a post
 model, a taxonomy for a taxonomy model). They can be generated through a `wp-cli` command:
 
-```
-wp mantle make:model Product --model_type=post --registrable
-```
+    wp mantle make:model Product --model_type=post --registrable
 
 That will generate a model that represents the `product` post type.
 
