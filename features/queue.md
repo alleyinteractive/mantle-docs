@@ -22,10 +22,11 @@ Application jobs are stored in the `apps/jobs` directory. Jobs can be generated
 through the `wp-cli` command:
 
 ```bash
-wp mantle make:job Process_Heavy_Task
+wp mantle make:job Example_Job
 ```
 
 ## Dispatching Jobs
+
 Once you have a job class you can dispatch to it from anywhere in your
 application.
 
@@ -36,6 +37,7 @@ Example_Job::dispatch( $post_data_to_include );
 ```
 
 ### Multiple Queues
+
 To allow for some priority between jobs a job can be sent to a specific queue.
 By default all jobs will be sent to the `default` queue. A job can be
 selectively sent to a smaller/different queue to allow for some priority among
@@ -50,6 +52,7 @@ Example_Job::dispatch()->on_queue( 'priority' );
 ```
 
 ### Dispatch Synchronously
+
 A job can be invoked synchronously and will be run in the current request.
 
 ```php
@@ -57,5 +60,6 @@ Example_Job::dispatch_now();
 ```
 
 ## Future Additions
+
 In the future, we hope to add better processing for failed jobs and better
 support for concurrency among jobs.
