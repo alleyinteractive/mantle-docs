@@ -2,12 +2,19 @@
 
 [[toc]]
 
-Let's aim to spend less time writing registration code and more time building
+Mantle can help you spend less time writing registration code and more time building
 websites.
 
 ## Registering Post Types/Taxonomies
+
 Models can auto-register the object type they represent (a post type for a post
-model, a taxonomy for a taxonomy model).
+model, a taxonomy for a taxonomy model). They can be generated through a `wp-cli` command:
+
+```
+wp mantle make:model Product --model_type=post --registrable
+```
+
+That will generate a model that represents the `product` post type.
 
 ```php
 namespace App\Models;
@@ -16,10 +23,7 @@ use Mantle\Contracts\Database\Registrable;
 use Mantle\Database\Model\Post;
 use Mantle\Database\Model\Registration\Register_Post_Type;
 
-/**
- * Example_Post Model.
- */
-class Example_Post extends Post implements Registrable {
+class Product extends Post implements Registrable {
   use Register_Post_Type;
 
   /**
@@ -35,27 +39,66 @@ class Example_Post extends Post implements Registrable {
       'supports'              => [ 'author', 'title', 'editor', 'revisions', 'thumbnail', 'custom-fields', 'excerpt' ],
       'taxonomies'            => [ 'category', 'post_tag' ],
       'labels'                => [
-        // A lot of labels here.
+        // ...
       ],
     ];
   }
 }
 ```
 
-From here, the model can be added to your `config/models.php` file under the
-`register` property and the post type will automatically be created.
+The model should automatically be registered with Mantle. Models are discovered
+from the `app/models` directory in your application.
+
+### Manual Model Registration
+
+In the event you don't wish to use Mantle's built-in model registration, models
+can be registered by your application's service provider. This is helpful to
+allow manual control over the models that are registered on your site.
+
+First, disable the automatic registration of models. Generate a new service provider to manage your models:
+
+```bash
+wp mantle make:provider Model_Service_Provider
+```
+
+Add `App\Providers\Model_Service_Provider::class` to your `config/app.php` file:
 
 ```php
 return [
-  // ...
+  // Other configuration....
 
-  'register' => [
-    \App\Models\Example_Post::class,
+  'providers' =>
+    // Providers that are already in place...
+
+    App\Providers\Model_Service_Provider::class,
   ],
 ];
 ```
 
+Then update your `app/providers/class-model-service-provider.php` provider to look like this:
+
+```php
+namespace App\Providers;
+
+use Mantle\Support\Service_Provider;
+use App\Models\Product;
+
+class Model_Service_Provider extends Service_Provider {
+  public function boot() {
+    // Boot your models here:
+    Product::boot_if_not_booted();
+  }
+
+  public function on_mantle_model_registration() {
+    return [];
+  }
+}
+```
+
+Your model should now be automatically registered on each request.
+
 ### Register REST API Fields
+
 Models can define REST API fields inside of a model easily. Registration should
 be defined in the model's `boot()` method. To ensure the model's fields are
 always registered, the model should beadded to the `config/models.php` file
@@ -88,6 +131,7 @@ class Post extends Base_Post implements Registrable_Fields {
 ```
 
 ### Register Meta Fields
+
 Models can define meta values to associate with the model. Similar to
 registering a model's REST API field, registration should be defined in the
 model's `boot()` method. To ensure the fields are always registered, the model
@@ -109,13 +153,14 @@ class Product extends Post implements Registrable_Meta {
   use Register_Meta;
 
   protected static function boot() {
-		static::register_meta( 'product_id' );
-		static::register_meta( 'feedback', [ ... ] );
+    static::register_meta( 'product_id' );
+    static::register_meta( 'feedback', [ ... ] );
   }
 }
 ```
 
 ## Bootable Trait Methods
+
 To allow for simplicity when writing traits that are shared among a set of
 models, traits support a `boot` and `initialize` method to allow for automatic
 registration of the respective trait. The trait name are suffixed with the name
@@ -156,11 +201,11 @@ use Mantle\Database\Model\Post;
 use Mantle\Database\Model\Registration\Register_Post_Type;
 
 class Product extends Post {
-	use Register_Post_Type;
+  use Register_Post_Type;
 
-	public static function get_route(): ?string {
-		return '/product/{slug}';
-	}
+  public static function get_route(): ?string {
+    return '/product/{slug}';
+  }
 }
 ```
 
