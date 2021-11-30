@@ -131,7 +131,7 @@ return as expected.
 * `assertElementExists( string $expression )` - Assert that a given XPath exists
   in the response.
 * `assertElementMissing( string $expression )` - Assert that a given XPath does
-  not exists in the response.
+  not exist in the response.
 
 ### JSON Assertions
 
