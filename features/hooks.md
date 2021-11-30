@@ -1,24 +1,9 @@
 # WordPress Hooks
 
-- [WordPress Hooks](#wordpress-hooks)
-	- [Find a Hook's Usage in the Codebase](#find-a-hooks-usage-in-the-codebase)
-	- [Using Hooks with Type Hints](#using-hooks-with-type-hints)
-
-## Find a Hook's Usage in the Codebase
-Quickly calculate the usage of a specific WordPress hook throughout your code
-base. Mantle will read all specified files in a specific path to find all uses
-of a specific action/filter along with their respective line number.
-
-On initial scan of the file system, the results can be a bit slow to build a
-cache of all files on the site. By default Mantle will ignore all `test` and
-`vendor/` files. The default search path is the `wp-content/` folder of your
-installation.
-
-```bash
-wp mantle hook-usage <hook> [--search-path] [--format]
-```
+[[toc]]
 
 ## Using Hooks with Type Hints
+
 To improve on WordPress' actions/filters to allow for safer use of type hints,
 Mantle providers a wrapper on-top of `add_action()` and `add_filter()`. You can
 use either the helper methods in the `Mantle\Framework\Helpers` namespace via
@@ -58,3 +43,16 @@ add_filter(
 
 apply_filters( 'the_filter_to_apply', [ 1, 2, 3 ] );
 ```
+
+## Find a Hook's Usage in the Codebase
+
+Quickly calculate the usage of a specific WordPress hook throughout your code
+base. Mantle will read all specified files in a specific path to find all uses
+of a specific action/filter along with their respective line number.
+
+On initial scan of the file system, the results can be a bit slow to build a
+cache of all files on the site. By default Mantle will ignore all `test` and
+`vendor/` files. The default search path is the `wp-content/` folder of your
+installation.
+
+	wp mantle hook-usage <hook> [--search-path] [--format]
