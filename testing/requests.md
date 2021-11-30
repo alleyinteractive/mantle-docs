@@ -137,8 +137,6 @@ return as expected.
 
 * `assertJsonPath()` - Assert that the expected value and type exists at the
   given path in the response.
-* `assertJsonPath()` - Assert that the expected value and type exists at the
-  given path in the response.
 * `assertExactJson()` - Assert that the response has the exact given JSON.
 * `assertJsonFragment()` - Assert that the response contains the given JSON
   fragment.
