@@ -1,10 +1,10 @@
 # Model Factory
 
 - [Model Factory](#model-factory)
-	- [Defining Factories for a Model](#defining-factories-for-a-model)
+  - [Defining Factories for a Model](#defining-factories-for-a-model)
 - [Faking Blocks](#faking-blocks)
-	- [Registering the Provider](#registering-the-provider)
-	- [Generating Blocks](#generating-blocks)
+  - [Registering the Provider](#registering-the-provider)
+  - [Generating Blocks](#generating-blocks)
 
 Models can use factories to automatically generate data for your application.
 They're incredibly useful to get 'real' data in place without the bloat of a
@@ -17,13 +17,15 @@ can use [`Faker`](https://github.com/fzaninotto/Faker) to generate data easily.
 A factory can be registered directly to a model.
 
 ```php
+use App\Models\Post;
+
 /**
  * Factory definition.
  *
  * @var \Mantle\Database\Factory\Factory $factory
  */
 $factory->define(
-  \App\Models\Post::class,
+  Post::class,
   function ( Faker $faker ) {
     return [
       'post_title'   => $faker->sentence,
@@ -44,9 +46,10 @@ To use the provider, register the provider with Faker
 
 ```php
 use Mantle\Framework\Faker\Faker_Provider;
+use App\Models\Post;
 
 $factory->define(
-  \App\Models\Post::class,
+  Post::class,
   function ( Faker $faker ) {
 		$this->faker->addProvider( new Faker_Provider( $this->faker ) );
 
