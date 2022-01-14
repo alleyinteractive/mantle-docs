@@ -33,20 +33,20 @@ The location the asset appears can also be controlled:
 ```php
 asset()
 	->script( 'example-handle', mix( '/js/app.js' ) )
-  ->header();
+	->header();
 
 asset()
 	->script( 'example-footer', mix( '/js/footer.js' ) )
-  ->footer();
+	->footer();
 ```
 
 You can also specify the asset's version and dependencies:
 
 ```php
 asset()
-  ->style( 'example-styles', mix( '/css/app.css' ) )
-  ->version( '1.0' )
-  ->dependencies( [ 'unicorn-css' ] );
+	->style( 'example-styles', mix( '/css/app.css' ) )
+	->version( '1.0' )
+	->dependencies( [ 'unicorn-css' ] );
 ```
 
 ## Laravel Mix
