@@ -48,7 +48,8 @@ module.exports = {
     [
       '@vuepress/docsearch',
       {
-        apiKey: 'f4cbda59264a3b8e945405e83fc6d685',
+        appId: 'Y3WWPYIIL4',
+        apiKey: 'c92c3230a91695a1b01b2d74ed79d959',
         indexName: 'mantle',
         locales: {
           '/': {
