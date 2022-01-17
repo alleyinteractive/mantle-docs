@@ -5,7 +5,7 @@
 WordPress' hooks are the most flexible way of integrating with WordPress. Mantle
 aims to make these a bit more flexible for the 21st century. Mantle provides a
 simple observer pattern implementation, allowing you to listen for various
-events that occur withing WordPress and Mantle.
+events that occur within WordPress and Mantle.
 
 Events can be your traditional WordPress hooks (`pre_get_posts`, `init`, etc.)
 or event objects: standalone classes used to define a specific event. This
@@ -182,7 +182,7 @@ is used. To cache the events, run the following command on deployment:
 ## Using Hooks Safely with Type-hint Declarations
 
 WordPress' actions/filters are extended by Mantle to allow for safe use of
-type/return declarations with a fatal error. Mantle providers a wrapper on-top
+type/return declarations with a fatal error. Mantle providers a wrapper on top
 of `add_action()` and `add_filter()` (these can be used interchangeable with
 `Event::listen( ... )`).
 
@@ -202,7 +202,7 @@ add_filter(
   },
 );
 
-// Else where in your application a plugin adds this filter at a slightly higher priority:
+// Elsewhere in your application a plugin adds this filter at a slightly higher priority:
 add_filter(
   'my_custom_filter',
   function ( array $posts ): array {
