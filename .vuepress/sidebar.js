@@ -44,12 +44,13 @@ module.exports = [
     text: 'Features',
     collapsable: false,
     children: prefix('features', [
+      'assets',
+      'cache',
+      'caper',
+      'file-system',
+      'hooks',
       'queue',
       'scheduling-tasks',
-      'hooks',
-      'file-system',
-      'caper',
-      'cache',
     ]),
   },
   {
