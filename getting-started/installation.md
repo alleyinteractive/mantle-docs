@@ -49,8 +49,12 @@ with your site's slug.
 
 ```bash
 cd wp-content/plugins/
+
 composer create-project alleyinteractive/mantle my-site \
---remove-vcs --stability=dev --no-cache --no-interaction
+  --remove-vcs \
+  --stability=dev \
+  --no-cache \
+  --no-interaction
 ```
 
 ## Use `create-mantle-app`
