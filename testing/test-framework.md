@@ -76,7 +76,7 @@ Test Framework](./transition.md).
 
 ## Running Tests
 
-Running tests locally can be done in seconds. If you're working on a plugin/theme in an existing WordPress installation Mantle will use that installation to run tests against. (Be sure to read ahead to [Generating a wp-tests-config.php](generating-a-wp-tests-config-php)) If you're working on a standalone project not located inside a WordPress project then Mantle will automatically install WordPress for you at `/tmp/wordpress`.
+Running tests locally can be done in seconds. If you're working on a plugin/theme in an existing WordPress installation Mantle will use that installation to run tests against. (Be sure to read ahead to [Generating a wp-tests-config.php](#generating-a-wp-tests-config-php)) If you're working on a standalone project not located inside a WordPress project then Mantle will automatically install WordPress for you at `/tmp/wordpress`.
 
 ### Generating a `wp-tests-config.php`
 
