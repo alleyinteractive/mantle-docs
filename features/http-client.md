@@ -4,7 +4,7 @@
 
 ## Introduction
 
-Mantle provides a fluent and expressive wrapped around the [WordPress HTTP
+Mantle provides a fluent and expressive wrapper around the [WordPress HTTP
 API](https://developer.wordpress.org/plugins/http-api/) allowing you to quickly
 make HTTP requests with external services. The HTTP Client combined with support
 for [testing and faking Remote Requests](../testing/remote-requests.md) provides
@@ -19,7 +19,8 @@ and multipart requests. This also allows parallel requests to be made.
 
 Making requests with the HTTP Client can be done using any HTTP verb such as
 `get`, `head`, `post`, `put`, `delete` and `patch`. Requests can be made using
-the `Http` or instantiating `Mantle\Http\Client\Http_Client` directly:
+the `Http` facade class or by instantiating `Mantle\Http\Client\Http_Client`
+directly:
 
 ```php
 use Mantle\Facade\Http;
