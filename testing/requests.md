@@ -58,7 +58,10 @@ $this
 
 // Pass multiple cookies.
 $this->
-  ->with_cookies( [ ... ] )
+  ->with_cookies( [
+    'key'     => 'value',
+    'another' => 'value',
+  ] )
   ->get( '/example' );
 ```
 
@@ -72,7 +75,10 @@ $this
   ->get( '/example' );
 
 $this
-  ->with_headers( [ ... ] )
+  ->with_headers( [
+    'API-Key' => '<value>',
+    'X-Nonce' => 'nonce',
+  ] )
   ->get( '/example' );
 ```
 
