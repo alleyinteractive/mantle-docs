@@ -47,6 +47,43 @@ $this->following_redirects()
      ->assertSee( 'Success!' );
 ```
 
+### Request Cookies
+
+Requests can have cookies included with them:
+
+```php
+$this
+  ->with_cookie( 'session', 'cookie-value' );
+  ->get( '/endpoint' );
+
+// Pass multiple cookies.
+$this->
+  ->with_cookies( [ ... ] )
+  ->get( '/example' );
+```
+
+### Request Headers
+
+Request headers can be set for requests:
+
+```php
+$this
+  ->with_header( 'api-key', '<value>' )
+  ->get( '/example' );
+
+$this
+  ->with_headers( [ ... ] )
+  ->get( '/example' );
+```
+
+### Request Referrer
+
+The request referrer can be passed using the `from` method:
+
+```php
+$this->from( 'https://wordpress.org/' )->get( '/example' );
+```
+
 ### Asserting HTML Responses
 
 HTML responses can be tested against using various methods to assert the
