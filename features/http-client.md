@@ -169,11 +169,31 @@ returning `Mantle\Http\Client\Http_Client`:
 use Mantle\Http\Client\Http_Client;
 
 $client = Http_Client::create()
-  ->base_url( 'https://api.github.com' )
+  ->base_url( 'https://httpbin.org' )
   ->with_token( '<token>' );
 
 // Requests can now be made without specifying the base URL:
 $response = $client->post( '/example-endpoint', [
   'name' => 'Mantle Http Client',
 ] );
+```
+
+### Middleware
+
+Requests can have middleware applied to them to allow the request and the
+response to be modified. One use case is to calculate a checksum header based on
+body of the request and pass that along with the request:
+
+```php
+use Closure;
+use Mantle\Http\Client\Http_Client;
+
+$client = Http_Client::create()
+  ->base_url( 'https://api.github.com' )
+  ->middleware( function ( Http_Client $client, Closure $next ) {
+    $client->with_header( 'Authorization', md5( $client->url() . $client->body() ) );
+
+    // You can also run the callback and then modify the response.
+    return $next( $client );
+  } );
 ```
