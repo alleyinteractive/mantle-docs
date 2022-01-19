@@ -32,6 +32,9 @@ module.exports = {
     sidebarDepth: 3,
   },
   markdown: {
+    code: {
+      lineNumbers: false,
+    },
     toc: {
       includeLevel: [1,2,3,4],
     },
