@@ -113,7 +113,7 @@ $this->get( rest_url( '/mantle/v1/example' ) )
 
 ## Available Assertions
 
-`Test_Response` provides many assertions to confirm aspects of the response
+`Mantle\Testing\Test_Response` provides many assertions to confirm aspects of the response
 return as expected.
 
 ### HTTP Status Assertions
@@ -175,19 +175,3 @@ return as expected.
   `get_queried_object_id()`
 * `assertQueriedObject( $object )` - Assert that the type and ID of the given
   object match that of `get_queried_object()`
-
-
-### WordPress Existence Assertions
-
-* `assertPostExists( array $args )` - Assert if a post exists given a set of
-  arguments.
-* `assertPostDoesNotExists( array $args )` - Assert if a post doesn't exists
-  given a set of arguments.
-* `assertTermExists( array $args )` - Assert if a term exists given a set of
-  arguments.
-* `assertTermDoesNotExists( array $args )` - Assert if a term doesn't exists
-  given a set of arguments.
-* `assertUserExists( array $args )` - Assert if a user exists given a set of
-  arguments.
-* `assertUserDoesNotExists( array $args )` - Assert if a user doesn't exists
-  given a set of arguments.
