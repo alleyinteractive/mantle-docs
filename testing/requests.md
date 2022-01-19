@@ -47,6 +47,49 @@ $this->following_redirects()
      ->assertSee( 'Success!' );
 ```
 
+### Request Cookies
+
+Requests can have cookies included with them:
+
+```php
+$this
+  ->with_cookie( 'session', 'cookie-value' );
+  ->get( '/endpoint' );
+
+// Pass multiple cookies.
+$this->
+  ->with_cookies( [
+    'key'     => 'value',
+    'another' => 'value',
+  ] )
+  ->get( '/example' );
+```
+
+### Request Headers
+
+Request headers can be set for requests:
+
+```php
+$this
+  ->with_header( 'api-key', '<value>' )
+  ->get( '/example' );
+
+$this
+  ->with_headers( [
+    'API-Key' => '<value>',
+    'X-Nonce' => 'nonce',
+  ] )
+  ->get( '/example' );
+```
+
+### Request Referrer
+
+The request referrer can be passed using the `from` method:
+
+```php
+$this->from( 'https://wordpress.org/' )->get( '/example' );
+```
+
 ### Asserting HTML Responses
 
 HTML responses can be tested against using various methods to assert the
@@ -113,7 +156,7 @@ $this->get( rest_url( '/mantle/v1/example' ) )
 
 ## Available Assertions
 
-`Test_Response` provides many assertions to confirm aspects of the response
+`Mantle\Testing\Test_Response` provides many assertions to confirm aspects of the response
 return as expected.
 
 ### HTTP Status Assertions
@@ -137,6 +180,8 @@ return as expected.
 
 * `assertJsonPath()` - Assert that the expected value and type exists at the
   given path in the response.
+* `assertJsonPathExists()` -- Assert that a specific JSON path exists.
+* `assertJsonPathMissing()` -- Assert that a specific JSON path is missing.
 * `assertExactJson()` - Assert that the response has the exact given JSON.
 * `assertJsonFragment()` - Assert that the response contains the given JSON
   fragment.
@@ -173,19 +218,3 @@ return as expected.
   `get_queried_object_id()`
 * `assertQueriedObject( $object )` - Assert that the type and ID of the given
   object match that of `get_queried_object()`
-
-
-### WordPress Existence Assertions
-
-* `assertPostExists( array $args )` - Assert if a post exists given a set of
-  arguments.
-* `assertPostDoesNotExists( array $args )` - Assert if a post doesn't exists
-  given a set of arguments.
-* `assertTermExists( array $args )` - Assert if a term exists given a set of
-  arguments.
-* `assertTermDoesNotExists( array $args )` - Assert if a term doesn't exists
-  given a set of arguments.
-* `assertUserExists( array $args )` - Assert if a user exists given a set of
-  arguments.
-* `assertUserDoesNotExists( array $args )` - Assert if a user doesn't exists
-  given a set of arguments.

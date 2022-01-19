@@ -67,6 +67,9 @@ directory](https://docs.wpvip.com/technical-references/vip-codebase/private-dire
 (`/wp-content/private`). Mantle will also check in the `wp-content/private` and
 `WPCOM_VIP_PRIVATE_DIR` folder for `.env` files.
 
+For WordPress VIP Users, Mantle will also read the [Environmental Variables set
+by the platform](https://docs.wpvip.com/how-tos/manage-environment-variables/).
+
 ### Environment File Security
 
 Your `.env` file should not be committed to your application's source control,

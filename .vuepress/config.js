@@ -26,12 +26,16 @@ module.exports = {
     repo: 'alleyinteractive/mantle-docs',
     navbar: [
       { text: 'Home', link: '/', target: '_self', },
+      { text: 'Docs', link: '/getting-started/installation.html', target: '_self', },
       { text: 'Alley', link: 'https://alley.co/', },
     ],
     sidebar: require('./sidebar'),
     sidebarDepth: 3,
   },
   markdown: {
+    code: {
+      lineNumbers: false,
+    },
     toc: {
       includeLevel: [1,2,3,4],
     },

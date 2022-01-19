@@ -44,12 +44,14 @@ module.exports = [
     text: 'Features',
     collapsable: false,
     children: prefix('features', [
+      'assets',
+      'cache',
+      'caper',
+      'file-system',
+      'hooks',
+      'http-client',
       'queue',
       'scheduling-tasks',
-      'hooks',
-      'file-system',
-      'caper',
-      'cache',
     ]),
   },
   {
@@ -66,6 +68,7 @@ module.exports = [
       'remote-requests',
       'traits',
       'users',
+      'pest',
     ]),
   },
   {
