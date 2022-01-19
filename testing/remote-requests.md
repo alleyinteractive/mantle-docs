@@ -102,4 +102,28 @@ during a unit test.
 ```php
 $this->assertRequestSent( 'https://alley.co/' );
 $this->assertRequestNotSent( 'https://anothersite.com/' );
+$this->assertNoRequestSent();
+$this->assertRequestCount( int $number );
+```
+
+Requests can also be asserted against using a callback that is passed the `Mantle\Http\Client\Request` object:
+
+```php
+use Mantle\Facade\Http;
+use Mantle\Http\Client\Request;
+
+Http::with_basic_auth( 'user', 'pass' )
+  ->get( 'https://example.com/basic-auth/' );
+
+$this->assertRequestSent( fn ( Request $request ) => $request
+  ->has_header( 'Authorization', 'Basic dXNlcjpwYXNz' )
+  && 'https://example.com/basic-auth/' === $request->url()
+  && 'GET' === $request->method()
+);
+
+$this->assertRequestNotSent( fn ( Request $request ) => $request
+  ->has_header( 'Content-Type', 'application-json' )
+  && 'https://example.com/get/' === $request->url()
+  && 'GET' === $request->method()
+);
 ```
