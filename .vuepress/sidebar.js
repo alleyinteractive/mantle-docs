@@ -49,6 +49,7 @@ module.exports = [
       'caper',
       'file-system',
       'hooks',
+      'http-client',
       'queue',
       'scheduling-tasks',
     ]),
