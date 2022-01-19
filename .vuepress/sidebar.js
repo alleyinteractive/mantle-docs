@@ -67,6 +67,7 @@ module.exports = [
       'remote-requests',
       'traits',
       'users',
+      'pest',
     ]),
   },
   {
