@@ -46,6 +46,8 @@ $response->failed(): bool
 $response->forbidden(): bool
 $response->header( string $header )
 $response->headers(): array
+$response->is_json(): bool
+$response->is_xml(): bool
 $response->json( $key = null, $default = null )
 $response->object()
 $response->ok(): bool
@@ -55,10 +57,11 @@ $response->server_error(): bool
 $response->status(): int
 $response->successful(): bool
 $response->unauthorized(): bool
+$response->xml( string $xpath = null, $default = null )
 ```
 
 The `Mantle\Http\Client\Response` object also implements the `ArrayAccess`,
-allowing you to access JSON response properties directly on the response.
+allowing you to access JSON/XML response properties directly on the response.
 
 ```php
 return Http::get( 'https://httpbin.org/json' )['slideshow'];
