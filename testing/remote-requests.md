@@ -17,7 +17,7 @@ API](https://developer.wordpress.org/reference/functions/wp_remote_request/)
 (`wp_remote_request()`, `wp_remote_get()`, `wp_remote_post()`, etc.)
 :::
 
-## Faking All Requests
+## Faking Requests
 
 Intercept all remote requests with a specified response code and body.
 
@@ -27,7 +27,7 @@ $this->fake_request()
   ->with_body( 'test body' );
 ```
 
-## Faking Multiple Endpoints
+### Faking Multiple Endpoints
 
 Faking a specific endpoint, `testing.com` will return a 404 while `github.com`
 will return a 500.
@@ -55,7 +55,11 @@ $this->fake_request(
 );
 ```
 
-## Faking With a Callback
+### Faking With a Callback
+
+If you require more complicated logic to determine the response, you can use a
+closure that will be invoked when a request is being faked. It should return a
+mocked HTTP response:
 
 ```php
 $this->fake_request(
@@ -68,6 +72,39 @@ $this->fake_request(
       ->with_response_code( 123 )
       ->with_body( 'alley!' );
   }
+);
+```
+
+### Faking Response Sequences
+
+Sometimes a single URL should return a series of fake responses in a specific
+order. This can be accomplished via `Mock_Http_Sequence` to build the response
+sequence:
+
+```php
+$this->fake_request(
+  [
+    'https://github.com/*' => Mock_Http_Sequence::create()
+      ->push_status( 200 )
+      ->push_status( 400 )
+      ->push_status( 500 )
+  ],
+);
+```
+
+Any request made in the above example will use a response in the defined
+sequence. When all the responses in a sequence have been consumed, further
+requests will throw an exception. You can also specify a default response that
+will be returned when there are no responses left in the sequence:
+
+```php
+$this->fake_request(
+  [
+    'https://github.com/*' => Mock_Http_Sequence::create()
+      ->push( Mock_Http_Response::create()->with_json( [ 1, 2, 3 ] )
+      ->push( Mock_Http_Response::create()->with_json( [ 4, 5, 6 ] )
+      ->when_empty( Mock_Http_Response::create()->with_json( [ 4, 5, 6 ] )
+  ],
 );
 ```
 
