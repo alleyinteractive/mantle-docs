@@ -4,9 +4,10 @@
  * ref：https://v1.vuepress.vuejs.org/config/#index-styl
  */
 
-.home .hero img {
+ .home .hero img {
 	max-height: 450px !important;
-  max-width: 450px !important
+	max-width: 450px !important;
+	width: 100%;
 }
 
 h1, h2, h3, h4 {
