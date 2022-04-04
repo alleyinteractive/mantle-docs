@@ -7,10 +7,6 @@
     "name": "Alley Interactive",
     "email": "info@alley.co"
   },
-  "engines": {
-    "node": "16",
-    "npm": "8"
-  },
   "repository": "https://github.com/alleyinteractive/mantle/",
   "scripts": {
     "dev": "vuepress dev .",
