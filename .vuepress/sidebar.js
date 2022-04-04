@@ -59,7 +59,7 @@ module.exports = [
     collapsable: false,
     children: prefix('testing', [
       'test-framework',
-      'transition',
+      'testkit',
       'continuous-integration',
       'assertions',
       'requests',
