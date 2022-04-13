@@ -1,10 +1,18 @@
-# Transitioning to Test Framework
+# Testkit
 
 [[toc]]
 
-The Mantle Test Framework can be used outside of projects that started as a
-Mantle project, such as normal WordPress sites, themes, and plugins. The
-framework can be added and loaded to your existing project's unit test.
+Mantle Testkit is a standalone package for use of the [Mantle Testing
+Framework](./test-framework.md) on non-Mantle based projects. That means that
+you can use the great features of the Mantle Testing Framework on your existing
+projects/plugins/themes without needing to do any more refactoring.
+
+Testkit should only be used on projects that do not use or define a Mantle
+application. The project can still utilize [other components from
+Mantle](https://github.com/mantle-framework) outside of testkit.
+
+This document acts as a guide to transitioning your project to using [Mantle
+Testkit](./testkit.md) for use of the Mantle Testing Library outside of Mantle.
 
 ::: tip Want to see a `/wp-content/`-rooted project that is using Mantle?
 
@@ -16,26 +24,21 @@ use Mantle, checkout
 
 This guide assumes that we are in a `wp-content/` rooted WordPress project.
 
-### Install `alleyinteractive/mantle-framework` as a dependency.
-
-If you do not have a `composer.json` file in your project initialize that with
-`composer init`. Install the latest version of the `main` branch. Composer does
-not need to be loaded on all requests unless you plan on using Mantle outside of
-your unit tests.
+### Install `mantle-framework/testkit` as a dependency
 
 ```bash
-composer require alleyinteractive/mantle-framework:dev-main
+composer require --dev mantle-framework/testkit
 ```
 
-## Change Test Case
+### Change Test Case
 
-Unit Tests should extend themselves from Mantle's `Framework_Test_Case` class
+Unit Tests should extend themselves from Testkit's `Test_Case` class
 in place of core's `WP_UnitTestCase` class.
 
 ```php
-use Mantle\Testing\Framework_Test_Case;
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
 
-class Test_Case extends Framework_Test_Case {
+class Test_Case extends Testkit_Test_Case {
 
 	public function test_example() {
 		$this->go_to( home_url( '/' ) );
@@ -50,14 +53,13 @@ class Test_Case extends Framework_Test_Case {
 }
 ```
 
-## Adjusting Unit Test Bootstrap
+### Adjusting Unit Test Bootstrap
 
 Commonly unit tests live inside of plugins or themes. For this use case, we're
 going to adjust a theme's unit test bootstrap file to load the test framework.
 
 ::: tip
-1. You might not need an autoloader if you are rolling your own.
-2. The callback to `install()` is completely optional.
+The callback to `install()` is optional.
 :::
 
 ```php
@@ -76,14 +78,17 @@ namespace App\Tests;
 		\Mantle\Testing\tests_add_filter(
 			'muplugins_loaded',
 			function() {
+				// Load the main file of a plugin, theme, etc.
+
 				// Setup any dependencies once WordPress is loaded, such as themes.
 				switch_theme( 'twentytwenty' );
 			}
 		);
 	}
 );
-
-spl_autoload_register(
-	\Mantle\generate_wp_autoloader( __NAMESPACE__, __DIR__ )
-);
 ```
+
+### Running Tests
+
+Run your tests using `./vendor/bin/phpunit` or add a Composer script to allow
+for `composer phpunit`.

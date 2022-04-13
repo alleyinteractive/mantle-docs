@@ -65,14 +65,12 @@ to incorporate the best parts of WordPress Core's test suite, but remove the
 unnecessary bits. Without having to worry about older versions of PHP, that also
 allows Mantle's Test Framework to use the latest versions of PHPUnit itself.
 
-### Drop-in Support for Core Test Suite
+### Drop-in Support for Core Test Suite (and use of Mantle Testing Framework outside of Mantle)
 
 The Mantle Test Framework supports legacy support for core's test suite methods,
 including `go_to()` and `factory()` among others. Projects are able to switch to
 the Mantle Test Framework without needing to rewrite any existing unit tests.
-The `Mantle\Testing\Framework_Test_Case` class should be extended from
-for any non-Mantle based project. For more information, see [Transitioning to
-Test Framework](./transition.md).
+See the [Mantle Test Kit](./testkit.md) for more information.
 
 ## Running Tests
 
