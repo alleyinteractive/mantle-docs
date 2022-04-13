@@ -19,7 +19,7 @@ and multipart requests. This also allows parallel requests to be made.
 
 Making requests with the HTTP Client can be done using any HTTP verb such as
 `get`, `head`, `post`, `put`, `delete` and `patch`. Requests can be made using
-the `Http` facade class or by instantiating `Mantle\Http\Client\Http_Client`
+the `Http` facade class or by instantiating `Mantle\Http_Client\Http_Client`
 directly:
 
 ```php
@@ -31,7 +31,7 @@ $response = Http::get( 'https://example.org/' );
 ### Responses
 
 The `get` method (and all other HTTP verb methods) return an instance of
-`Mantle\Http\Client\Response`, which provides a flexible wrapper on top of the
+`Mantle\Http_Client\Response`, which provides a flexible wrapper on top of the
 raw WordPress HTTP API response.
 
 ```php
@@ -60,7 +60,7 @@ $response->unauthorized(): bool
 $response->xml( string $xpath = null, $default = null )
 ```
 
-The `Mantle\Http\Client\Response` object also implements the `ArrayAccess`,
+The `Mantle\Http_Client\Response` object also implements the `ArrayAccess`,
 allowing you to access JSON/XML response properties directly on the response.
 
 ```php
@@ -167,10 +167,10 @@ Http::retry( 3 )->post(...);
 The HTTP Client can be used as a basis for a API Client for an external service.
 For example, if you are making requests to `https://httpbin.org` and want to
 include built-in authentication, you could create a reusable API client by
-returning `Mantle\Http\Client\Http_Client`:
+returning `Mantle\Http_Client\Http_Client`:
 
 ```php
-use Mantle\Http\Client\Http_Client;
+use Mantle\Http_Client\Http_Client;
 
 $client = Http_Client::create()
   ->base_url( 'https://httpbin.org' )
@@ -190,7 +190,7 @@ body of the request and pass that along with the request:
 
 ```php
 use Closure;
-use Mantle\Http\Client\Http_Client;
+use Mantle\Http_Client\Http_Client;
 
 $client = Http_Client::create()
   ->base_url( 'https://api.github.com' )
