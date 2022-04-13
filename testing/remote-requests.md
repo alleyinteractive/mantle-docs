@@ -143,11 +143,11 @@ $this->assertNoRequestSent();
 $this->assertRequestCount( int $number );
 ```
 
-Requests can also be asserted against using a callback that is passed the `Mantle\Http\Client\Request` object:
+Requests can also be asserted against using a callback that is passed the `Mantle\Http_Client\Request` object:
 
 ```php
 use Mantle\Facade\Http;
-use Mantle\Http\Client\Request;
+use Mantle\Http_Client\Request;
 
 Http::with_basic_auth( 'user', 'pass' )
   ->get( 'https://example.com/basic-auth/' );
