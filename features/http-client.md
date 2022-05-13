@@ -201,3 +201,20 @@ $client = Http_Client::create()
     return $next( $client );
   } );
 ```
+
+## Use Outside of Mantle
+
+The Http Client can be used separately outside of Mantle. Require the Http Client
+as a Composer Dependency:
+
+```bash
+composer require mantle-framework/http-client
+```
+
+You will then be able to use the Http Client to make requests like in the above examples:
+
+```php
+use Mantle\Http_Client\Http_Client;
+
+Http_Client::get( 'https://example.org/' );
+```
