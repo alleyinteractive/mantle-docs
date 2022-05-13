@@ -216,5 +216,9 @@ You will then be able to use the Http Client to make requests like in the above 
 ```php
 use Mantle\Http_Client\Http_Client;
 
-Http_Client::create()->get( 'https://example.org/' );
+$response = Http_Client::create()->get( 'https://httpbin.org/json' );
+
+// Access properties from the response.
+$response->json( 'slideshow' );
+$response['slideshow'];
 ```
