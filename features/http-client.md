@@ -216,5 +216,5 @@ You will then be able to use the Http Client to make requests like in the above 
 ```php
 use Mantle\Http_Client\Http_Client;
 
-Http_Client::get( 'https://example.org/' );
+Http_Client::create()->get( 'https://example.org/' );
 ```
