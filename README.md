@@ -6,7 +6,6 @@ footer: Copyright © 2020-present Alley
 
 <header class="hero">
   <img src="/logo.svg" alt="Mantle" />
-  <!-- <img src="/logo-dark.png" alt="Mantle" class="logo-dark" /> -->
   <h1 id="main-title">Mantle</h1>
   <p class="description">Mantle is a framework for building large, robust websites and applications with WordPress</p>
   <p class="actions">

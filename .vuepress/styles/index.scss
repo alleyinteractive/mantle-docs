@@ -10,16 +10,8 @@
 	width: 100%;
 }
 
-@media (prefers-color-scheme: light) {
-	.logo-dark {
-		display: none !important;
-	}
-}
-
-@media (prefers-color-scheme: dark) {
-	.logo-light {
-		display: none !important;
-	}
+.toggle-dark-button {
+	display: none;
 }
 
 h1, h2, h3, h4 {
