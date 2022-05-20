@@ -4,10 +4,22 @@
  * ref：https://v1.vuepress.vuejs.org/config/#index-styl
  */
 
- .home .hero img {
+.home .hero img {
 	max-height: 450px !important;
 	max-width: 450px !important;
 	width: 100%;
+}
+
+@media (prefers-color-scheme: light) {
+	.logo-dark {
+		display: none !important;
+	}
+}
+
+@media (prefers-color-scheme: dark) {
+	.logo-light {
+		display: none !important;
+	}
 }
 
 h1, h2, h3, h4 {
