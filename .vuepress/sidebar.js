@@ -66,6 +66,7 @@ module.exports = [
       'hooks',
       'cron',
       'remote-requests',
+      'factory',
       'traits',
       'users',
       'pest',
