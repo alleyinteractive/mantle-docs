@@ -143,12 +143,31 @@ class Order_Listener {
 }
 ```
 
-Listeners can also automatically listen for WordPress events:
+Listeners can also automatically listen for WordPress events using PHP
+Attributes or naming the function after the action using the `on_{hook}`
+function name:
 
 ```php
+use Mantle\Support\Attributes\Action;
 use WP_Query;
 
 class Customer_Listener {
+	/**
+	 * Handle the callback to the 'attribute-based' action.
+	 */
+	#[Action('attribute-based')]
+	public function handle_special_action_callback( $event ) {
+		// ...
+	}
+
+	/**
+	 * Handle the callback to the 'attribute-based' action at 20 priority.
+	 */
+	#[Action('attribute-based', 20)]
+	public function handle_special_action_callback_20( $event ) {
+		// ...
+	}
+
 	/**
 	 * Handle the query.
 	 *
