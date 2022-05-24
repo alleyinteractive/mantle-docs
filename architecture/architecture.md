@@ -165,5 +165,5 @@ interfacing with singleton objects deep in the framework.
 Log::info( 'My log message!' );
 
 // Can be rewritten as...
-mantle_app()['log']->info( 'My log message!' );
+app()['log']->info( 'My log message!' );
 ```
