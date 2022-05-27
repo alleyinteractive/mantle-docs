@@ -1,24 +1,6 @@
 # Models
 
-- [Models](#models)
-	- [Supported Model Types](#supported-model-types)
-	- [Generating a Model](#generating-a-model)
-	- [Defining a Model](#defining-a-model)
-		- [Example Post Model](#example-post-model)
-		- [Example Term Model](#example-term-model)
-	- [Interacting with Models](#interacting-with-models)
-		- [Field Aliases](#field-aliases)
-			- [Post Aliases](#post-aliases)
-			- [Term Aliases](#term-aliases)
-		- [Saving/Updating Models](#savingupdating-models)
-		- [Deleting Models](#deleting-models)
-		- [Working with Meta](#working-with-meta)
-	- [Core Object](#core-object)
-	- [Events](#events)
-	- [Query Scopes](#query-scopes)
-		- [Global Scope.](#global-scope)
-		- [Local Scope](#local-scope)
-			- [Using a Local Scope](#using-a-local-scope)
+[[toc]]
 
 Models provide a fluent way to interface with objects in WordPress. Models can
 be either a post type, a term, or a subset of a post type. They represent a data
@@ -27,6 +9,7 @@ a post type, REST API fields, and more. To make life easier for developers,
 Mantle models were designed with uniformity and simplicity in mind.
 
 ## Supported Model Types
+
 Data Type | Model Class
 --------- | -----------
 Attachment | `Mantle\Database\Model\Attachment`
@@ -37,6 +20,7 @@ Term | `Mantle\Database\Model\Term`
 User | `Mantle\Database\Model\User`
 
 ## Generating a Model
+
 Models can be generated through the command:
 
 ```bash
@@ -44,6 +28,7 @@ wp mantle make:model <name> --model_type=<model_type> [--registrable] [--object_
 ```
 
 ## Defining a Model
+
 Models live in the `app/models` folder under the `App\Models` namespace.
 
 ### Example Post Model
@@ -99,6 +84,7 @@ class Example_Model extends Term {
 ```
 
 ## Interacting with Models
+
 Setting/updating data with a model can be done using the direct attribute name
 you wish to update or a handy alias (see Core Object).
 
@@ -110,7 +96,9 @@ $post->post_content = 'Content to set.';
 ```
 
 ### Field Aliases
+
 #### Post Aliases
+
 
 Alias | Field
 ----- | -----
@@ -185,6 +173,58 @@ unset( $model->meta->meta_key );
 $model->save();
 ```
 
+### Working with Terms
+
+The `Post` model support interacting with terms through
+[relationships](./model-relationships.md) or through the model directly. The
+model supports multiple methods to make setting terms on a post simple:
+
+```php
+$category = Category::whereName( 'Example Category' )->first();
+
+// Save the category to a post.
+$post = new Post( [ 'title' => 'Example Post' ] );
+
+// Also supports an array of IDs or WP_Term objects.
+$post->terms->category = [ $category ];
+
+$post->save();
+
+// Read the tags from a post.
+$post->terms->post_tag // Term[]
+```
+
+Terms can also be set when creating a post (specifying the taxonomy is
+optional):
+
+```php
+$post = new Post( [
+	'title' => 'Example Title',
+	'terms' => [ $category ],
+] );
+
+$post = new Post( [
+	'title' => 'Example Title',
+	'terms' => [
+		'category' => [ $category ],
+		'post_tag' => [ $tag ],
+	],
+] );
+```
+
+Models also support simpler `get_terms`/`set_terms` methods for function based
+setting of a post's terms:
+
+```php
+$post = Post::find( 1234 );
+
+// Set the terms on a model.
+$post->set_terms( [ $terms ], 'category' );
+
+// Read the terms on a model.
+$post->get_terms( 'category' ); // Term[]
+```
+
 ## Core Object
 
 To promote a uniform interface of data across models, all models implement
@@ -207,6 +247,7 @@ core_object(): object|null
 ```
 
 ## Events
+
 In the spirit of interoperability, you can listen to model events in a uniform
 way across all model types. Currently only `Post` and `Term` models support
 events. Model events can be registered inside or outside a model.
@@ -238,6 +279,7 @@ Method | Event
 `trashed` | After a model is trashed.
 
 ## Query Scopes
+
 A scope provides a way to add a constraint to a model's query easily.
 
 ### Global Scope.
@@ -289,6 +331,7 @@ class Admin_Scope implements Scope {
 ```
 
 ### Local Scope
+
 Local Scopes allow you to define a commonly used set of constraints that you may
 easily re-use throughout your application. For example, you can retrieve all
 posts that are in a specific category. To add a local scope to the application,
