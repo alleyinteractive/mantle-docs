@@ -69,7 +69,14 @@ use Mantle\Testkit\Test_Case as Testkit_Test_Case;
 class Test_Case extends Testkit_Test_Case {
 
   public function test_create_ordered_set() {
-    $post_ids = static::factory()->post->create_ordered_set( 10, [], Carbon::now()->subYear(), DAY_IN_SECONDS );
+    $post_ids = static::factory()->post->create_ordered_set(
+      10,
+      [],
+      // Start creating the post a year ago.
+      Carbon::now()->subYear(),
+      // Spread them out by a day.
+      DAY_IN_SECONDS,
+    );
   }
 }
 ```
