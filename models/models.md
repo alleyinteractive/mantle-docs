@@ -139,6 +139,7 @@ $post->save( [ 'content' => 'Fresher content' ] );
 ```
 
 ### Deleting Models
+
 The `delete()` method on the model will delete the model. On `Post` models, the
 delete method will attempt to trash the post if the post type supports it. You
 can pass `$force = true` to bypass that.
@@ -151,25 +152,44 @@ $term->delete();
 ```
 
 ### Working with Meta
-The `Post`, `Term`, and `User` model types support setting meta easily.
+
+The `Post`, `Term`, and `User` model types support setting meta easily. Models
+have a get/set/delete methods for meta:
 
 ```php
+// Meta will be stored immediately unless the model hasn't been saved yet
+// (allows you to set meta before saving the post).
 $model->set_meta( 'meta-key', 'meta-value' );
-$model->save( [ 'meta' => [ 'meta-key' => 'meta-value' ] ] );
-$model->meta->meta_key = 'meta-value';
-
 $model->delete_meta( 'meta-key' );
-$model->save( [ 'meta' => [ 'meta-key' => '' ] ] );
+$value = $model->get_meta( 'meta-key' ); // mixed
 
-$value = $model->get_meta( 'meta-key' );
-$value = $model->meta->meta_key;
+// Meta can also be saved directly with the save() method.
+$model->save( [ 'meta' => [ 'meta-key' => 'meta-value' ] ] );
+```
+
+Models also support a fluent way of setting meta using the `meta` attribute. The
+meta will be queued for saving and saved once you call the `save()` method on
+the model:
+
+```php
+// Retrieve meta value.
+$value = $model->meta->meta_key; // mixed
+
+// Update a meta value.
+$model->meta->meta_key = 'meta-value';
+$model->save();
+
+// Delete a meta key.
+unset( $model->meta->meta_key );
+$model->save();
 ```
 
 ## Core Object
+
 To promote a uniform interface of data across models, all models implement
-`Mantle\Contracts\Database\Core_Object`. This provides a consistent
-set of methods to invoke on any model you may come across. A developer shouldn't
-have to check the model type before retrieving a field. This helps promote
+`Mantle\Contracts\Database\Core_Object`. This provides a consistent set of
+methods to invoke on any model you may come across. A developer shouldn't have
+to check the model type before retrieving a field. This helps promote
 interoperability between model types in your application.
 
 The `core_object()` method will retrieve the WordPress core object that the
