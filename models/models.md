@@ -128,6 +128,7 @@ Alias | Field
 `id` | `term_id`
 
 ### Saving/Updating Models
+
 The `save()` method on the model will store the data for the respective model.
 It also supports an array of attributes to set for the model before saving.
 
