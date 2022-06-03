@@ -68,7 +68,7 @@ class Post extends Base_Post {
   public function sponsor() {
     // Uses the 'sponsor_id' meta field on the post to retrieve the sponsor.
     return $this->belongs_to( Sponsor::class );
-	}
+  }
 
   public function tags() {
     return $this->belongs_to( Sponsor::class );
@@ -137,7 +137,7 @@ Relationships can also be access as magic properties on the model instance.
 echo $post->sponsor->title;
 
 foreach ( $post->sponsors as $sponsor ) {
-	echo $sponsor->title;
+  echo $sponsor->title;
 }
 ```
 
@@ -160,9 +160,9 @@ blog posts in a collection at once. Here is an example model:
 
 ```php
 class Blog_Post extends Post {
-	public function sponsor() {
-		return $this->has_one( Sponsor::class );
-	}
+  public function sponsor() {
+    return $this->has_one( Sponsor::class );
+  }
 }
 ```
 
@@ -172,9 +172,9 @@ Now, let's retrieve all the blog posts and the sponsors:
 $posts = Blog_Post::with( 'sponsor' )->get();
 
 foreach ( $posts as $post ) {
-	echo $post->title;
+  echo $post->title;
 
-	echo $post->sponsor->title;
+  echo $post->sponsor->title;
 }
 ```
 
@@ -188,11 +188,11 @@ property on the model.
 
 ```php
 class Blog_Post extends Post {
-	/**
-	 * The relations to eager load on every query.
-	 *
-	 * @var string[]
-	 */
-	protected $with = [ 'sponsor' ];
+  /**
+   * The relations to eager load on every query.
+   *
+   * @var string[]
+   */
+  protected $with = [ 'sponsor' ];
 }
 ```

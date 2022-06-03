@@ -55,6 +55,8 @@ are non-empty:
 * `assertTermDoesNotExists( array $args )` - Assert if a term doesn't exists given a set of arguments.
 * `assertUserExists( array $args )` - Assert if a user exists given a set of arguments.
 * `assertUserDoesNotExists( array $args )` - Assert if a user doesn't exists given a set of arguments.
+* `assertPostHasTerm( $post, $term )` - Assert if a post has a specific term.
+* `assertPostNotHasTerm( $post, $term )` - Assert if a post does not have a specific term (aliased to `assertPostsDoesNotHaveTerm()`)
 
 ## Deprecated and Incorrect Usage Assertion
 
