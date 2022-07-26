@@ -1,11 +1,11 @@
 # Commands
 
 - [Commands](#commands)
-	- [Introduction](#introduction)
-	- [Writing Commands](#writing-commands)
-		- [Generating a Command](#generating-a-command)
-		- [Registering a Command](#registering-a-command)
-		- [Command Structure](#command-structure)
+  - [Introduction](#introduction)
+  - [Writing Commands](#writing-commands)
+    - [Generating a Command](#generating-a-command)
+    - [Registering a Command](#registering-a-command)
+    - [Command Structure](#command-structure)
 
 ## Introduction
 Mantle provides a `wp-cli` integration to help make writing commands easier.
@@ -113,10 +113,10 @@ class Example_Command extends Command {
     $password = $this->secret( 'Ask a super secret question?' );
 
     // Get an argument.
-    $arg = $this->get_arg( 0, 'Default Value' );
+    $arg = $this->argument( 'name-of-the-argument', 'Default Value' );
 
     // Get a flag.
-    $flag = $this->get_flag( 'flag-to-get', 'default-value' );
+    $flag = $this->flag( 'flag-to-get', 'default-value' );
   }
 }
 ```
