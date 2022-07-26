@@ -1,11 +1,6 @@
 # Commands
 
-- [Commands](#commands)
-  - [Introduction](#introduction)
-  - [Writing Commands](#writing-commands)
-    - [Generating a Command](#generating-a-command)
-    - [Registering a Command](#registering-a-command)
-    - [Command Structure](#command-structure)
+[[toc]]
 
 ## Introduction
 Mantle provides a `wp-cli` integration to help make writing commands easier.
