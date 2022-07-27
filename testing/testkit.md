@@ -63,27 +63,25 @@ The callback to `install()` is optional.
 :::
 
 ```php
-<?php
 /**
  * Theme Testing using Mantle Framework
  */
 
 namespace App\Tests;
 
-// Install the Mantle Test Framework.
-\Mantle\Testing\install(
-	function() {
-		// Setup any additional dependencies.
+// Install Mantle Testing Framework normally.
+\Mantle\Testing\install();
 
-		\Mantle\Testing\tests_add_filter(
-			'muplugins_loaded',
-			function() {
-				// Load the main file of a plugin, theme, etc.
+// Install Mantle Testing Framework with some callbacks.
+\Mantle\Testing\manager()
+	->before( ... )
+	->after( ... )
+	->loaded( function() {
+		// The loaded callback is fired on 'wp_loaded'.
+		// You can use this callback to load the main file of a plugin, theme, etc.
 
-				// Setup any dependencies once WordPress is loaded, such as themes.
-				switch_theme( 'twentytwenty' );
-			}
-		);
+		// Setup any dependencies once WordPress is loaded, such as themes.
+		switch_theme( 'twentytwenty' );
 	}
 );
 ```
