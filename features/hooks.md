@@ -201,7 +201,7 @@ is used. To cache the events, run the following command on deployment:
 ## Using Hooks Safely with Type-hint Declarations
 
 WordPress' actions/filters are extended by Mantle to allow for safe use of
-type/return declarations with a fatal error. Mantle providers a wrapper on top
+type/return declarations with a fatal error. Mantle provides a wrapper on top
 of `add_action()` and `add_filter()` (these can be used interchangeable with
 `Event::listen( ... )`).
 
@@ -225,7 +225,7 @@ add_filter(
 add_filter(
   'my_custom_filter',
   function ( array $posts ): array {
-    if ( another_function() {
+    if ( another_function() ) {
       return null;
     }
 
