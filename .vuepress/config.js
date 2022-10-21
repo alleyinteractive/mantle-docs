@@ -6,7 +6,7 @@ import { sitemapPlugin } from 'vuepress-plugin-sitemap2';
 import sidebar from './sidebar';
 
 export default defineUserConfig({
-  title: 'Mantle',
+  title: 'Mantle by Alley',
   description: 'Mantle is a framework for building large, robust websites and applications with WordPress',
   base: '/',
   head: [
