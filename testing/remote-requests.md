@@ -137,7 +137,7 @@ the test case. Mantle will log if an actual remote request is being made
 during a unit test.
 
 ```php
-$this->assertRequestSent( 'https://alley.co/' );
+$this->assertRequestSent( 'https://alley.com/' );
 $this->assertRequestNotSent( 'https://anothersite.com/' );
 $this->assertNoRequestSent();
 $this->assertRequestCount( int $number );

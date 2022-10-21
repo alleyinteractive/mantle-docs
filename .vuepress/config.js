@@ -27,7 +27,7 @@ module.exports = {
     navbar: [
       { text: 'Home', link: '/', target: '_self', },
       { text: 'Docs', link: '/getting-started/installation.html', target: '_self', },
-      { text: 'Alley', link: 'https://alley.co/', },
+      { text: 'Alley', link: 'https://alley.com/', },
     ],
     sidebar: require('./sidebar'),
     sidebarDepth: 3,
