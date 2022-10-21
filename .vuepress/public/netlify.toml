@@ -1,4 +1,5 @@
 [[redirects]]
   from = "https://mantle.alley.co/*"
-  to = "https://mantle.alley.com"
-  status = 200
+  to = "https://mantle.alley.com/:splat"
+  status = 301
+  force = true
