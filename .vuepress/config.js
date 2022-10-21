@@ -1,8 +1,6 @@
-import { backToTopPlugin } from '@vuepress/plugin-back-to-top';
 import { defaultTheme, defineUserConfig } from 'vuepress';
 import { docsearchPlugin } from '@vuepress/plugin-docsearch';
 import { googleAnalyticsPlugin } from '@vuepress/plugin-google-analytics';
-import { mediumZoomPlugin } from '@vuepress/plugin-medium-zoom';
 import { removeHtmlExtensionPlugin } from 'vuepress-plugin-remove-html-extension';
 import { sitemapPlugin } from 'vuepress-plugin-sitemap2';
 import sidebar from './sidebar';
