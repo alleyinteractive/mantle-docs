@@ -1,5 +1,10 @@
+import { backToTopPlugin } from '@vuepress/plugin-back-to-top';
 import { defaultTheme, defineUserConfig } from 'vuepress';
+import { docsearchPlugin } from '@vuepress/plugin-docsearch';
+import { googleAnalyticsPlugin } from '@vuepress/plugin-google-analytics';
+import { mediumZoomPlugin } from '@vuepress/plugin-medium-zoom';
 import { removeHtmlExtensionPlugin } from 'vuepress-plugin-remove-html-extension';
+import { sitemapPlugin } from 'vuepress-plugin-sitemap2';
 import sidebar from './sidebar';
 
 export default defineUserConfig({
@@ -18,15 +23,17 @@ export default defineUserConfig({
     ['meta', { name: 'theme-color', content: '#234568' }],
   ],
   theme: defaultTheme({
+    activeHeaderLinks: false,
+    backToTop: true,
     colorMode: 'dark',
     colorModeSwitch: false,
-    activeHeaderLinks: false,
     contributors: false,
     displayAllHeaders: false,
     docsBranch: 'main',
     editLinks: true,
     editLinkText: 'Help us improve this page!',
     lastUpdated: false,
+    mediumZoom: true,
     repo: 'alleyinteractive/mantle-docs',
     navbar: [
       { text: 'Home', link: '/', target: '_self', },
@@ -46,26 +53,22 @@ export default defineUserConfig({
   },
   plugins: [
     removeHtmlExtensionPlugin(),
-    '@vuepress/plugin-back-to-top',
-    '@vuepress/plugin-medium-zoom',
-    [
-      '@vuepress/google-analytics',
-      {
-        id: 'G-G4HGJSHN3S',
-      }
-    ],
-    [
-      '@vuepress/docsearch',
-      {
-        appId: 'Y3WWPYIIL4',
-        apiKey: 'c92c3230a91695a1b01b2d74ed79d959',
-        indexName: 'mantle',
-        locales: {
-          '/': {
-            placeholder: 'Search Documentation',
-          },
+    sitemapPlugin({
+      hostname: 'https://mantle.alley.com',
+      sitemapFilename: 'sitemap.xml',
+    }),
+    googleAnalyticsPlugin({
+      id: 'G-G4HGJSHN3S',
+    }),
+    docsearchPlugin({
+      appId: 'Y3WWPYIIL4',
+      apiKey: 'c92c3230a91695a1b01b2d74ed79d959',
+      indexName: 'mantle',
+      locales: {
+        '/': {
+          placeholder: 'Search Documentation',
         },
       },
-    ],
-  ]
+    }),
+  ],
 });
