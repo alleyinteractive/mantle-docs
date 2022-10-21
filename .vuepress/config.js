@@ -1,8 +1,9 @@
-const { description } = require('../package');
+import { defaultTheme, defineUserConfig } from 'vuepress';
+import sidebar from './sidebar';
 
-module.exports = {
+export default defineUserConfig({
   title: 'Mantle',
-  description,
+  description: 'Mantle is a framework for building large, robust websites and applications with WordPress',
   base: '/',
   head: [
     ['meta', { name: 'google-site-verification', content: '9j6GWEdJJsL1zqzPRBMYahbaFg0NNj-NVglppOfGyJE' }],
@@ -15,7 +16,9 @@ module.exports = {
     ['link', { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' }],
     ['meta', { name: 'theme-color', content: '#234568' }],
   ],
-  themeConfig: {
+  theme: defaultTheme({
+    colorMode: 'dark',
+    colorModeSwitch: false,
     activeHeaderLinks: false,
     contributors: false,
     displayAllHeaders: false,
@@ -29,9 +32,9 @@ module.exports = {
       { text: 'Docs', link: '/getting-started/installation.html', target: '_self', },
       { text: 'Alley', link: 'https://alley.com/', },
     ],
-    sidebar: require('./sidebar'),
+    sidebar,
     sidebarDepth: 3,
-  },
+  }),
   markdown: {
     code: {
       lineNumbers: false,
@@ -63,4 +66,4 @@ module.exports = {
       },
     ],
   ]
-}
+});

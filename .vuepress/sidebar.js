@@ -2,7 +2,7 @@ function prefix(prefix, children) {
   return children.map(child => `/${prefix}/${child}.md`)
 }
 
-module.exports = [
+export default [
   {
     text: 'Getting Started',
     children: prefix('getting-started', [
@@ -79,4 +79,4 @@ module.exports = [
       'browser-testing',
     ]),
   },
-]
+];
