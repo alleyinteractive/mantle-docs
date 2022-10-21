@@ -12,6 +12,10 @@
     "dev": "vuepress dev . --config .vuepress/config.js",
     "build": "vuepress build . --config .vuepress/config.js"
   },
+  "engines": {
+    "node": "16",
+    "npm": "8"
+  },
   "license": "GPL-2.0-or-later",
   "dependencies": {
     "@vuepress/plugin-back-to-top": "^2.0.0-beta.51",
