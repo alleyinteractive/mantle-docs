@@ -1,4 +1,5 @@
 import { defaultTheme, defineUserConfig } from 'vuepress';
+import { removeHtmlExtensionPlugin } from 'vuepress-plugin-remove-html-extension';
 import sidebar from './sidebar';
 
 export default defineUserConfig({
@@ -29,7 +30,7 @@ export default defineUserConfig({
     repo: 'alleyinteractive/mantle-docs',
     navbar: [
       { text: 'Home', link: '/', target: '_self', },
-      { text: 'Docs', link: '/getting-started/installation.html', target: '_self', },
+      { text: 'Docs', link: '/getting-started/installation/', target: '_self', },
       { text: 'Alley', link: 'https://alley.com/', },
     ],
     sidebar,
@@ -44,6 +45,7 @@ export default defineUserConfig({
     },
   },
   plugins: [
+    removeHtmlExtensionPlugin(),
     '@vuepress/plugin-back-to-top',
     '@vuepress/plugin-medium-zoom',
     [
