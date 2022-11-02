@@ -1,0 +1,25 @@
+.features {
+  align-items: center;
+  display: flex;
+  margin-bottom: 40px;
+  padding: 2rem 0;
+  width: 100%;
+}
+
+.featureSvg {
+  height: 200px;
+  width: 200px;
+}
+
+.featureTitle {
+  font-size: 26px;
+}
+
+[data-theme='light'] .featureTitle {
+  color: var(--ifm-color-primary-darkest);
+}
+
+.featureDescription {
+  font-size: 1.2rem;
+  line-height: 2rem;
+}
