@@ -920,7 +920,7 @@ location to be a given value:
 $browser->waitForLocation( '/secret' );
 ```
 
-You may also wait for a [named route's](/docs/{{version}}/routing#named-routes)
+You may also wait for a [named route's](../basics/requests.md#named-routes)
 location:
 
 ```php
@@ -1136,7 +1136,7 @@ Assert that the current path does not match the given path:
 #### assertRouteIs
 
 Assert that the current URL matches the given [named
-route's](/docs/{{version}}/routing#named-routes) URL:
+route's](../basics/requests.md#named-routes) URL:
 
     $browser->assertRouteIs( $name, $parameters );
 

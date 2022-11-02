@@ -1,6 +1,6 @@
 {
-  "name": "mantle-docs-new",
-  "version": "0.0.0",
+  "name": "mantle-docs",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "docusaurus": "docusaurus",

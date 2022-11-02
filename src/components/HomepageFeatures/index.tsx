@@ -25,16 +25,16 @@ const FeatureList: FeatureItem[] = [
       <>
         Includes a
         {' '}
-        <Link to="/docs/models/models/">powerful ORM</Link>
+        <Link to="/docs/models">powerful ORM</Link>
         , simple to use
         {' '}
-        <Link to="/docs/basics/requests/">routing</Link>
+        <Link to="/docs/basics/requests">routing</Link>
         ,
         {' '}
-        <Link to="/docs/basics/templating/">blade-powered templating</Link>
+        <Link to="/docs/basics/templating">blade-powered templating</Link>
         , and a
         {' '}
-        <Link to="/docs/testing/test-framework/">fast independent testing library for WordPress</Link>
+        <Link to="/docs/testing/test-framework">fast independent testing library for WordPress</Link>
         {' '}
         out of the box.
       </>
