@@ -28,3 +28,17 @@
   --ifm-color-primary-lightest: #417ab0;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+/* Homepage feature titles and description */
+.featureTitle {
+  font-size: 26px;
+}
+
+[data-theme='light'] .featureTitle {
+  color: var(--ifm-color-primary-darkest);
+}
+
+.featureDescription {
+  font-size: 1.2rem;
+  line-height: 2rem;
+}

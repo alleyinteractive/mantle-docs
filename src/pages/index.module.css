@@ -34,7 +34,7 @@
 
 @media screen and (max-width: 996px) {
   .heroBanner {
-    padding: 2rem;
+    padding: 2rem 2rem 0;
   }
 }
 
@@ -50,4 +50,10 @@
 	text-align: center;
   margin: 50px auto;
   max-width: 900px;
+}
+
+@media (max-width: 400px) {
+  .buttonLower {
+    margin-top: 20px;
+  }
 }

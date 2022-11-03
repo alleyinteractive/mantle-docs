@@ -3,21 +3,25 @@ import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
+
+// Components.
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import HomepageLowerFeatures from '@site/src/components/HomepageLowerFeatures';
+import HomepageExamples from '../components/HomepageExamples';
 
+import Logo from '../../static/img/logo.svg';
 import styles from './index.module.css';
 
 function HomepageHeader() {
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
-      <img src="/img/logo.svg" className={styles.heroImage} alt="Mantle" />
+      <Logo className={styles.heroImage} />
       <p className={clsx('hero__subtitle', styles.heroDescription)}>Mantle is a framework for building large, robust websites and applications with WordPress</p>
       <p className={styles.heroActions}>
         <Link className="button button--lg button--primary" to="/docs/getting-started/installation">
           Get Started →
         </Link>
-        <Link className="button button--lg button--secondary margin-left--sm" href="https://github.com/alleyinteractive/mantle/">
+        <Link className={clsx('button button--lg button--secondary margin-left--sm', styles.buttonLower)} href="https://github.com/alleyinteractive/mantle/">
           GitHub
         </Link>
       </p>
@@ -32,9 +36,9 @@ export default function Home(): JSX.Element {
       <HomepageHeader />
       <main>
         <HomepageFeatures />
-        {/* <HomepageExamples />
-        <HomepageLowerFeatures /> */}
-        <HomepageLowerFeatures />
+        <HomepageExamples />
+        {/* Disabled for the time being. */}
+        {/* <HomepageLowerFeatures /> */}
 
         <div className="container">
           <p className={clsx('text--center', styles.goals)}>

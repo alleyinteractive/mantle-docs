@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from '@docusaurus/Link';
 import Features, { FeatureItem } from '../Features';
 
 const FeatureList: FeatureItem[] = [

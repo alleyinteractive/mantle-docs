@@ -1,0 +1,37 @@
+.featureRow {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.featureCode {
+  flex: 1;
+}
+
+@media (max-width: 996px) {
+  .featureCode {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 996px) {
+  .featureCode {
+    margin-right: 40px;
+    width: 66.666667%;
+  }
+
+  .featureRow {
+    flex-direction: row;
+  }
+
+  .featureRowFlipped {
+    flex-direction: row-reverse;
+  }
+
+  .featureRowFlipped .featureCode {
+    margin-right: 0;
+    margin-left: 40px;
+  }
+}
