@@ -76,10 +76,10 @@ const config = {
       ],
       navbar: {
         title: 'Mantle by Alley',
-        // logo: {
-        //   alt: 'My Site Logo',
-        //   src: 'img/logo.svg',
-        // },
+        logo: {
+          alt: 'Mantle by Alley',
+          src: 'img/logo-no-text.svg',
+        },
         items: [
           {
             type: 'doc',
