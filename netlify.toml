@@ -1,3 +1,8 @@
 [build]
   publish = "build/"
   command = "npm run build"
+[[redirects]]
+  from = "https://mantle.alley.co/*"
+  to = "https://mantle.alley.com/:splat"
+  status = 301
+  force = true
