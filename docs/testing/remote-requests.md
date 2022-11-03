@@ -9,7 +9,7 @@ generate a response.
 By default Mantle won't mock any HTTP request but will actively notify you when
 one is being made inside a unit test.
 
-::: warning
+:::note
 This only supports requests made via the [`WP_Http`
 API](https://developer.wordpress.org/reference/functions/wp_remote_request/)
 (`wp_remote_request()`, `wp_remote_get()`, `wp_remote_post()`, etc.)

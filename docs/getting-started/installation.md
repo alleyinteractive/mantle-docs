@@ -28,7 +28,7 @@ into an existing WordPress installation.
 mantle new my-site
 ```
 
-::: details Looking to contribute to Mantle?
+:::info Looking to contribute to Mantle?
 
 You can install Mantle and the Mantle Framework linked to each other for easy
 local development. Both will be cloned as Git repositories. Mantle Framework

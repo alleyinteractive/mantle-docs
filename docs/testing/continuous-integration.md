@@ -72,7 +72,7 @@ code. Mantle's version of the WordPress installer for continuous integration is
 also faster than the common version included from WP-CLI, too (1-2 seconds
 versus 4-5 -- subsequent runs also cache the existing WordPress installation).
 
-::: details Where can I find the Mantle version of the installation script?
+:::tip Where can I find the Mantle version of the installation script?
 
   The canonical version of the Mantle `install-wp-tests.sh` script is located
   [here](https://github.com/alleyinteractive/mantle-ci/blob/HEAD/install-wp-tests.sh) and can be referenced in tests via `https://raw.githubusercontent.com/alleyinteractive/mantle-ci/HEAD/install-wp-tests.sh`.

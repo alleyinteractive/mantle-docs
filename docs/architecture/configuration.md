@@ -32,7 +32,7 @@ installation, the root directory of your application will contain a
 `.env.example` file that defines many common environment variables. This file
 should be copied to `.env` for use.
 
-::: details Deploying your site to a server?
+:::tip Deploying your site to a server?
 See [Environment File Location](#environment-file-location) for where the `.env` should be placed.
 :::
 
@@ -122,7 +122,7 @@ For situations when environment variables aren't supported, environment-specific
 configuration is possible by including a configuration file in a child folder
 named after the respective environment to apply the configuration for.
 
-::: warning
+:::danger
 `.env`-based configuration is preferred for simplicity versus file-based PHP files.
 :::
 

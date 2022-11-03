@@ -8,7 +8,7 @@ make HTTP requests with external services. The HTTP Client combined with support
 for [testing and faking Remote Requests](../testing/remote-requests.md) provides
 you a full solution for making and testing external HTTP requests end-to-end.
 
-::: details Future Plans
+:::info Future Plans
 In the future, the HTTP Client will be abstracted to support the Guzzle HTTP Client
 and multipart requests. This also allows parallel requests to be made.
 :::

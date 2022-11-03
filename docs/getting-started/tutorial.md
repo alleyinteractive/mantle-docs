@@ -8,7 +8,7 @@ WordPress alike.
 
 ## Installation
 
-::: details
+:::info
 This guide assumes that you are running WordPress in a Vagrant or similar local
 PHP environment such as [VVV](https://varyingvagrantvagrants.org/).
 :::

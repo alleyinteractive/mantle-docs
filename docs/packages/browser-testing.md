@@ -10,7 +10,7 @@ on your local computer. Instead, it uses a standalone
 installation. However, you are free to utilize any other Selenium compatible
 driver you wish.
 
-::: details Credits Where Due
+:::info Credits Where Due
 Most of the credits for this package go to the [authors of
 Dusk](https://github.com/laravel/dusk/graphs/contributors) and we are thankful
 to have it as apart of our framework!
@@ -25,7 +25,8 @@ Composer dependency to your project:
 composer require --dev alleyinteractive/mantle-browser-testing
 ```
 
-::: details Loading the Service Provider
+:::info Loading the Service Provider
+
 Through package discovery, the browser testing service provider should
 automatically be loaded to your application. If it is not, add
 `Mantle\Browser_Testing\Browser_Testing_Service_Provider::class` to your
