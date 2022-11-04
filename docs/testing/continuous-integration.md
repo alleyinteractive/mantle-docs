@@ -22,6 +22,9 @@ install WordPress behind the scenes so that your plugin/package can focus on
 other things. For majority of the use cases plugins/packages will be able to run
 `./vendor/bin/phpunit` and have their tests run automatically.
 
+For more information, read more about the
+[Installation Manager](./installation-manager.md).
+
 ## Environment Variables
 
 By default, no variables need to be set to run your tests. It is recommended to
@@ -32,45 +35,11 @@ set the following variables before running:
 
 The `CACHEDIR` variable defines the location of the cache folder used for tests.
 If possible, cache that folder and use it across tests to improve performance.
-For tests using the mantle installation script, `WP_DEVELOP_DIR` and
+For tests using the Mantle installation script, `WP_DEVELOP_DIR` and
 `WP_TESTS_DIR` are unused and do not need to be defined.
 
-### Automatic Installation of WordPress
-
-By default Mantle will check if the plugin/project is a valid WordPress
-installation. If a WordPress installation is found it will use that installation
-instead. For local development this is the most common use case if you're
-working on a package/plugin/theme inside of an existing WordPress installation.
-
-:::tip Are you are running unit tests locally?
-
-Make sure you have a `wp-tests-config.php` file: [Generating a wp-tests-config.php](./testing.md#generating-a-wp-tests-config-php).
-:::
-
-If a WordPress installation is not found, common when a single plugin is checked
-out in a CI environment, Mantle will attempt to automatically install WordPress
-in `WP_CORE_DIR` (`/tmp/wordpress` by default). A default configuration is used
-that can be customized via environmental variables. Here are the default
-variables:
-
-```
-WP_DB_HOST: localhost
-WP_DB_USER: root
-WP_DB_PASSWORD: root
-WP_DB_NAME: wordpress_unit_tests
-```
-
-### Manual Installation of WordPress
-
-Mantle's automatic installation of WordPress is the preferred solution but may not meet all of your needs. Two common use cases may require you to install WordPress manually in CI:
-
-1. Themes are currently not supported for automatic installation.
-2. Plugins/packages that rely on other plugins to be installed.
-
-Installing WordPress in your CI test is easy and can be done in a few lines of
-code. Mantle's version of the WordPress installer for continuous integration is
-also faster than the common version included from WP-CLI, too (1-2 seconds
-versus 4-5 -- subsequent runs also cache the existing WordPress installation).
+For more environmental variables, see the
+[Installation Manager](./installation-manager.md#overriding-the-default-installation).
 
 :::tip Where can I find the Mantle version of the installation script?
 
@@ -84,22 +53,15 @@ Actions](#github-actions) can be found below):
 
 
 ```bash
-# Install WordPress [db name, username, password, host, version]
-curl -s https://raw.githubusercontent.com/alleyinteractive/mantle-ci/HEAD/install-wp-tests.sh | bash -s wordpress_unit_tests root 'root' mysql $WP_VERSION
-
 # Install Composer
 composer install
 
-# Rsync the theme into $WP_CORE_DIR/themes/example-theme
-rsync -aWq --no-compress --exclude '.npm' --exclude '.git' --exclude '.npm' --exclude 'node_modules' . ${WP_CORE_DIR}/wp-content/themes/example-theme
-
-# Hop into theme's directory.
-cd ${WP_CORE_DIR}/wp-content/wp-content/themes/example-theme
-
 # Run PHPUnit/phpcs
-composer run phpunit
-composer run phpcs
+composer test
 ```
+
+An example test bootstrap file for a plugin [can be found
+here](https://github.com/alleyinteractive/mantle/blob/HEAD/tests/bootstrap.php).
 
 ## Caching
 
@@ -108,7 +70,8 @@ should cache the dependencies installed using Composer and the remote files
 downloaded during testing (the `CACHEDIR` variable). The configurations included
 in this guide will use the recommended caching for testing.
 
-The Mantle version of the `install-wp-tests.sh` script will also cache the WordPress installation and latest WordPress version as well.
+The Mantle version of the `install-wp-tests.sh` script will also cache the
+WordPress installation and latest WordPress version for 24 hours.
 
 ## Setting Up Continuous Integration
 
@@ -117,15 +80,15 @@ The Mantle version of the `install-wp-tests.sh` script will also cache the WordP
 The Mantle repository includes GitHub Actions for testing your Mantle
 application against PHPUnit and phpcs:
 
-- [GitHub Action for PHPUnit](https://github.com/alleyinteractive/mantle/blob/main/.github/workflows/tests.yml)
-- [GitHub Action for phpcs](https://github.com/alleyinteractive/mantle/blob/main/.github/workflows/coding-standards.yml)
+- [GitHub Action for PHPUnit](https://github.com/alleyinteractive/mantle/blob/HEAD/.github/workflows/tests.yml)
+- [GitHub Action for phpcs](https://github.com/alleyinteractive/mantle/blob/HEAD/.github/workflows/coding-standards.yml)
 
 These actions include best practices included in this guide to test your
 application. If you are working against a `wp-content/`-rooted application, you
 can use the GitHub Actions from `alleyinteractive/create-mantle-app`:
 
-- [GitHub Action for PHPUnit](https://github.com/alleyinteractive/create-mantle-app/blob/main/.github/workflows/tests.yml)
-- [GitHub Action for phpcs](https://github.com/alleyinteractive/create-mantle-app/blob/main/.github/workflows/coding-standards.yml)
+- [GitHub Action for PHPUnit](https://github.com/alleyinteractive/create-mantle-app/blob/HEAD/.github/workflows/tests.yml)
+- [GitHub Action for phpcs](https://github.com/alleyinteractive/create-mantle-app/blob/HEAD/.github/workflows/coding-standards.yml)
 
 ### Buddy
 
@@ -261,23 +224,11 @@ this configuration (this one manually installs WordPress):
     docker_image_name: "alleyops/ci-resources"
     docker_image_tag: "7.4-fpm-wp"
     execute_commands:
-    - "# Install WordPress"
-    - "curl -s https://raw.githubusercontent.com/alleyinteractive/mantle-ci/HEAD/install-wp-tests.sh | bash -s wordpress_unit_tests root 'root' mysql $WP_VERSION false"
-    - ""
     - "# Install Composer"
     - "composer install"
     - ""
-    - "# Rsync the theme into /tmp/wordpress"
-    - "rsync -aWq --no-compress --exclude '.npm' --exclude '.git' --exclude '.npm' --exclude 'node_modules' . ${WP_CORE_DIR}/wp-content/"
-    - ""
-    - "# Hop into theme's directory."
-    - "cd ${WP_CORE_DIR}/wp-content/themes/national-review/"
-    - ""
-    - "# Run PHPUnit"
-    - "../../vendor/bin/phpunit"
-    - ""
-    - "# Run phpcs"
-    - "../../vendor/bin/phpcs -vs --parallel=20"
+    - "# Run tests"
+    - "composer run phpunit"
     services:
     - type: "MYSQL"
       version: "5.7"

@@ -1,5 +1,7 @@
 # Installation Manager
 
+## Introduction
+
 The Installation Manager is a class used to install WordPress for testing. It
 supports installing WordPress in a temporary directory and `rsync`ing your
 project to live within it for testing.
@@ -17,7 +19,7 @@ used to override them:
 
 | Variable/Setting | Default Value | Environmental Variable Name |
 | --- | --- | --- |
-| Installation Path | `/tmp/wordpress` | `WP_TESTS_INSTALL_PATH` |
+| Installation Path | `/tmp/wordpress` | `WP_CORE_DIR` |
 | `DB_NAME` | `wordpress_unit_tests` | `WP_DB_NAME` |
 | `DB_USER` | `root` | `WP_DB_USER` |
 | `DB_PASSWORD` | `root` | `WP_DB_PASSWORD` |

@@ -36,6 +36,10 @@ article {
   --ifm-link-decoration: underline dotted var(--ifm-color-primary-light);
 }
 
+[data-theme="dark"] article {
+  --ifm-link-decoration: underline dotted var(--ifm-color-primary-lightest);
+}
+
 article a {
   text-underline-offset: 2px;
 }
