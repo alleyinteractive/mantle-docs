@@ -1,8 +1,14 @@
+---
+title: Authentication
+---
+
 # Users
 
-The Mantle Test Framework provides a method, `acting_as( $user )` to execute a
-test as a given user or a user in the given role. This is best explained through
-code, so here are some examples of using this method:
+The Mantle Test Framework provides a method `$this->acting_as( $user )` to
+execute a test as a given user or a user in the given role.
+
+Passing a role name to `acting_as()` will create a new user with that role and
+authenticate as that user.
 
 ```php
 $this->acting_as( 'administrator' );
@@ -15,10 +21,8 @@ $this->get( '/some-admin-only-page/' )
      ->assertForbidden();
 ```
 
-```php
-$user = $this->acting_as( 'editor' );
-```
+You may also pass a user instance to `acting_as()` to authenticate as that user.
 
 ```php
-$this->acting_as( $some_user_created_elsewhere );
+$this->acting_as( static::factory()->user->create() );
 ```
