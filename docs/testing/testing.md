@@ -180,24 +180,3 @@ installation:
 ```
 
 For more information, read more about the [Installation Manager](./installation-manager.md).
-
-<!-- ### Generating a `wp-tests-config.php`
-
-When running WordPress inside an existing installation Mantle will attempt to use the existing installation with some default configuration values:
-
-```
-DB_NAME: wordpress_unit_tests
-DB_USER: root
-DB_PASSWORD: root
-DB_HOST: localhost
-DB_CHARSET: utf8
-```
-
-For most local developers this configuration will be correct and Mantle's unit
-tests will be able to be run. For others, you will need to create a
-`wp-tests-config.php` in your WordPress installation. You can copy [this
-file](https://github.com/alleyinteractive/mantle-framework/blob/HEAD/src/mantle/testing/wp-tests-config-sample.php)
-to the root of your WordPress installation and customize as needed.
-
-If you are using the Mantle Framework in your application, you can run `wp
-mantle test-config` to automatically generate this file for you. -->
