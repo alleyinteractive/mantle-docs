@@ -1,7 +1,7 @@
 # Installation Manager
 
 The Installation Manager is a class used to install WordPress for testing. It
-supports installating WordPress in a temporary directory and `rsync`ing your
+supports installing WordPress in a temporary directory and `rsync`ing your
 project to live within it for testing.
 
 ## Overriding the Default Installation
@@ -12,7 +12,7 @@ available. The default installation will also make some assumptions about the
 default configuration of WordPress, such as the database name, username, and
 password.
 
-The following are the default values and the enviormental variables that can be
+The following are the default values and the environmental variables that can be
 used to override them:
 
 | Variable/Setting | Default Value | Environmental Variable Name |
@@ -36,7 +36,7 @@ to manually execute a shell script before running your unit tests.
 
 ### Rsyncing a Plugin
 
-Plugins can be rsynced to live within a WordPress installation by using the
+Plugins can be rsync'd to live within a WordPress installation by using the
 `maybe_rsync_plugin()`. Within your `tests/bootstrap.php` file, you can use the
 following code:
 
