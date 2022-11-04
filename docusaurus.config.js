@@ -10,6 +10,7 @@ const config = {
   tagline: 'Mantle is a framework for building large, robust websites and applications with WordPress',
   url: 'https://mantle.alley.com',
   baseUrl: '/',
+  trailingSlash: false,
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.png',
