@@ -44,7 +44,7 @@ working on a package/plugin/theme inside of an existing WordPress installation.
 
 :::tip Are you are running unit tests locally?
 
-Make sure you have a `wp-tests-config.php` file: [Generating a wp-tests-config.php](./test-framework.md#generating-a-wp-tests-config-php).
+Make sure you have a `wp-tests-config.php` file: [Generating a wp-tests-config.php](./testing.md#generating-a-wp-tests-config-php).
 :::
 
 If a WordPress installation is not found, common when a single plugin is checked

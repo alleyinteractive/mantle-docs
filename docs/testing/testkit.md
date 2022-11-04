@@ -1,7 +1,11 @@
-# Testkit
+---
+title: Teskit
+---
+
+# Mantle Testkit
 
 Mantle Testkit is a standalone package for use of the [Mantle Testing
-Framework](./test-framework.md) on non-Mantle based projects. That means that
+Framework](./testing.md) on non-Mantle based projects. That means that
 you can use the great features of the Mantle Testing Framework on your existing
 projects/plugins/themes without needing to do any more refactoring.
 
@@ -18,6 +22,7 @@ If you're interested in seeing a `/wp-content/`-rooted project that is setup to
 use Mantle, checkout
 [`alleyinteractive/create-mantle-app`](https://github.com/alleyinteractive/create-mantle-app).
 :::
+
 ## Getting Started
 
 This guide assumes that we are in a `wp-content/` rooted WordPress project.

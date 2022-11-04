@@ -97,11 +97,12 @@ const sidebars = {
       label: 'Testing',
       link: {
         type: 'doc',
-        id: 'testing/test-framework',
+        id: 'testing/testing',
       },
       items: [
-        'testing/test-framework',
+        'testing/testing',
         'testing/testkit',
+        'testing/installation-manager',
         'testing/continuous-integration',
         'testing/assertions',
         'testing/requests',
