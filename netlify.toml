@@ -6,8 +6,3 @@
   to = "https://mantle.alley.com/:splat"
   status = 301
   force = true
-[[redirects]]
-  from = "https://mantle.alley.com/testing/test-framework.html"
-  to = "https://mantle.alley.com/docs/testing/test-framework/"
-  status = 301
-  force = true
