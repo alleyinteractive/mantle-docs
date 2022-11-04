@@ -1,8 +1,7 @@
-https://mantle.alley.co/*                       https://mantle.alley.com/:splat
-https://mantle.alley.com/getting-started/*      https://mantle.alley.com/docs/getting-started/:splat
-https://mantle.alley.com/architecture/*         https://mantle.alley.com/docs/architecture/:splat
-https://mantle.alley.com/basics/*               https://mantle.alley.com/docs/basics/:splat
-https://mantle.alley.com/features/*             https://mantle.alley.com/features-started/:splat
-https://mantle.alley.com/models/*               https://mantle.alley.com/models-started/:splat
-https://mantle.alley.com/packages/*             https://mantle.alley.com/packages-started/:splat
-https://mantle.alley.com/testing/*              https://mantle.alley.com/testing-started/:splat
+/getting-started/*  /docs/getting-started/:splat
+/architecture/*     /docs/architecture/:splat
+/basics/*           /docs/basics/:splat
+/features/*         /features-started/:splat
+/models/*           /models-started/:splat
+/packages/*         /packages-started/:splat
+/testing/*          /testing-started/:splat
