@@ -107,9 +107,9 @@ use Mantle\Testkit\Test_Case as Testkit_Test_Case;
 class Test_Case extends Testkit_Test_Case {
 
   public function test_factory() {
-    $post_id = static::factory()->post->with_thumbnail()->create();
-    $post = get_post( $post_id );
-    $this->assertNotEmpty( $post->thumbnail );
+    $post = static::factory()->post->with_thumbnail()->create_and_get();
+
+    // ...
   }
 }
 ```
