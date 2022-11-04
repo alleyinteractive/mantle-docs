@@ -27,7 +27,6 @@ objects interact with each other or even a full HTTP request to a JSON endpoint.
 provide the most confidence that your system as a whole is functioning as
 intended.**
 
-
 After installing a Mantle application, unit tests can be run directly or via
 Composer:
 
