@@ -17,19 +17,15 @@ In the future, the HTTP Client will be abstracted to support the Guzzle HTTP Cli
 and multipart requests.
 ::: -->
 
-## Installation
+## Making Requests
 
 The HTTP Client is installed by default with Mantle. It also supports being used
-outside of the framework and can be installed via Composer:
-
-```bash
-composer require mantle-framework/http-client
-```
-
-## Making Requests
+outside of the framework.
 
 <Tabs>
   <TabItem value="framework" label="Framework Use" default>
+
+The Http Client is included with Mantle out of the box.
 
 Making requests with the HTTP Client can be done using any HTTP verb. Requests
 can be made using the `Http` facade class or by instantiating `Mantle\Http_Client\Http_Client`
@@ -52,6 +48,12 @@ $response = Http::post( 'https://example.org/', [
 ```
   </TabItem>
   <TabItem value="orange" label="Standalone Use">
+
+Install the Http Client package via Composer:
+
+```bash
+composer require mantle-framework/http-client
+```
 
 Making requests with the HTTP Client can be done using any HTTP verb. Requests
 can be made by instantiating `Mantle\Http_Client\Factory` directly:
