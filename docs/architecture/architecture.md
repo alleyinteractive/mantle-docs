@@ -1,16 +1,5 @@
 # Architecture
 
-- [Architecture](#architecture)
-	- [Service Provider](#service-provider)
-		- [What would be a service provider?](#what-would-be-a-service-provider)
-		- [Registering a Service Provider](#registering-a-service-provider)
-	- [Writing a Service Provider](#writing-a-service-provider)
-		- [Service Provider Structure](#service-provider-structure)
-	- [Automatic Registration with WordPress Events](#automatic-registration-with-wordpress-events)
-- [Service Container](#service-container)
-- [Facades](#facades)
-	- [Aliases](#aliases)
-
 ## Service Provider
 Service providers act as the key method of extending the framework and
 bootstrapping essential services. Core application functionality will be defined

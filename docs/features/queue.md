@@ -1,12 +1,5 @@
 # Queues
 
-- [Queues](#queues)
-	- [Creating Jobs](#creating-jobs)
-	- [Dispatching Jobs](#dispatching-jobs)
-		- [Multiple Queues](#multiple-queues)
-		- [Dispatch Synchronously](#dispatch-synchronously)
-	- [Future Additions](#future-additions)
-
 Mantle provides a Queue interface for queueing asynchronous jobs that should be
 run in the background instead of blocking the user's request. By default, the
 queue is powered through the WordPress cron but is abstracted so that it could

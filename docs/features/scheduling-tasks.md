@@ -1,21 +1,13 @@
 # Scheduling Tasks
 
-- [Scheduling Tasks](#scheduling-tasks)
-	- [Introduction](#introduction)
-	- [Defining Schedules](#defining-schedules)
-		- [Schedule Frequency Options](#schedule-frequency-options)
-			- [Day Constraints](#day-constraints)
-			- [Between Time Constraints](#between-time-constraints)
-			- [Truth Test Constraints](#truth-test-constraints)
-			- [Environment Constraints](#environment-constraints)
-	- [Future Plans](#future-plans)
-
 ## Introduction
+
 To help provide a singular interface for scheduling jobs in WordPress (and to
 not interact with WordPress cron) Mantle provides a fluent interface for
 defining scheduleable tasks.
 
 ## Defining Schedules
+
 Jobs and Console Commands can be scheduled in the
 `app/providers/class-app-service-provider.php` file in your application.
 

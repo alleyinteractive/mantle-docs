@@ -1,21 +1,5 @@
 # Helpers
 
-- [Helpers](#helpers)
-	- [Application Helpers](#application-helpers)
-		- [`app()`](#app)
-		- [`config()`](#config)
-		- [`mantle_base_path()`](#mantle_base_path)
-		- [`response()`](#response)
-		- [`view()`](#view)
-		- [`loop()`](#loop)
-		- [`iterate()`](#iterate)
-		- [`mantle_get_var()`](#mantle_get_var)
-		- [`route()`](#route)
-		- [`abort()`](#abort)
-		- [`abort_if()` and `abort_unless()`](#abort_if-and-abort_unless)
-	- [Array Helpers](#array-helpers)
-	- [String Helpers](#string-helpers)
-
 Mantle includes a variety of global "helper" functions (props to Laravel) to
 make life easier.
 

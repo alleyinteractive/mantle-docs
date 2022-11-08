@@ -1,10 +1,6 @@
 # Model Factory
 
-- [Model Factory](#model-factory)
-  - [Defining Factories for a Model](#defining-factories-for-a-model)
-- [Faking Blocks](#faking-blocks)
-  - [Registering the Provider](#registering-the-provider)
-  - [Generating Blocks](#generating-blocks)
+## Introduction
 
 Models can use factories to automatically generate data for your application.
 They're incredibly useful to get 'real' data in place without the bloat of a
