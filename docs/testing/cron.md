@@ -1,47 +1,78 @@
 # Cron / Queue Assertions
 
+## Introduction
+
 Cron and queue jobs can be asserted in unit tests.
 
-## Cron
+## Dispatching Cron
 
-* `assertInCronQueue( string $action, array $args = [] )`
-* `assertNotInCronQueue( string $action, array $args = [] )`
-* `dispatch_cron( string $action = null )`
+The WordPress cron can be dispatched by calling `dispatch_cron()` and optionally
+passing the action name to run.
 
 ```php
-$this->assertNotInCronQueue( 'example' );
+namespace App\Tests;
 
-wp_schedule_single_event( time(), 'example' );
+class Dispatch_Cron_Test extends Test_Case {
+  public function test_cron() {
+    $this->dispatch_cron( 'example' );
 
-$this->assertInCronQueue( 'example' );
+    // ...
+  }
+}
+```
 
-$this->dispatch_cron( 'example' );
-$this->assertNotInCronQueue( 'example' );
+## Asserting Cron Actions
+
+The `assertInCronQueue()` and `assertNotInCronQueue()` methods can be used to
+assert if a cron action is in the queue.
+
+```php
+namespace App\Tests;
+
+class Cron_Test extends Test_Case {
+  public function test_cron() {
+    $this->assertNotInCronQueue( 'example' );
+
+    wp_schedule_single_event( time(), 'example' );
+
+    $this->assertInCronQueue( 'example' );
+
+    $this->dispatch_cron( 'example' );
+
+    $this->assertNotInCronQueue( 'example' );
+  }
+}
 ```
 
 ## Queue
 
-* `assertJobQueued( $job, array $args = [], string $queue = null )`
-* `assertJobNotQueued( $job, array $args = [], string $queue = null )`
-* `dispatch_queue( string $queue = null )`
+The [Mantle Queue](../features/queue.md) can be run and asserted against in unit tests.
 
 ```php
-$job = new Example_Job( 1, 2, 3 );
+namespace App\Tests;
 
-// Assert if a job class with a set of arguments is not in the queue.
-$this->assertJobNotQueued( Example_Job::class, [ 1, 2, 3 ] );
+use App\Jobs\Example_Job;
 
-// Assert if a specific job is not in the queue.
-$this->assertJobNotQueued( $job );
+class Example_Queue_Test extends Test_Case {
+  public function test_queue() {
+    $job = new Example_Job( 1, 2, 3 );
 
-Example_Job::dispatch( 1, 2, 3 );
+    // Assert if a job class with a set of arguments is not in the queue.
+    $this->assertJobNotQueued( Example_Job::class, [ 1, 2, 3 ] );
 
-$this->assertJobQueued( Example_Job::class, [ 1, 2, 3 ] );
-$this->assertJobQueued( $job );
+    // Assert if a specific job is not in the queue.
+    $this->assertJobNotQueued( $job );
 
-// Fire the queue.
-$this->dispatch_queue();
+    Example_Job::dispatch( 1, 2, 3 );
 
-$this->assertJobNotQueued( Example_Job::class, [ 1, 2, 3 ] );
-$this->assertJobNotQueued( $job );
+    $this->assertJobQueued( Example_Job::class, [ 1, 2, 3 ] );
+    $this->assertJobQueued( $job );
+
+    // Fire the queue.
+    $this->dispatch_queue();
+
+    $this->assertJobNotQueued( Example_Job::class, [ 1, 2, 3 ] );
+    $this->assertJobNotQueued( $job );
+  }
+}
 ```
