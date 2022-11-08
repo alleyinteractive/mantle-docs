@@ -20,7 +20,7 @@ return $post->to_array();
 A collection of models will also properly serialize all models to array.
 
 ```php
-$posts = App:models\Post::all();
+$posts = App\Models\Post::all();
 
 return $posts->to_array();
 ```
