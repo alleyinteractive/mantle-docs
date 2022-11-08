@@ -1,0 +1,517 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+# HTTP Client
+
+## Introduction
+
+Mantle provides a fluent and expressive wrapper around the [WordPress HTTP
+API](https://developer.wordpress.org/plugins/http-api/) allowing you to quickly
+make HTTP requests with external services. The HTTP Client combined with support
+for [testing and faking Remote Requests](../testing/remote-requests.md) provides
+you a full solution for making and testing external HTTP requests end-to-end.
+
+<!-- :::info Future Plans
+In the future, the HTTP Client will be abstracted to support the Guzzle HTTP Client
+and multipart requests.
+::: -->
+
+## Installation
+
+The HTTP Client is installed by default with Mantle. It also supports being used
+outside of the framework and can be installed via Composer:
+
+```bash
+composer require mantle-framework/http-client
+```
+
+## Making Requests
+
+<Tabs>
+  <TabItem value="framework" label="Framework Use" default>
+
+Making requests with the HTTP Client can be done using any HTTP verb. Requests
+can be made using the `Http` facade class or by instantiating `Mantle\Http_Client\Http_Client`
+directly:
+
+```php
+use Mantle\Facade\Http;
+
+$response = Http::get( 'https://example.org/' );
+```
+
+You can also use other HTTP methods fluently on the `Http` facade:
+
+```php
+use Mantle\Facade\Http;
+
+$response = Http::post( 'https://example.org/', [
+  'name' => 'Mantle',
+] );
+```
+  </TabItem>
+  <TabItem value="orange" label="Standalone Use">
+
+Making requests with the HTTP Client can be done using any HTTP verb. Requests
+can be made by instantiating `Mantle\Http_Client\Factory` directly:
+
+```php
+use Mantle\Http_Client\Factory;
+
+$http = new Factory();
+
+$response = $http->get( 'https://example.org/' );
+
+// Or using a fluent interface:
+$response = $http
+  ->with_timeout( 10 )
+  ->get( 'https://example.org/' );
+```
+  </TabItem>
+</Tabs>
+
+
+### Responses
+
+The HTTP client will return an instance of `Mantle\Http_Client\Response`, which
+provides a flexible wrapper on top of the raw WordPress HTTP API response.
+
+```php
+$response->body(): mixed
+$response->client_error(): bool
+$response->collect( $key = null ): \Mantle\Support\Collection
+$response->cookie( string $name ): ?\WP_HTTP_Cookie
+$response->cookies(): array
+$response->dd()
+$response->dump()
+$response->failed(): bool
+$response->forbidden(): bool
+$response->header( string $header )
+$response->headers(): array
+$response->is_json(): bool
+$response->is_xml(): bool
+$response->json( $key = null, $default = null )
+$response->object()
+$response->ok(): bool
+$response->redirect(): bool
+$response->response(): array
+$response->server_error(): bool
+$response->status(): int
+$response->successful(): bool
+$response->unauthorized(): bool
+$response->xml( string $xpath = null, $default = null )
+```
+
+The `Mantle\Http_Client\Response` object also implements the `ArrayAccess`,
+allowing you to access JSON/XML response properties directly on the response.
+
+```php
+return Http::get( 'https://httpbin.org/json' )['slideshow'];
+```
+
+#### Client Error Status Code
+
+The `client_error()` method will return `true` if the response status code is
+between `400` and `499`:
+
+```php
+use Mantle\Facade\Http;
+
+Http::get( 'https://httpbin.org/status/404' )->client_error();
+```
+
+#### Failed Status Code
+
+The `failed()` method will return `true` if the response status code is between
+`400` and `599`:
+
+```php
+use Mantle\Facade\Http;
+
+Http::get( 'https://httpbin.org/status/500' )->failed();
+```
+
+#### Forbidden Status Code
+
+The `forbidden()` method will return `true` if the response status code is
+`403`:
+
+```php
+use Mantle\Facade\Http;
+
+Http::get( 'https://httpbin.org/status/403' )->forbidden();
+```
+
+#### OK Status Code
+
+The `ok()` method will return `true` if the response status code is `200`:
+
+```php
+use Mantle\Facade\Http;
+
+Http::get( 'https://httpbin.org/status/200' )->ok();
+```
+
+#### Server Error Status Code
+
+The `server_error()` method will return `true` if the response status code is
+between `500` and `599`:
+
+```php
+use Mantle\Facade\Http;
+
+Http::get( 'https://httpbin.org/status/500' )->server_error();
+```
+
+#### Successful Status Code
+
+The `successful()` method will return `true` if the response status code is
+between `200` and `299`:
+
+```php
+use Mantle\Facade\Http;
+
+$response = Http::get( 'https://httpbin.org/status/200' )->successful();
+```
+
+#### Unauthorized Status Code
+
+The `unauthorized()` method will return `true` if the response status code is
+`401`:
+
+```php
+use Mantle\Facade\Http;
+
+Http::get( 'https://httpbin.org/status/401' )->unauthorized();
+```
+
+
+#### Response Redirect
+
+The `redirect()` method will return `true` if the response status code is
+between `300` and `399`:
+
+```php
+use Mantle\Facade\Http;
+
+$response = Http::get( 'https://httpbin.org/redirect/1' )->redirect();
+```
+
+#### Response Status Code
+
+The `status()` method will return the response status code:
+
+```php
+use Mantle\Facade\Http;
+
+$status = Http::get( 'https://httpbin.org/status/200' )->status();
+```
+
+#### Response Header
+
+The `header()` method will return the value of a single response header:
+
+```php
+use Mantle\Facade\Http;
+
+$response = Http::get( 'https://httpbin.org/headers' )->header( 'Content-Type' );
+```
+
+#### Response Headers
+
+The `headers()` method will return an array of all response headers:
+
+```php
+use Mantle\Facade\Http;
+
+$headers = Http::get( 'https://httpbin.org/headers' )->headers();
+```
+
+#### Response response(): array
+
+#### Response Body
+
+The `body()` method will return the response body as a string. If the response
+is JSON or XML, the `json()` and `xml()` methods can be used to parse the body
+into a PHP array or object:
+
+```php
+use Mantle\Facade\Http;
+
+$response = Http::get( 'https://httpbin.org/json' )->body();
+```
+
+#### Response Cookie
+
+The `cookie()` method will return a single cookie from the response:
+
+```php
+use Mantle\Facade\Http;
+
+$cookie = Http::get( 'https://httpbin.org/cookies' )->cookie( 'foo' );
+```
+
+#### Response Cookies
+
+The `cookies()` method will return an array of all cookies from the response:
+
+```php
+use Mantle\Facade\Http;
+
+$cookies = Http::get( 'https://httpbin.org/cookies' )->cookies();
+```
+
+#### Response Is JSON
+
+The `is_json()` method will return `true` if the response is JSON:
+
+```php
+use Mantle\Facade\Http;
+
+$response = Http::get( 'https://httpbin.org/json' )->is_json();
+```
+
+#### Response Is XML
+
+The `is_xml()` method will return `true` if the response is XML:
+
+```php
+use Mantle\Facade\Http;
+
+$response = Http::get( 'https://httpbin.org/xml' )->is_xml();
+```
+
+#### Response JSON
+
+The `json()` method will return the response body as a PHP array. Optionally
+supports retrieving a specific JSON path.
+
+```php
+use Mantle\Facade\Http;
+
+$response = Http::get( 'https://httpbin.org/json' )->json( 'slideshow.author' );
+```
+
+#### Response JSON Object
+
+The `object()` method will return the response body as a PHP object.
+
+```php
+use Mantle\Facade\Http;
+
+$response = Http::get( 'https://httpbin.org/json' )->object();
+```
+
+#### Response XML
+
+The `xml()` method will return the response body as a PHP array. Optionally
+supports retrieving a specific XPath.
+
+```php
+use Mantle\Facade\Http;
+
+$response = Http::get( 'https://httpbin.org/xml' )->xml( '/slideshow/slide' );
+```
+
+### Request Data
+
+Many HTTP requests include some sort of a payload for `POST`, `PUT`, `PATCH`,
+and `DELETE` methods. These methods access an array of data as their second
+argument. By default these will be sent using JSON:
+
+```php
+use Mantle\Facade\Http;
+
+Http::post( 'http://example.org/endpoint', [
+  'name' => 'Mantle',
+] );
+```
+
+#### Sending a Body
+
+Requests can also be made using a form body or a raw body:
+
+```php
+use Mantle\Facade\Http;
+
+Http::as_form()->post( 'http://example.org/endpoint', [
+  'name' => 'Mantle',
+] );
+
+Http::with_body( 'raw-body' )->post( 'http://example.org/endpoint' );
+```
+
+#### GET Request Query Parameters
+
+When making `GET` requests, you can either pass a URL with a query string
+directly or pass an array of key / value pairs as the second argument:
+
+```php
+use Mantle\Facade\Http;
+
+// The actual URL will be https://example.org/query?name=mantle
+Http::get( 'https://example.org/query', [
+  'name' => 'mantle',
+] );
+```
+
+### Headers
+
+Headers can be added to a request using the `with_header()` and `with_headers()`
+methods:
+
+```php
+Http::with_headers( [
+  'X-Api-Key' => 'password',
+] )->post( 'https://example.org' );
+
+Http::with_header( 'X-Special-Header', 'value' )->post( 'https://example.org' );
+```
+
+The `accept` method can be used to specify the content type that your
+application is expecting in response:
+
+```php
+Http::accept( 'text/plain' )->post( 'https://example.org' );
+Http::accept_json()->post( 'https://example.org' );
+```
+
+### Authentication
+
+You can specify basic authentication and bearer token credentials with built-in
+helper methods:
+
+```php
+Http::with_basic_auth( 'username', 'password' )->post( 'https://example.org' );
+
+// Passed as Authorization: Bearer <value>
+Http::with_token( '<value>' )->post( 'https://example.org' );
+```
+
+### Timeout
+
+The `timeout` method may be used to specify a maximum number of seconds to wait
+for a response. The default is 5 seconds:
+
+```php
+Http::with_timeout( 10 )->post(...);
+```
+
+### Retries
+
+If you would like HTTP client to automatically retry the request if a client or
+server error occurs, you may use the `retry` method. The `retry` method accepts
+the maximum number of times the request should be attempted and the number of
+milliseconds that Mantle should wait in between attempts:
+
+```php
+Http::retry( 3 )->post(...);
+```
+
+### Error Handling
+
+By default, errors will be handled and converted into a
+`Mantle\Http_Client\Response` object. This includes `WP_Error` objects that are
+returned by WordPress. No exceptions are thrown by default.
+
+Optionally, you can opt to an exception to be thrown if an error occurs:
+
+```php
+try {
+  Http::throw_exception()->post(...);
+} catch ( \Mantle\Http_Client\Http_Client_Exception $e ) {
+  // Handle the exception.
+}
+```
+
+## Base API Client
+
+The HTTP Client can be used as a basis for a API Client for an external service.
+For example, if you are making requests to `https://httpbin.org` and want to
+include built-in authentication, you could create a reusable API client by
+returning `Mantle\Http_Client\Http_Client`:
+
+```php
+use Mantle\Http_Client\Http_Client;
+
+$client = Http_Client::create()
+  ->base_url( 'https://httpbin.org' )
+  ->with_token( '<token>' );
+
+// Requests can now be made without specifying the base URL:
+$response = $client->post( '/example-endpoint', [
+  'name' => 'Mantle Http Client',
+] );
+```
+
+### Middleware
+
+Requests can have middleware applied to them to allow the request and the
+response to be modified. One use case is to calculate a checksum header based on
+body of the request and pass that along with the request:
+
+```php
+use Closure;
+use Mantle\Http_Client\Http_Client;
+
+$client = Http_Client::create()
+  ->base_url( 'https://api.github.com' )
+  ->middleware( function ( Http_Client $client, Closure $next ) {
+    $client->with_header( 'Authorization', md5( $client->url() . $client->body() ) );
+
+    // You can also run the callback and then modify the response.
+    return $next( $client );
+  } );
+```
+
+### Concurrent Requests
+
+Sometimes, you may wish to make multiple HTTP requests concurrently. In other
+words, you want several requests to be dispatched at the same time instead of
+issuing the requests sequentially. This can lead to substantial performance
+improvements when interacting with slow HTTP APIs.
+
+Thankfully, you may accomplish this using the `pool` method. The `pool` method
+accepts a closure which receives an `Mantle\Http_Client\Pool` instance,
+allowing you to easily add requests to the request pool for dispatching:
+
+```php
+use Mantle\Http_Client\Pool;
+use Mantle\Facade\Http;
+
+$responses = Http::pool( fn ( Pool $pool ) => [
+    $pool->get( 'http://localhost/first' ),
+    $pool->get( 'http://localhost/second' ),
+    $pool->get( 'http://localhost/third' ),
+] );
+
+return $responses[0]->ok() &&
+  $responses[1]->ok() &&
+  $responses[2]->ok();
+```
+
+As you can see, each response instance can be accessed based on the order it was
+added to the pool. If you wish, you can name the requests using the `as` method,
+which allows you to access the corresponding responses by name:
+
+```php
+use Mantle\Http_Client\Pool;
+use Mantle\Facade\Http;
+
+$responses = Http::pool( fn ( Pool $pool ) => [
+    $pool->as( 'first' )->get( 'http://localhost/first' ),
+    $pool->as( 'second' )->get( 'http://localhost/second' ),
+    $pool->as( 'third' )->get( 'http://localhost/third' ),
+] );
+
+return $responses['first']->ok() &&
+  $responses['second']->ok() &&
+  $responses['third']->ok();
+```
+
+## Testing Http Client
+
+The Mantle Http Client was built using WordPress' built-in HTTP API. This means
+that it can be tested using [Mantle's Remote Request](../testing/remote-requests.md)
+testing functionality.
