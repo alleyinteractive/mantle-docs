@@ -4,6 +4,8 @@ title: Getting Started
 
 # Testing: Getting Started
 
+## Introduction
+
 Mantle provides a PHPUnit test framework to make it easier to test your code
 with WordPress. It is focused on making testing your application faster and
 easier, allowing unit testing to become top of mind when building your site.

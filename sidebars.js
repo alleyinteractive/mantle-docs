@@ -106,6 +106,7 @@ const sidebars = {
         'testing/requests',
         'testing/factory',
         'testing/assertions',
+        'testing/state',
         'testing/deprecation-incorrect-usage',
         'testing/hooks',
         'testing/remote-requests',
