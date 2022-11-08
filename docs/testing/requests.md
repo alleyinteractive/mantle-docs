@@ -248,6 +248,35 @@ $this->get( rest_url( '/mantle/v1/example' ) )
   ] );
 ```
 
+## Before/After Callbacks
+
+You may use `before_request()` and `after_request()` to register callbacks to be
+run before and after each test request. These callbacks are useful for
+registering and unregistering hooks, filters, and other WordPress functionality
+that may be required for your tests.
+
+```php
+namespace App\Tests;
+
+class Example_Callback_Test extends Test_Case {
+  protected function setUp(): void {
+    parent::setUp();
+
+    $this->before_request( function() {
+      // Register hooks, filters, etc. that should apply to HTTP requests.
+    } );
+
+    $this->after_request( function() {
+      // Unregister hooks, filters, etc.
+    } );
+  }
+
+  public function test_example_callbacks() {
+    // ...
+  }
+}
+```
+
 ## Available Assertions
 
 `Mantle\Testing\Test_Response` provides many assertions to confirm aspects of the response
