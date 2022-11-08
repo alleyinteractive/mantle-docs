@@ -220,6 +220,8 @@ $this->get( rest_url( "/wp/v2/posts/{$post_id}" ) )
   ->assertJsonPath( 'id', $post_id );
 ```
 
+For more information see [JSON Assertions](#json-assertions).
+
 ### Asserting Exact JSON Matches
 
 As previously mentioned, the `assertJsonPath()` method may be used to assert
@@ -251,82 +253,320 @@ $this->get( rest_url( '/mantle/v1/example' ) )
 `Mantle\Testing\Test_Response` provides many assertions to confirm aspects of the response
 return as expected.
 
-<!-- TODO: expand these to individual headings with an example for each. -->
-
 ### HTTP Status Assertions
 
-* `assertSuccessful()` - Assert 2xx
-* `assertOk()` - Assert 200
-* `assertStatus( $status )`
-* `assertCreated()` - Assert 201
-* `assertNoContent( $status = 204 )`
-* `assertNotFound()` - Assert 404
-* `assertForbidden()` - Assert 403
-* `assertUnauthorized()` - Assert 401
-* `assertRedirect( $uri = null )` - Asserts that the response is 301 or 302, and
-  also runs `assertLocation()` with the `$uri`
-* `assertElementExists( string $expression )` - Assert that a given XPath exists
-  in the response.
-* `assertElementMissing( string $expression )` - Assert that a given XPath does
-  not exist in the response.
-* `assertElementExistsByClass( string $class )` - Assert that a given class
-  exists in the response.
-* `assertElementMissingByClass( string $class )` - Assert that a given class
-  does not exist in the response.
-* `assertElementExistsById( string $id )` - Assert that a given ID exists in the
-  response.
-* `assertElementMissingById( string $id )` - Assert that a given ID does not
-  exist in the response.
-* `assertElementExistsByTagName( string $tag_name )` - Assert that a given tag
-  name exists in the response.
-* `assertElementMissingByTagName( string $tag_name )` - Assert that a given tag
-  name does not exist in the response.
+#### assertSuccessful
+
+Assert that a response has a (>= 200 and < 300) HTTP status code.
+
+```php
+$response->assertSuccessful();
+```
+
+#### assertOk
+
+Assert that a response has a 200 HTTP status code.
+
+```php
+$response->assertOk();
+```
+
+#### assertStatus
+
+Assert that a response has a given HTTP status code.
+
+```php
+$response->assertStatus( $status );
+```
+
+#### assertCreated
+
+Assert that a response has a 201 HTTP status code.
+
+```php
+$response->assertCreated();
+```
+
+#### assertNoContent
+
+Assert that a response has a given status code (default to 204) and no content.
+
+```php
+$response->assertNoContent( $status = 204 );
+```
+
+#### assertNotFound
+
+Assert that a response has a 404 HTTP status code.
+
+```php
+$response->assertNotFound();
+```
+
+#### assertForbidden
+
+Assert that a response has a 403 HTTP status code.
+
+```php
+$response->assertForbidden();
+```
+
+#### assertUnauthorized
+
+Assert that a response has a 401 HTTP status code.
+
+```php
+$response->assertUnauthorized();
+```
+
+#### assertRedirect
+
+Assert that a response has a redirect to a given URI and has a 301 or 302 HTTP
+status code.
+
+```php
+$response->assertRedirect( $uri = null );
+```
+
+### Element Assertions
+
+#### assertElementExists
+
+Assert that a given XPath exists in the response.
+
+```php
+$response->assertElementExists( string $expression );
+```
+
+#### assertElementMissing
+
+Assert that a given XPath does not exist in the response.
+
+```php
+$response->assertElementMissing( string $expression );
+```
+
+#### assertElementExistsByClass
+
+Assert that a given class exists in the response.
+
+```php
+$response->assertElementExistsByClass( string $class );
+```
+
+#### assertElementMissingByClass
+
+Assert that a given class does not exist in the response.
+
+```php
+$response->assertElementMissingByClass( string $class );
+```
+
+#### assertElementExistsById
+
+Assert that a given ID exists in the response.
+
+```php
+$response->assertElementExistsById( string $id );
+```
+
+#### assertElementMissingById
+
+Assert that a given ID does not exist in the response.
+
+```php
+$response->assertElementMissingById( string $id );
+```
+
+#### assertElementExistsByTagName
+
+Assert that a given tag name exists in the response.
+
+```php
+$response->assertElementExistsByTagName( string $tag_name );
+```
+
+#### assertElementMissingByTagName
+
+Assert that a given tag name does not exist in the response.
+
+```php
+$response->assertElementMissingByTagName( string $tag_name );
+```
 
 ### Header Assertions
 
-* `assertLocation( $uri )` - Assert that the response has a `Location` header
-  matching the given URI.
-* `assertHeader( $header_name, $value = null )` - Assert that the response has
-  the given header and optionally the given value.
-* `assertHeaderMissing( $header_name )` - Assert that the response does not have
-  the given header.
+#### assertLocation
+
+Assert that the response has a `Location` header matching the given URI.
+
+```php
+$response->assertLocation( $uri );
+```
+
+#### assertHeader
+
+Assert that the response has a given header and optionally the given value.
+
+```php
+$response->assertHeader( $header_name, $value = null );
+```
+
+#### assertHeaderMissing
+
+Assert that the response does not have a given header.
+
+```php
+$response->assertHeaderMissing( $header_name );
+```
 
 ### JSON Assertions
 
-* `assertJsonPath()` - Assert that the expected value and type exists at the
-  given path in the response.
-* `assertJsonPathExists()` -- Assert that a specific JSON path exists.
-* `assertJsonPathMissing()` -- Assert that a specific JSON path is missing.
-* `assertExactJson()` - Assert that the response has the exact given JSON.
-* `assertJsonFragment()` - Assert that the response contains the given JSON
-  fragment.
-* `assertJsonMissing()` - Assert that the response does not contain the given
-  JSON fragment.
-* `assertJsonMissingExact()` - Assert that the response does not contain the
-  exact JSON fragment.
-* `assertJsonCount()` - Assert that the response JSON has the expected count of
-  items at the given key.
-* `assertJsonStructure()` - Assert that the response has a given JSON structure.
+#### assertJsonPath
+
+Assert that the expected value and type exists at the given path in the response.
+
+```php
+$response->assertJsonPath();
+```
+
+#### assertJsonPathExists
+
+Assert that a specific JSON path exists.
+
+```php
+$response->assertJsonPathExists();
+```
+
+#### assertJsonPathMissing
+
+Assert that a specific JSON path is missing.
+
+```php
+$response->assertJsonPathMissing();
+```
+
+#### assertExactJson
+
+Assert that the response has the exact given JSON.
+
+```php
+$response->assertExactJson();
+```
+
+#### assertJsonFragment
+
+Assert that the response contains the given JSON fragment.
+
+```php
+$response->assertJsonFragment();
+```
+
+#### assertJsonMissing
+
+Assert that the response does not contain the given JSON fragment.
+
+```php
+$response->assertJsonMissing();
+```
+
+#### assertJsonMissingExact
+
+Assert that the response does not contain the exact JSON fragment.
+
+```php
+$response->assertJsonMissingExact();
+```
+
+#### assertJsonCount
+
+Assert that the response JSON has the expected count of items at the given key.
+
+```php
+$response->assertJsonCount();
+```
+
+#### assertJsonStructure
+
+Assert that the response has a given JSON structure.
+
+```php
+$response->assertJsonStructure();
+```
 
 ### Content Body Assertions
 
-* `assertSee( $value )` - Assert the given string exists in the body content
-* `assertSeeInOrder( array $values )` - Assert the given strings exist in the
-  body content in the given order
-* `assertSeeText( $value )` - Similar to `assertSee()` but strips all HTML tags
-  first
-* `assertSeeTextInOrder( array $values )` - Similar to `assertSeeInOrder()` but
-  strips all HTML tags first
-* `assertDontSee( $value )` - Assert the given string does not exist in the body
-  content.
-* `assertDontSeeText( $value )`  - Similar to `assertDontSee()` but strips all
-  HTML tags first.
+#### assertSee
+
+Assert the given string exists in the body content
+
+```php
+$response->assertSee( $value );
+```
+
+#### assertSeeInOrder
+
+Assert the given strings exist in the body content in the given order
+
+```php
+$response->assertSeeInOrder( array $values );
+```
+
+#### assertSeeText
+
+Similar to `assertSee()` but strips all HTML tags first
+
+```php
+$response->assertSeeText( $value );
+```
+
+#### assertSeeTextInOrder
+
+Similar to `assertSeeInOrder()` but strips all HTML tags first
+
+```php
+$response->assertSeeTextInOrder( array $values );
+```
+
+#### assertDontSee
+
+Assert the given string does not exist in the body content.
+
+```php
+$response->assertDontSee( $value );
+```
+
+#### assertDontSeeText
+
+Similar to `assertDontSee()` but strips all HTML tags first.
+
+```php
+$response->assertDontSeeText( $value );
+```
+
 
 ### WordPress Query Assertions
 
-* `assertQueryTrue( ...$prop )` - Assert the given WP_Query `is_` functions
-  (`is_single()`, `is_archive()`, etc.) return true and all others return false
-* `assertQueriedObjectId( int $id )` - Assert the given ID matches the result of
-  `get_queried_object_id()`
-* `assertQueriedObject( $object )` - Assert that the type and ID of the given
-  object match that of `get_queried_object()`
+#### assertQueryTrue
+
+Assert the given `WP_Query`'s `is_` functions (`is_single()`, `is_archive()`, etc.) return true and all others return false
+
+```php
+$response->assertQueryTrue( ...$prop );
+```
+
+#### assertQueriedObjectId
+
+Assert the given ID matches the result of `get_queried_object_id()`.
+
+```php
+$response->assertQueriedObjectId( int $id );
+```
+
+#### assertQueriedObject
+
+Assert that the type and ID of the given object match that of `get_queried_object()`.
+
+```php
+$response->assertQueriedObject( $object );
+```
