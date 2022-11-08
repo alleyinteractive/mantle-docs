@@ -427,7 +427,7 @@ $response->assertHeaderMissing( $header_name );
 Assert that the expected value and type exists at the given path in the response.
 
 ```php
-$response->assertJsonPath();
+$response->assertJsonPath( string $path, $expect );
 ```
 
 #### assertJsonPathExists
@@ -435,7 +435,7 @@ $response->assertJsonPath();
 Assert that a specific JSON path exists.
 
 ```php
-$response->assertJsonPathExists();
+$response->assertJsonPathExists( string $path );
 ```
 
 #### assertJsonPathMissing
@@ -443,7 +443,7 @@ $response->assertJsonPathExists();
 Assert that a specific JSON path is missing.
 
 ```php
-$response->assertJsonPathMissing();
+$response->assertJsonPathMissing( string $path );
 ```
 
 #### assertExactJson
@@ -451,7 +451,7 @@ $response->assertJsonPathMissing();
 Assert that the response has the exact given JSON.
 
 ```php
-$response->assertExactJson();
+$response->assertExactJson( array $data );
 ```
 
 #### assertJsonFragment
@@ -459,7 +459,7 @@ $response->assertExactJson();
 Assert that the response contains the given JSON fragment.
 
 ```php
-$response->assertJsonFragment();
+$response->assertJsonFragment( array $data);
 ```
 
 #### assertJsonMissing
@@ -467,7 +467,7 @@ $response->assertJsonFragment();
 Assert that the response does not contain the given JSON fragment.
 
 ```php
-$response->assertJsonMissing();
+$response->assertJsonMissing( array $data );
 ```
 
 #### assertJsonMissingExact
@@ -475,7 +475,7 @@ $response->assertJsonMissing();
 Assert that the response does not contain the exact JSON fragment.
 
 ```php
-$response->assertJsonMissingExact();
+$response->assertJsonMissingExact( array $data );
 ```
 
 #### assertJsonCount
@@ -483,7 +483,7 @@ $response->assertJsonMissingExact();
 Assert that the response JSON has the expected count of items at the given key.
 
 ```php
-$response->assertJsonCount();
+$response->assertJsonCount( int $count, string $key = null );
 ```
 
 #### assertJsonStructure
@@ -491,7 +491,7 @@ $response->assertJsonCount();
 Assert that the response has a given JSON structure.
 
 ```php
-$response->assertJsonStructure();
+$response->assertJsonStructure( array $structure = null);
 ```
 
 ### Content Body Assertions
