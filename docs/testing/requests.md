@@ -16,7 +16,7 @@ headers and body content. The response object allows the developer to make
 assertions against the observable response data, for instance asserting that
 some content is present in the response body or that some header was set.
 
-Fpr example, here's a simple test that asserts that a given post's title is
+For example, here's a simple test that asserts that a given post's title is
 present on the page:
 
 ```php
