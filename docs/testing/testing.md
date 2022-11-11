@@ -78,33 +78,12 @@ able to switch to the Mantle Test Framework without needing to rewrite any
 existing unit tests. See the [Mantle Test Kit](./testkit.md) for more
 information.
 
-<!-- ## Environment
-
-The Mantle Test Framework will work out of the box defining a set of constants
-to install WordPress. The default set of constants can be overridden using a
-test config in your WordPress root directory, named `wp-tests-config.php`. See
-[the sample config in the Mantle
-Framework](https://github.com/alleyinteractive/mantle-framework/blob/main/src/mantle/testing/wp-tests-config-sample.php)
-to get started. This config is similar to `wp-config.php` and defines many of
-the same constants. Most importantly, it defines the database information, which
-*must* be different from your environment's database. If you reuse the same
-database, your data could be lost!
-
-The default configuration will install WordPress using a `localhost` database
-named `wordpress_unit_tests` with the username/password pair of `root/root`. All
-constants can be overridden using the `wp-tests-config.php` file or your unit
-test's bootstrap file.
-
-Lastly, see this repository's [`tests/bootstrap.php`
-file](https://github.com/alleyinteractive/mantle/blob/main/tests/bootstrap.php)
-for examples of how to load the Mantle Test Framework in your project. -->
-
 ## Using the Testing Framework
 
 The testing framework is flexible enough to support running tests in a variety
 of environments. The most common use case is running tests in an existing
 WordPress project. For example, you could run tests within a plugin that is
-located within inside a larger WordPress project. This would fall under the
+located within a larger WordPress project. This would fall under the
 [Running Tests Within a WordPress Project](#running-tests-within-a-wordpress-project)
 guide for using an existing WordPress project to run tests against.
 
