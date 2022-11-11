@@ -1,18 +1,5 @@
 # Templating
 
-- [Templating](#templating)
-	- [Views](#views)
-		- [Blade Templates](#blade-templates)
-		- [View File Location](#view-file-location)
-			- [Default View Locations](#default-view-locations)
-	- [Passing Variables to Views](#passing-variables-to-views)
-		- [Passing Global Variables](#passing-global-variables)
-	- [Setting the Global Post Object.](#setting-the-global-post-object)
-		- [View Helpers](#view-helpers)
-			- [`loop()`](#loop)
-			- [`iterate()`](#iterate)
-		- [View Shortcuts](#view-shortcuts)
-
 Templating in WordPress should be delightful -- Mantle hopes to make it that
 way.
 

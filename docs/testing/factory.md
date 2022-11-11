@@ -14,7 +14,7 @@ The factory supports the creation of the following types of content:
 * term
 * user
 * blog (if mulitisite)
-* network (if mulitisite)
+* network (if multisite)
 
 ## Generating Content
 
@@ -36,6 +36,80 @@ class Test_Case extends Testkit_Test_Case {
 
     static::factory()->tag->create_and_get(); // WP_Term
     static::factory()->tag->create(); // int
+  }
+}
+```
+
+### Generating Posts/Terms with Meta
+
+Posts and terms can be generated with meta by calling the `with_meta` method on
+the factory:
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class Test_Case extends Testkit_Test_Case {
+
+  public function test_factory() {
+    $post_id = static::factory()->post->with_meta(
+      [
+        'key' => 'value',
+      ]
+    )->create();
+
+    // ...
+
+    $term_id = static::factory()->tag->with_meta(
+      [
+        'key' => 'value',
+      ]
+    )->create();
+
+    // ...
+  }
+}
+```
+
+### Generating Posts with Terms
+
+Posts can be generated with terms by calling the `with_terms` method on the
+factory:
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class Test_Case extends Testkit_Test_Case {
+
+  public function test_factory() {
+    $post_id = static::factory()->post->with_terms(
+      [
+        // Pass in slugs.
+        'category' => [ 'cat1', 'cat2' ],
+
+        // Or pass in term IDs.
+        'post_tag' => static::factory()->tag->create(),
+      ]
+    )->create();
+
+    // ...
+  }
+}
+```
+
+## Generating Post with Thumbnail
+
+Posts can be generated with a thumbnail by calling the `with_thumbnail` method
+on the post factory:
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class Test_Case extends Testkit_Test_Case {
+
+  public function test_factory() {
+    $post = static::factory()->post->with_thumbnail()->create_and_get();
+
+    // ...
   }
 }
 ```

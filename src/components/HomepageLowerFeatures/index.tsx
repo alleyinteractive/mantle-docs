@@ -22,7 +22,7 @@ const FeatureList: FeatureItem[] = [
   },
   {
     title: 'Test Framework',
-    link: '/docs/testing/test-framework',
+    link: '/docs/testing',
     description: (
       <>
         Use the independent Mantle Test Framework to make writing unit tests simpler than ever. Supports a drop-in replacement for WordPress core testing framework that will run faster and allow IDE-friendly assertions. Runs PHPUnit 9.5+ out of the box.

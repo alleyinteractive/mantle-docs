@@ -54,7 +54,7 @@ $this->post( '/upload', [
       </div>
       <div className={styles.featureDescription}>
         <h4 className="featureTitle">
-          <Link to="/docs/testing/test-framework">Independent Test Framework</Link>
+          <Link to="/docs/testing">Independent Test Framework</Link>
         </h4>
         <p className="featureDescription">
           Use the independent Mantle Test Framework to make writing unit tests simpler than ever. Supports a drop-in replacement for WordPress core testing framework that will run faster and allow IDE-friendly assertions. Runs PHPUnit 9.5+ out of the box.

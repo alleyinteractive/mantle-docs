@@ -34,7 +34,7 @@ const FeatureList: FeatureItem[] = [
         <Link to="/docs/basics/templating">blade-powered templating</Link>
         , and a
         {' '}
-        <Link to="/docs/testing/test-framework">fast independent testing library for WordPress</Link>
+        <Link to="/docs/testing">fast independent testing library for WordPress</Link>
         {' '}
         out of the box.
       </>

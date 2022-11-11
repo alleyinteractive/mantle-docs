@@ -1,16 +1,7 @@
 # Directory Structure
 
-- [Directory Structure](#directory-structure)
-- [Overview](#overview)
-- [Root Directory](#root-directory)
-	- [The App Directory](#the-app-directory)
-	- [The Bootstrap Directory](#the-bootstrap-directory)
-	- [The Config Directory](#the-config-directory)
-	- [The Database Directory](#the-database-directory)
-	- [The Routes Directory](#the-routes-directory)
-	- [The Tests Directory](#the-tests-directory)
-
 # Overview
+
 Below is the current proposed directory structure for sites using Mantle. This
 will certainly change and expand as Mantle develops. The tree is assumed to be
 placed inside of a `wp-content/private/{site}` folder.

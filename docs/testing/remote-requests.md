@@ -7,7 +7,8 @@ testing. Mantle gives you the ability to mock specific requests and fluently
 generate a response.
 
 By default Mantle won't mock any HTTP request but will actively notify you when
-one is being made inside a unit test.
+one is being made inside a unit test. To prevent any non-mocked requests from
+being made, see [preventing stray requests](#preventing-stray-requests).
 
 :::note
 This only supports requests made via the [`WP_Http`
@@ -141,24 +142,57 @@ $this->assertNoRequestSent();
 $this->assertRequestCount( int $number );
 ```
 
-Requests can also be asserted against using a callback that is passed the `Mantle\Http_Client\Request` object:
+Requests can also be asserted against using a callback that is passed the
+`Mantle\Http_Client\Request` object:
 
 ```php
 use Mantle\Facade\Http;
 use Mantle\Http_Client\Request;
+use Tests\Test_Case;
 
-Http::with_basic_auth( 'user', 'pass' )
-  ->get( 'https://example.com/basic-auth/' );
+class Example_Test extends Test_Case {
+  public function test_example() {
+    Http::with_basic_auth( 'user', 'pass' )
+      ->get( 'https://example.com/basic-auth/' );
 
-$this->assertRequestSent( fn ( Request $request ) => $request
-  ->has_header( 'Authorization', 'Basic dXNlcjpwYXNz' )
-  && 'https://example.com/basic-auth/' === $request->url()
-  && 'GET' === $request->method()
-);
+    $this->assertRequestSent( fn ( Request $request ) => $request
+      ->has_header( 'Authorization', 'Basic dXNlcjpwYXNz' )
+      && 'https://example.com/basic-auth/' === $request->url()
+      && 'GET' === $request->method()
+    );
 
-$this->assertRequestNotSent( fn ( Request $request ) => $request
-  ->has_header( 'Content-Type', 'application-json' )
-  && 'https://example.com/get/' === $request->url()
-  && 'GET' === $request->method()
-);
+    $this->assertRequestNotSent( fn ( Request $request ) => $request
+      ->has_header( 'Content-Type', 'application-json' )
+      && 'https://example.com/get/' === $request->url()
+      && 'GET' === $request->method()
+    );
+
+  }
+}
+```
+
+## Preventing Stray Requests
+
+If you would like to ensure that all requests are faked during a unit test, you
+can use the `prevent_stray_requests()` method. This will throw an exception if
+any requests are made that are not faked.
+
+```php
+class Example_Test extends Test_Case {
+  public function __construct() {
+    $this->prevent_stray_requests();
+  }
+
+  public function test_example() {
+    $this->fake_request( 'https://alley.com/*' )
+      ->with_response_code( 200 )
+      ->with_body( 'alley!' );
+
+    // An 'alley!' response is returned.
+    Http::get( 'https://alley.com/' );
+
+    // An exception is thrown because the request was not faked.
+    Http::get( 'https://github.com/' );
+  }
+}
 ```

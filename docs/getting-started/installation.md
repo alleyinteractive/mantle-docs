@@ -2,8 +2,8 @@
 
 ## Requirements
 
-Mantle has two system requirements to run: PHP to be at least running 7.4 and
-WordPress to be at least 5.6.
+Mantle has two system requirements to run: PHP to be at least running 8.0 and
+WordPress to be at least 5.9.
 
 ## Installing Mantle on a Site
 
