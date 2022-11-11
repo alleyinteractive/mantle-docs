@@ -1,0 +1,7 @@
+/getting-started/*  /docs/getting-started/:splat
+/architecture/*     /docs/architecture/:splat
+/basics/*           /docs/basics/:splat
+/features/*         /features-started/:splat
+/models/*           /models-started/:splat
+/packages/*         /packages-started/:splat
+/testing/*          /testing-started/:splat

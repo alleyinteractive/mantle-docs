@@ -1,0 +1,12 @@
+{
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#57122D",
+    "titleBar.activeBackground": "#7A1A3F",
+    "titleBar.activeForeground": "#FEFCFD"
+  },
+  "search.useGlobalIgnoreFiles": false,
+  "search.exclude": {
+    "**/.docusaurus/*": true,
+    "**/build/*": true
+  }
+}
