@@ -141,7 +141,7 @@ You can generate your own config file by running `bin/mantle test-config`.
 
 ### Running Tests in a Standalone Project
 
-A standalone project that isn't located within a existing WordPress project can
+A standalone project that isn't located within an existing WordPress project can
 be used to run tests against. Mantle will automatically install WordPress for
 you without needing to run any manual bash script in your continuous integration
 process. **This means that you only have to run `composer test` instead of having
@@ -161,7 +161,7 @@ directory to run tests against.
 
 ### Rsyncing Your Project to a WordPress Installation
 
-Mantle can rsync your project to within a working without needing to run any
+Mantle can rsync your project to within a working WordPress installation without needing to run any
 rsync command yourself. This is useful for themes or more integrated projects
 that need to run tests against a fully integrated WordPress installation. Within
 your `tests/bootstrap.php` file, you can use the [Installation

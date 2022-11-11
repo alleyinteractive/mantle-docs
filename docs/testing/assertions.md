@@ -107,7 +107,7 @@ $this->assertPostExists( array $args );
 
 ### assertPostDoesNotExists
 
-Assert if a post doesn't exists given a set of arguments.
+Assert if a post doesn't exist given a set of arguments.
 
 ```php
 $this->assertPostDoesNotExists( array $args );
