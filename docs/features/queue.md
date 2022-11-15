@@ -29,6 +29,31 @@ use App\Jobs\Example_Job;
 Example_Job::dispatch( $post_data_to_include );
 ```
 
+### Dispatching Closures
+
+Closures can be dispatched to the queue as well. The closure will be serialized
+and unserialized when it is run.
+
+```php
+$post = App\Models\Post::find( 1 );
+
+dispatch( function() use ( $post ) {
+    $post->perform_expensive_operation();
+} );
+```
+
+Using the `catch` method, you may provide a closure that should be executed if
+the queued closure fails to complete successfully after exhausting all of your
+queue's configured retry attempts.
+
+```php
+dispatch( function() {
+    // Perform some task...
+} )->catch( function( Exception $e ) {
+    // Send the exception to Sentry, etc...
+} );
+```
+
 ### Multiple Queues
 
 To allow for some priority between jobs a job can be sent to a specific queue.
