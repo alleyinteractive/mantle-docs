@@ -26,3 +26,32 @@ You may also pass a user instance to `acting_as()` to authenticate as that user.
 ```php
 $this->acting_as( static::factory()->user->create() );
 ```
+
+## Assertions
+
+The Mantle Test Framework provides assertions to make it possible to assert if
+you are authenticated as a given user or role or not at all.
+
+### `assertAuthenticated()`
+
+Assert that the user is authenticated.
+
+```php
+$this->assertAuthenticated();
+```
+
+Also supports checking if the current user is a specific user or role:
+
+```php
+$this->assertAuthenticated( 'administrator' );
+
+$this->assertAuthenticatedAs( $user );
+```
+
+### `assertGuest()`
+
+Assert that the user is not authenticated.
+
+```php
+$this->assertGuest();
+```
