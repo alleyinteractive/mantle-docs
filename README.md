@@ -1,41 +1,30 @@
-# Website
+# Mantle Documentation
 
-This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
+The Mantle documentation for the [Mantle
+Framework](https://github.com/alleyinteractive/mantle-framework) is hosted at
+[https://mantle.alley.co](https://mantle.alley.co). It is automatically deployed
+via Netlify.
 
-### Installation
-
-```
-$ yarn
-```
-
-### Local Development
+## Installation
 
 ```
-$ yarn start
+$ npm install
 ```
 
-This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
-
-### Build
+## Local Development
 
 ```
-$ yarn build
+$ npm run dev
 ```
 
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
+This command starts a local development server and opens up a browser window.
+Most changes are reflected live without having to restart the server.
 
-### Deployment
-
-Using SSH:
-
-```
-$ USE_SSH=true yarn deploy
-```
-
-Not using SSH:
+## Build
 
 ```
-$ GIT_USER=<Your GitHub username> yarn deploy
+$ npm run build
 ```
 
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+This command generates static content into the `build` directory and can be
+served using any static contents hosting service.
