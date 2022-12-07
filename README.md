@@ -2,7 +2,7 @@
 
 The Mantle documentation for the [Mantle
 Framework](https://github.com/alleyinteractive/mantle-framework) is hosted at
-[https://mantle.alley.co](https://mantle.alley.co). It is automatically deployed
+[mantle.alley.com](https://mantle.alley.com). It is automatically deployed
 via Netlify.
 
 ## Installation
