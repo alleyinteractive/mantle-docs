@@ -3,8 +3,14 @@
 ## Introduction
 
 The Installation Manager is a class used to install WordPress for testing. It
-supports installing WordPress in a temporary directory and `rsync`ing your
+supports installing WordPress in a temporary directory and `rsync`-ing your
 project to live within it for testing.
+
+Mantle aims to remove the need to install any external dependencies such as core
+testing suites, WordPress VIP MU plugins, or other testing tools. The
+Installation Manager should be capable of handling all of that and letting you
+focus on writing tests. The only thing you should need to do to test your
+plugin/theme/site is run `composer phpunit`.
 
 ## Overriding the Default Installation
 
@@ -31,12 +37,27 @@ used to override them:
 Mantle uses `getenv()` to retrieve the environmental variables and will fallback
 to the default values if the environmental variable isn't set.
 
-## Rsyncing
+## Rsync-ing
 
 The Installation Manager can manage the entire rsync process without you needing
 to manually execute a shell script before running your unit tests.
 
-### Rsyncing a Plugin
+### Rsync-ing a `wp-content/`-rooted Project
+
+If you're working on a project that is rooted in the `wp-content/` directory (a
+WordPress VIP site for example), you can use the `maybe_rsync()` to rsync the
+entire project over to a working WordPress installation.
+
+```php
+\Mantle\Testing\manager()
+	->maybe_rsync()
+	->install();
+```
+
+Your project will then be rsynced to the `wp-content/` directory within the
+WordPress installation.
+
+### Rsync-ing a Plugin
 
 Plugins can be rsync'd to live within a WordPress installation by using the
 `maybe_rsync_plugin()`. Within your `tests/bootstrap.php` file, you can use the
@@ -63,20 +84,20 @@ The installation manager will place the plugin in the
 installation.
 
 :::note
-Plugins normally don't need to be rsynced. Mantle will automatically install
+Plugins normally don't need to be rsync'd. Mantle will automatically install
 WordPress if not found and use the installation without rsyncing the plugin.
 :::
 
-### Rsyncing a Theme
+### Rsync-ing a Theme
 
 Themes can be rsynced to live within a WordPress installation by using the
 `maybe_rsync_theme()`. Within your `tests/bootstrap.php` file, you can use the
 following code:
 
 ```php
-\Mantle\Testing\manager()
-  ->maybe_rsync_theme()
-  ->install();
+Mantle\Testing\manager()
+	->maybe_rsync_theme()
+	->install();
 ```
 
 By default, the Installation Manager will set the default name of the theme. If
@@ -84,34 +105,56 @@ you'd like to customize it, you can pass the name to the `maybe_rsync_theme()`
 method:
 
 ```php
-\Mantle\Testing\manager()
-  ->maybe_rsync_theme( 'my-theme-name' )
-  ->install();
+Mantle\Testing\manager()
+	->maybe_rsync_theme( 'my-theme-name' )
+	->install();
 ```
 
 The installation manager will place the theme in the
 `wp-content/themes/<my-theme-name>` directory within the WordPress installation.
 
-### Rsyncing a `wp-content/`-rooted Project
+#### Including WordPress VIP MU Plugins
 
-If you're working on a project that is rooted in the `wp-content/` directory (a
-WordPress VIP site for example), you can use the `maybe_rsync()` to rsync the
-entire project over to a working WordPress installation.
+Mantle can automatically install the built-version of [WordPress VIP's MU
+Plugins](https://github.com/Automattic/vip-go-mu-plugins-built) to your testing
+installation.
 
 ```php
-\Mantle\Testing\manager()
-  ->maybe_rsync()
-  ->install();
+Mantle\Testing\manager()
+	->maybe_rsync_wp_content()
+	->with_vip_mu_plugins()
+	->install();
 ```
 
-Your project will then be rsynced to the `wp-content/` directory within the
-WordPress installation.
+If your project does include a `mu-plugin` folder, it will be ignored and will
+not be rsync'd to the testing installation.
 
-## Registering Before/After/Loaded Callbacks
+#### Including Memcache Object Cache Drop-In
 
-The Installation Manager supports before, after, and loaded callbacks during the
-installation process. These callbacks can be used to perform any additional
-setup or teardown tasks that are needed for your project before tests are run.
+If your project uses the [Memcache Object Cache Drop-In](https://raw.githubusercontent.com/Automattic/wp-memcached/HEAD/object-cache.php),
+you can include it in your testing installation for parity with your production environment.
+
+```php
+Mantle\Testing\manager()
+	->maybe_rsync_wp_content()
+	->with_object_cache()
+	->install();
+```
+
+:::note
+
+If your testing environment does not include the `Memcache` extension, the
+Memcache Object Cache Drop-In will not be installed to prevent a fatal error. If
+you want to force the installation of the Memcache Object Cache Drop-In, you set
+the `MANTLE_REQUIRE_OBJECT_CACHE` environmental variable to `true`.
+
+:::
+
+## Modifying the WordPress Installation
+
+The Installation Manager supports fluent methods for modifying the WordPress
+installation before/after the installation process. It also has helpers to aid
+in the setup process for projects to make it easier to get testing.
 
 ### Registering a Before Callback
 
@@ -142,7 +185,8 @@ executed after the WordPress installation is finished.
 ### Registering a Loaded Callback
 
 Loaded callbacks are registered using the `loaded()` method. The callback will
-be executed after the WordPress installation is finished and during the `muplugins_loaded` WordPress hook.
+be executed after the WordPress installation is finished and during the
+`muplugins_loaded` WordPress hook.
 
 ```php
 \Mantle\Testing\manager()
@@ -150,6 +194,45 @@ be executed after the WordPress installation is finished and during the `muplugi
     // Do something after the installation such as loading
     // your plugin's main file.
   } )
+  ->install();
+```
+
+### Registering a `init` Callback
+
+Callbacks can be registered to run during the `init` WordPress hook using the `init()` method.
+
+```php
+\Mantle\Testing\manager()
+  ->init( function() {
+    // Do something during the init hook.
+  } )
+  ->install();
+```
+
+### Changing the Active Theme
+
+The active theme can be changed using the `theme()` method. The method accepts
+the theme name and will switch to the active theme on the `muplugins_loaded`
+hook:
+
+```php
+\Mantle\Testing\manager()
+  ->theme( 'my-theme-name' )
+  ->install();
+```
+
+### Changing the Active Plugins
+
+The active plugins can be changed using the `plugins()` method. The method
+accepts an array of plugin file paths (mirrors the `active_plugins` option) and
+will switch to the active plugins on the `muplugins_loaded` hook:
+
+```php
+\Mantle\Testing\manager()
+  ->plugins( [
+    'my-plugin/my-plugin.php',
+    'my-other-plugin/my-other-plugin.php',
+  ] )
   ->install();
 ```
 
@@ -164,3 +247,11 @@ Installation Manager.
 // Or, if you're using the helper function.
 \Mantle\Testing\install();
 ```
+
+## About the Installation Script
+
+The Installation Manager uses a installation script located in the
+[mantle-ci repository](https://github.com/alleyinteractive/mantle-ci/blob/HEAD/install-wp-tests.sh).
+The script provides a fast way of installing WordPress for testing purposes. It
+also supports caching the installation between runs to speed up the process. For
+more information, see the documentation in the script.
