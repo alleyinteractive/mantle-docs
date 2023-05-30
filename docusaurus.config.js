@@ -97,7 +97,7 @@ const config = {
       },
       footer: {
         style: 'dark',
-        copyright: `Copyright &copy; ${new Date().getFullYear()} Alley. Built with Docusaurus.`,
+        copyright: `Copyright &copy; ${new Date().getFullYear()} <a href="https://alley.com/">Alley</a>. Built with Docusaurus.`,
       },
       prism: {
         additionalLanguages: ['php'],

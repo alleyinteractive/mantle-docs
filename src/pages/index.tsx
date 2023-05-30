@@ -29,11 +29,33 @@ function HomepageHeader() {
   );
 }
 
+function HomepageTestkitCallout() {
+  return (
+    <div className="container">
+      <div className={styles.testkitCallout}>
+        <h4>Looking to upgrade your WordPress unit testing?</h4>
+        <p>
+          Check out
+          {' '}
+          <Link to="/docs/testing/testkit">Mantle Testkit</Link>
+          {' '}
+          for a drop-in replacement to WordPress core tests via our
+          {' '}
+          <Link to="/docs/testing">testing framework</Link>
+          {' '}
+          that allows you to fluently tests WordPress in a modern way.
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default function Home(): JSX.Element {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout description={siteConfig.tagline}>
       <HomepageHeader />
+      <HomepageTestkitCallout />
       <main>
         <HomepageFeatures />
         <HomepageExamples />

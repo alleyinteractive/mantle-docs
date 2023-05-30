@@ -57,3 +57,36 @@
     margin-top: 20px;
   }
 }
+
+/* Callout for Mantle testkit that appears below the homepage hero */
+.testkitCallout {
+  background: var(--ifm-color-primary-light);
+  border-radius: var(--ifm-button-border-radius);
+  color: white;
+  margin: 0 0 40px;
+  padding: 2rem;
+  text-align: center;
+}
+
+[data-theme="dark"] .testkitCallout {
+  background: var(--ifm-color-primary-darkest);
+}
+
+.testkitCallout a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+[data-theme="light"] .testkitCallout a {
+  color: white;
+}
+
+.testkitCallout h4 {
+  font-size: 1.4rem;
+  font-weight: normal;
+}
+
+.testkitCallout p {
+  font-size: 1.2rem;
+  margin: 0;
+}
