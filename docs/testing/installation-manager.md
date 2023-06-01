@@ -113,7 +113,7 @@ Mantle\Testing\manager()
 The installation manager will place the theme in the
 `wp-content/themes/<my-theme-name>` directory within the WordPress installation.
 
-#### Including WordPress VIP MU Plugins
+### Including WordPress VIP MU Plugins
 
 Mantle can automatically install the built-version of [WordPress VIP's MU
 Plugins](https://github.com/Automattic/vip-go-mu-plugins-built) to your testing
@@ -129,7 +129,7 @@ Mantle\Testing\manager()
 If your project does include a `mu-plugin` folder, it will be ignored and will
 not be rsync'd to the testing installation.
 
-#### Including Memcache Object Cache Drop-In
+### Including Memcache Object Cache Drop-In
 
 If your project uses the [Memcache Object Cache Drop-In](https://raw.githubusercontent.com/Automattic/wp-memcached/HEAD/object-cache.php),
 you can include it in your testing installation for parity with your production environment.
