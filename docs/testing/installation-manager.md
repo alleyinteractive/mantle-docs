@@ -150,7 +150,7 @@ the `MANTLE_REQUIRE_OBJECT_CACHE` environmental variable to `true`.
 
 :::
 
-## Using SQLite for the Database
+### Using SQLite for the Database
 
 Mantle can automatically configure WordPress to use SQLite for the database
 instead of MySQL for testing. This can be a big leap in performance for your
