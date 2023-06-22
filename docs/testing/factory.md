@@ -81,14 +81,18 @@ use Mantle\Testkit\Test_Case as Testkit_Test_Case;
 class Test_Case extends Testkit_Test_Case {
 
   public function test_factory() {
-    $post_id = static::factory()->post->with_terms(
-      [
-        // Pass in slugs.
-        'category' => [ 'cat1', 'cat2' ],
+    $tag_id = static::factory()->tag->create();
 
-        // Or pass in term IDs.
-        'post_tag' => static::factory()->tag->create(),
-      ]
+    $post_id = static::factory()->post->with_terms(
+      // Pass in slugs.
+      'category_a',
+      'category_b',
+
+      // Pass in IDs.
+      $tag_id,
+
+      // Or pass in term objects.
+      static::factory()->tag->create_and_get(),
     )->create();
 
     // ...
