@@ -54,7 +54,7 @@ assert we see the post's name (title):
 $post = static::factory()->post->create_and_get();
 
 $this->get( $post )
-     ->assertSee( $post->name() );
+     ->assertSee( $post->post_title );
 ```
 
 In this example, here we request a non-existing resource and assert that it
