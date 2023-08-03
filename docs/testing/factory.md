@@ -72,7 +72,7 @@ class Test_Case extends Testkit_Test_Case {
 
 ### Generating Posts with Terms
 
-Posts can be generated with terms by calling the `with_terms` method on the
+Posts can be generated with terms by calling the `with_terms()` method on the
 factory:
 
 ```php
@@ -84,11 +84,20 @@ class Test_Case extends Testkit_Test_Case {
     $tag_id = static::factory()->tag->create();
 
     $post_id = static::factory()->post->with_terms(
-      // Pass in slugs.
-      'category_a',
-      'category_b',
+      // Pass in taxonomy => slug pairs
+      [
+        'category' => [
+          'category_a',
+          'category_b',
+        ],
+      ],
 
-      // Pass in IDs.
+      // Pass in a single taxonomy => slug pair.
+      [
+        'post_tag' => 'single-tag',
+      ],
+
+      // Pass in term ID(s).
       $tag_id,
 
       // Or pass in term objects.
