@@ -160,3 +160,74 @@ Assert if a post does not have a specific term (aliased to `assertPostsDoesNotHa
 ```php
 $this->assertPostNotHasTerm( $post, $term );
 ```
+
+## Asset Assertions
+
+Assets that are registered and/or enqueued with WordPress can be asserted
+against using the following methods:
+
+### assertScriptStatus
+
+Assert against the status of a script. `$status` accepts 'enqueued',
+'registered', 'queue', 'to_do', and 'done'.
+
+```php
+$this->assertScriptStatus( string $handle, string $status );
+```
+
+### assertStyleStatus
+
+Assert against the status of a style. `$status` accepts 'enqueued',
+'registered', 'queue', 'to_do', and 'done'.
+
+```php
+$this->assertStyleStatus( string $handle, string $status );
+```
+
+### assertScriptEnqueued
+
+Assert that a script is enqueued by handle.
+
+```php
+$this->assertScriptEnqueued( string $handle );
+```
+
+### assertScriptNotEnqueued
+
+Assert that a script is not enqueued by handle.
+
+```php
+$this->assertScriptNotEnqueued( string $handle );
+```
+
+### assertStyleEnqueued
+
+Assert that a style is enqueued by handle.
+
+```php
+$this->assertStyleEnqueued( string $handle );
+```
+
+### assertStyleNotEnqueued
+
+Assert that a style is not enqueued by handle.
+
+```php
+$this->assertStyleNotEnqueued( string $handle );
+```
+
+### assertScriptRegistered
+
+Assert that a script is registered.
+
+```php
+$this->assertScriptRegistered( string $handle );
+```
+
+### assertStyleRegistered
+
+Assert that a style is registered.
+
+```php
+$this->assertStyleRegistered( string $handle );
+```
