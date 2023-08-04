@@ -443,10 +443,11 @@ $response->assertHeader( $header_name, $value = null );
 
 #### assertHeaderMissing
 
-Assert that the response does not have a given header.
+Assert that the response does not have a given header and optional value.
 
 ```php
 $response->assertHeaderMissing( $header_name );
+$response->assertHeaderMissing( $header_name, $value );
 ```
 
 ### JSON Assertions
@@ -521,6 +522,24 @@ Assert that the response has a given JSON structure.
 
 ```php
 $response->assertJsonStructure( array $structure = null);
+```
+
+#### assertIsJson
+
+Assert that the response has a valid JSON structure and `content-type` header
+with `application/json`.
+
+```php
+$response->assertIsJson();
+```
+
+#### assertIsNotJson
+
+Assert that the response does not have a valid JSON structure or `content-type`
+header with `application/json`.
+
+```php
+$response->assertIsNotJson();
 ```
 
 ### Content Body Assertions
