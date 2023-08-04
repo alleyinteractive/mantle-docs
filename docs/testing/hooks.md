@@ -52,10 +52,18 @@ apply_filters( 'filter_to_check', 'value_to_check' );
 Define the expected return value for the filter. Return values can be specified
 using `andReturn(mixed $value)` or with some helper functions.
 
-* `andReturn(mixed $value)`: Returns with the value of `$value`.
-* `andReturnNull()`: Returns `null`.
-* `andReturnFalse()`: Returns `false.`
-* `andReturnTrue()`: Returns `true`.
+- `andReturn(mixed $value)`: Returns with the value of `$value`.
+- `andReturnNull()`: Returns `null`.
+- `andReturnTrue()`: Returns `true`.
+- `andReturnTruthy()`: Returns `true` if the value is truthy.
+- `andReturnFalse()`: Returns `false.`
+- `andReturnFalsy()`: Returns `false` if the value is falsy.
+- `andReturnEmpty()`: Returns `true` if the value is empty.
+- `andReturnNotEmpty()`: Returns `false` if the value is not empty.
+- `andReturnArray()`: Returns an array.
+- `andReturnInstanceOf( string $class )`: Returns an instance of `$class`.
+- `andReturnString()`: Returns a string.
+- `andReturnInteger()`: Returns an integer.
 
 ```php
 $this->expectApplied( 'falsey_filter_to_check' )
