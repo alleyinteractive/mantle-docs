@@ -4,7 +4,7 @@
 
 Below is the current proposed directory structure for sites using Mantle. This
 will certainly change and expand as Mantle develops. The tree is assumed to be
-placed inside of a `wp-content/private/{site}` folder.
+placed inside of a `wp-content/plugin/{site}` folder.
 
 ```
 .

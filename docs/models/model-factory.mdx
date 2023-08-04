@@ -223,21 +223,54 @@ $example_post = Example_Post_Model::factory()->my_custom_state()->create();
 
 ## Generating Content
 
-### Generating Posts with a Custom Post Type
+See [Creating Models Using Factories](#creating-models-using-factories) for more
+information about the `create()`/`create_many()`/`create_and_get()` methods.
 
-Posts can be generated with a custom post type by calling the `with_post_type()`
-method on the factory:
+<Tabs>
+  <TabItem value="model-factory" label="Model Factory" default>
 
 ```php
+use App\Models\Post;
+use App\Models\Category;
+
+$post_id = Post::factory()
+  ->with_meta( [ 'key' => 'value' ] )
+  ->create();
+
+$term_id = Category::factory()->tag
+  ->with_meta( [ 'key' => 'value' ] )
+  ->create();
+
+// ...
+```
+  </TabItem>
+  <TabItem value="testing" label="Standalone Testing Factory">
+
+```php
+use App\Models\Post;
 use Mantle\Testkit\Test_Case as Testkit_Test_Case;
 
 class Test_Case extends Testkit_Test_Case {
 
   public function test_factory() {
-    $post_id = static::factory()->post->with_post_type( 'custom_post_type' )->create();
+    $post_id = static::factory()->post
+      ->with_meta( [ 'key' => 'value' ] )
+      ->create();
+
+    // ...
+
+    $term_id = static::factory()->tag->with_meta(
+      [
+        'key' => 'value',
+      ]
+    )->create();
+
+    // ...
   }
 }
 ```
+  </TabItem>
+</Tabs>
 
 ### Generating Posts/Terms with Meta
 
@@ -448,6 +481,22 @@ class Test_Case extends Testkit_Test_Case {
   </TabItem>
 </Tabs>
 
+### Generating Posts with a Custom Post Type
+
+Posts can be generated with a custom post type by calling the `with_post_type()`
+method on the factory:
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class Test_Case extends Testkit_Test_Case {
+
+  public function test_factory() {
+    $post_id = static::factory()->post->with_post_type( 'custom_post_type' )->create();
+  }
+}
+```
+
 ### Generating an Ordered Set of Posts
 
 Mantle includes a helper to create an ordered set of posts that are evenly
@@ -558,3 +607,38 @@ class Test_Case extends Testkit_Test_Case {
 ```
   </TabItem>
 </Tabs>
+
+### Factory Middleware
+
+Mantle includes a middleware system that allows you to hook into the factory
+process and modify the data before it's saved to the database. This can be
+useful if you want to modify the data before it's saved or if you want to
+perform some action after the data is saved. The factory itself uses middleware
+to assign terms to posts after they're saved, set meta, and more.
+
+Middleware can be added to the factory by calling the `with_middleware()` method:
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class Test_Case extends Testkit_Test_Case {
+
+  protected $custom_factory;
+
+  protected function setUp(): void {
+    parent::setUp();
+
+    $this->custom_factory = static::factory()->post->with_middleware(
+      function ( array $args, \Closure $next ) {
+        // Modify the arguments (if needed).
+
+        // Call the next middleware
+        $result = $next( $args );
+
+        // Modify the result (if needed).
+
+        return $result;
+      }
+  }
+}
+```
