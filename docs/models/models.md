@@ -364,3 +364,24 @@ Posts::active()->get();
 
 Posts::ofType( 'type-to-query' )->get();
 ```
+
+## Creating a Dynamic Model
+
+A dynamic model is a model that is not defined in the application but is
+created on the fly. This is useful for creating a model for a post type that
+isn't defined in the application.
+
+Once the dynamic model is created, it can be used like any other model in the
+application.
+
+```php
+use Mantle\Database\Model\Post;
+
+$model = Post::for( 'my-custom-post-type' );
+
+// Create a new instance of the model.
+$instance = $model->create( [ 'title' => 'Example Title' ] );
+
+// Query the model.
+$results = $model->where( 'post_status', 'publish' )->get();
+```
