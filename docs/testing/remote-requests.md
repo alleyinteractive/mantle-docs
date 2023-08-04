@@ -41,15 +41,16 @@ $this->fake_request( 'https://github.com/*' )
   ->with_body( 'fake body' );
 ```
 
-You can also pass an array with a set of responses (or a callback):
+You can also pass an array with a set of responses (or a callback) using the
+`Mantle\Testing\Mock_Http_Response` class and `mock_http_response` helper:
 
 ```php
-use Mantle\Testing\Mock_Http_Response;
+use function Mantle\Testing\mock_http_response;
 
 $this->fake_request(
   [
-    'https://github.com/*'  => Mock_Http_Response::create()->with_body( 'github' ),
-    'https://twitter.com/*' => Mock_Http_Response::create()->with_body( 'twitter' ),
+    'https://github.com/*'  => mock_http_response()->with_body( 'github' ),
+    'https://twitter.com/*' => mock_http_response()->with_body( 'twitter' ),
   ]
 );
 ```
@@ -61,13 +62,15 @@ closure that will be invoked when a request is being faked. It should return a
 mocked HTTP response:
 
 ```php
+use function Mantle\Testing\mock_http_sequence;
+
 $this->fake_request(
   function( string $url, array $request_args ) {
     if ( false === strpos( $url, 'alley.co' ) ) {
       return;
     }
 
-    return Mock_Http_Response::create()
+    return mock_http_sequence()
       ->with_response_code( 123 )
       ->with_body( 'alley!' );
   }
@@ -77,13 +80,15 @@ $this->fake_request(
 ### Faking Response Sequences
 
 Sometimes a single URL should return a series of fake responses in a specific
-order. This can be accomplished via `Mock_Http_Sequence` to build the response
-sequence:
+order. This can be accomplished via `Mock_Http_Sequence` class and
+`mock_http_sequence` helper to build the response sequence:
 
 ```php
+use function Mantle\Testing\mock_http_sequence;
+
 $this->fake_request(
   [
-    'https://github.com/*' => Mock_Http_Sequence::create()
+    'https://github.com/*' => mock_http_sequence()
       ->push_status( 200 )
       ->push_status( 400 )
       ->push_status( 500 )
@@ -97,35 +102,38 @@ requests will throw an exception. You can also specify a default response that
 will be returned when there are no responses left in the sequence:
 
 ```php
+use function Mantle\Testing\mock_http_response;
+use function Mantle\Testing\mock_http_sequence;
+
 $this->fake_request(
   [
-    'https://github.com/*' => Mock_Http_Sequence::create()
-      ->push( Mock_Http_Response::create()->with_json( [ 1, 2, 3 ] )
-      ->push( Mock_Http_Response::create()->with_json( [ 4, 5, 6 ] )
-      ->when_empty( Mock_Http_Response::create()->with_json( [ 4, 5, 6 ] )
+    'https://github.com/*' => Mock_Http_Sequence()
+      ->push( mock_http_response()->with_json( [ 1, 2, 3 ] )
+      ->push( mock_http_response()->with_json( [ 4, 5, 6 ] )
+      ->when_empty( mock_http_response()->with_json( [ 4, 5, 6 ] )
   ],
 );
 ```
 
 ## Generating a Response
 
-`Mantle\Testing\Mock_Http_Response` exists to help you fluently build
-a WordPress-style remote response.
+`Mantle\Testing\Mock_Http_Response` class and `mock_http_response()` helper
+exists to help you fluently build a WordPress-style remote response.
 
 ```php
-use Mantle\Testing\Mock_Http_Response;
+use function Mantle\Testing\mock_http_response;
 
 // 404 response.
-Mock_Http_Response::create()
+mock_http_response()
   ->with_response_code( 404 )
   ->with_body( 'test body' );
 
 // JSON response.
-Mock_Http_Response::create()
+mock_http_response()
   ->with_json( [ 1, 2, 3 ] );
 
 // Redirect response.
-Mock_Http_Response::create()
+mock_http_response()
   ->with_redirect( 'https://wordpress.org/' );
 ```
 
@@ -174,12 +182,14 @@ class Example_Test extends Test_Case {
 ## Preventing Stray Requests
 
 If you would like to ensure that all requests are faked during a unit test, you
-can use the `prevent_stray_requests()` method. This will throw an exception if
+can use the `$this->prevent_stray_requests()` method. This will throw an exception if
 any requests are made that are not faked.
 
 ```php
 class Example_Test extends Test_Case {
-  public function __construct() {
+  protected function setUp(): void {
+    parent::setUp();
+
     $this->prevent_stray_requests();
   }
 
@@ -196,3 +206,5 @@ class Example_Test extends Test_Case {
   }
 }
 ```
+
+Stray requests can be re-enabled by calling `$this->allow_stray_requests()`.

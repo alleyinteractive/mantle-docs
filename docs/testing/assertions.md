@@ -87,12 +87,36 @@ Assert that the global queried object ID is equal to the given ID:
 $this->assertQueriedObjectId( int $id );
 ```
 
+### assertNotQueriedObjectId
+
+Assert that the global queried object ID is not equal to the given ID:
+
+```php
+$this->assertNotQueriedObjectId( int $id );
+```
+
 ### assertQueriedObject
 
 Assert that the global queried object is equal to the given object:
 
 ```php
 $this->assertQueriedObject( $object );
+```
+
+### assertNotQueriedObject
+
+Assert that the global queried object is not equal to the given object:
+
+```php
+$this->assertNotQueriedObject( $object );
+```
+
+### assertQueriedObjectNull
+
+Assert that the global queried object is null:
+
+```php
+$this->assertQueriedObjectNull();
 ```
 
 ## WordPress Post/Term Existence

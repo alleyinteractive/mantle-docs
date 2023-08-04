@@ -15,7 +15,8 @@ flag a test as expecting a deprecation or incorrect usage notice.
 :::note
 
 If a test has an `@expectedDeprecated` or `@expectedIncorrectUsage` annotation,
-it will not fail if a deprecation or incorrect usage notice is not triggered.
+it will not fail if a deprecation or incorrect usage notice is not triggered. If
+the test does not cause a deprecation or incorrect usage notice, it will fail.
 
 :::
 
