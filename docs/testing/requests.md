@@ -200,6 +200,17 @@ $this->get( '/example' )->dd();
 $this->get( '/example' )->dd_headers();
 ```
 
+You can use the `dumpJson()`/`ddJson()` methods to dump the JSON response body
+from a (optional) specific path.
+
+```php
+$this->get( '/example' )
+  ->dumpJson()
+  ->dumpJson( 'data' );
+
+$this->get( '/example' )->ddJson();
+```
+
 ## Testing JSON APIs
 
 Mantle includes several helpers for testing JSON APIs and their responses. For
