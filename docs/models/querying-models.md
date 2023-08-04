@@ -10,6 +10,8 @@ powerful query builder that allows you to fluently query the underlying data
 that each model represents.
 
 ```php
+use App\Models\Post;
+
 $posts = Post::all();
 
 foreach ( $posts as $post ) {
@@ -17,35 +19,89 @@ foreach ( $posts as $post ) {
 }
 ```
 
-### Adding Additional Constraints
-The `all` method will return all the results for a model.
+The `Model::all()` method will return all the results for a model.
 
 :::tip
-For `Post` models, the `all` method will retrieve only published posts by default. You
+For post models, the `all` method will retrieve only published posts by default. You
 can easily include all post statuses by calling `anyStatus()` on the model.
 
 ```php
+use App\Models\Post;
+
 Post::where( ... )->anyStatus()->all();
 ```
-
 :::
 
+You can also use the `first()` method to retrieve just a single model from
+either the model or the model's query builder.
+
 ```php
-// Posts with a post_name equal to 'slug-to-find'.
-Example_Post::whereSlug( 'slug-to-find' )->first();
+use App\Models\Post;
 
-// You can also use an `where()` method directly.
-Example_Post::where( 'slug', 'slug-to-find' )->first();
-
-// Posts in a list of IDs.
-Example_Post::whereIn( [ 1, 2, 3 ] )->get();
-
-// Posts not a list of IDs.
-Example_Post::whereNotIn( [ 1, 2, 3 ] )->get();
+$post = Post::first();
 ```
 
-## Querying Posts with Terms
-Only `Post` models support querying against terms.
+The `first_or_fail()` method will retrieve the first model matching the query or
+throw a `Mantle\Database\Model\Model_Not_Found_Exception` if no matching model
+exists.
+
+```php
+use App\Models\Post;
+
+// Retrieve the first post with the title "example" or throw an exception.
+$post = Post::where( 'title', 'example' )->first_or_fail();
+```
+
+### Performing a Query
+
+Queries can be started by calling the `query()` method on the model or using any
+query method directly on the model statically.
+
+```php
+use App\Models\Post;
+
+// Using the static magic method.
+Post::where( 'post_status', 'publish' )->get();
+
+// Using the query method.
+Post::query()->where( 'post_status', 'publish' )->get();
+```
+
+### Querying Model Fields
+
+Model fields can be queried against using the `where()` method or using
+magic-methods in the format of `where{Field}()` to fluently build queries.
+
+```php
+Example_Post::where( 'slug', 'slug-to-find' )->first();
+
+Example_Post::whereSlug( 'slug-to-find' )->first();
+```
+
+Queries can be chained together to build more complex queries.
+
+```php
+Example_Post::where( 'slug', 'slug-to-find' )
+  ->where( 'post_status', 'publish' )
+  ->first();
+```
+
+You can also use `whereIn()` and `whereNotIn()` to query against a list of
+values to retrieve models who are in or not in the list of IDs.
+
+```php
+// Posts in a list of IDs.
+Example_Post::whereIn( 'id', [ 1, 2, 3 ] )->get();
+
+// Posts not a list of IDs.
+Example_Post::whereNotIn( 'id', [ 1, 2, 3 ] )->get();
+```
+
+### Querying Posts with Terms
+
+Post queries can be built to query against terms.
+
+**Note:** Only post models support querying against terms.
 
 ```php
 // Get the first 10 posts in the 'term-slug' tag.
@@ -64,7 +120,8 @@ $term = Example_Term::first();
 Example_Post::whereTerm( $term )->take( 10 )->get();
 ```
 
-## Querying with Meta
+### Querying with Meta
+
 Normal concerns for querying against a model's meta still should be observed.
 The `Post` and `Term` models support querying with meta.
 
@@ -82,16 +139,240 @@ Example_Post::whereMeta( 'meta-key', 'meta-value' )
   ->first();
 ```
 
-## Ordering Results
-By default, the results will be order by `post_date` descending just like core.
+### Limit Results
+
+You can limit the number of results returned by using the `take()` method.
+
+```php
+// Get the first 10 posts.
+Example_Post::where( 'title', 'example' )->take( 10 )->get();
+```
+
+### Pages
+
+You can paginate results by using the `page()` method.
+
+```php
+// Get the second page of results.
+Example_Post::where( 'title', 'example' )->page( 2 )->get();
+```
+
+For more information on advanced pagination, see the [Pagination](#pagination) section.
+
+### Ordering Results
+
+Query results can be ordered by using the `orderBy()`/`order_by()` methods.
 
 ```php
 Example_Post::query()->orderBy( 'name', 'asc' )->get();
 ```
 
-## Limitations
+You can also order by the value passed to `whereIn()`:
+
+```php
+Example_Post::query()->whereIn( 'id', [ 1, 2, 3 ] )->orderByWhereIn()->get();
+```
+
+### Conditional Clauses
+
+Sometimes you may want certain clauses to be applied only if a condition is
+met. You can use the `when()` method to conditionally add clauses to a query.
+
+```php
+use App\Models\Post;
+
+Post::query()
+  ->when( $request->has( 'name' ), function ( $query ) use ( $request ) {
+    $query->where( 'name', $request->get( 'name' ) );
+  } )
+  ->get();
+```
+
+You can pass another callback to the third argument of the `when()` method to
+add a clause when the condition is not met.
+
+```php
+use App\Models\Post;
+
+Post::query()
+  ->when( $request->has( 'name' ), function ( $query ) use ( $request ) {
+    $query->where( 'name', $request->get( 'name' ) );
+  }, function ( $query ) {
+    $query->where( 'name', 'default-name' );
+  } )
+  ->get();
+```
+
+### Chunking Results
+
+If you need to work with thousands of models, you can use the `chunk()` method
+to process the results in chunks.
+
+```php
+use App\Models\Post;
+
+// Chunk the results in groups of 100.
+Post::chunk( 100, function ( $posts ) {
+  foreach ( $posts as $post ) {
+    // Do something with the post.
+  }
+} );
+```
+
+You can also use the `chunk_by_id()` method to chunk results by the model's ID.
+This is useful if you need to process results in batches and potentially
+delete/modify them in a way that can break the sorting of the query.
+
+```php
+use App\Models\Post;
+
+// Chunk the results in groups of 100.
+Post::chunk_by_id( 100, function ( $posts ) {
+  foreach ( $posts as $post ) {
+    // Do something with the post.
+  }
+} );
+```
+
+#### Each/Each By ID
+
+If you need to process each model in a query, you can use the
+`each()`/`each_by_id()` methods. These methods will process each model in the
+query performantly without loading all of the models into memory. `each_by_id()` is
+useful if you need to process results in batches and potentially delete/modify
+them in a way that can break the sorting of the query.
+
+```php
+use App\Models\Post;
+
+// Process each post using normal pagination chunking.
+Post::where( 'status', 'publish' )->each( function (  Post$post ) {
+  // Do something with the post.
+} );
+
+// Process each post using ID-based pagination chunking.
+Post::where( 'status', 'publish' )->each_by_id( function (  Post$post ) {
+  // Do something with the post.
+} );
+```
+
+### Debugging Queries
+
+The query arguments that are passed to the underlying `WP_Query`/`WP_Tax_Query`/etc.
+can be dumped by using the `dump()`/`dd()` methods.
+
+```php
+use App\Models\Post;
+
+// Dump the query arguments.
+Post::query()->where( 'name', 'example' )->dump();
+
+// Dump the query arguments and end the script.
+Post::query()->where( 'name', 'example' )->dd();
+```
+
+You can dump the raw SQL query by using the `dump_sql()`/`dd_sql()` methods.
+
+```php
+use App\Models\Post;
+
+// Dump the raw SQL query.
+Post::query()->where( 'name', 'example' )->dump_sql();
+
+// Dump the raw SQL query and end the script.
+Post::query()->where( 'name', 'example' )->dd_sql();
+```
+
+### Limitations
+
 Not all fields are supported to be queried against since this is a fluent
-interface for the underlying `WP_Query` and `WP_Tax_Query` classes.
+interface for the underlying `WP_Query` and `WP_Tax_Query` classes. For more
+advanced queries, checkout the `Mantle\Database\Query\Concerns\Query_Clauses`
+trait which will allow you to add raw query clauses to your post/term queries.
+
+## Retrieving or Creating Models
+
+Models can be retrieved or created if they do not exist using the following
+helper methods:
+
+### first_or_new
+
+The `first_or_new()` method will retrieve the first model matching the query or
+create a new instance of the model if no matching model exists. It will not save
+the model. The second argument is an array of attributes to set on the model if
+it is created.
+
+```php
+use App\Models\Post;
+
+// Retrieve the first post with the title "example" or create a new post.
+$post = Post::first_or_new(
+  [
+    'title' => 'example',
+  ],
+  [
+    'content' => 'This is an example post.',
+  ]
+);
+```
+
+### first_or_create
+
+Similar to `first_or_new()`, the `first_or_create()` method will retrieve the
+first model matching the query or create a new instance of the model if no
+matching model exists. It will save the model. The second argument is an array
+of attributes to set on the model if it is created.
+
+```php
+use App\Models\Post;
+
+// Retrieve the first post with the title "example" or create a new post.
+$post = Post::first_or_create(
+  [
+    'title' => 'example',
+  ],
+  [
+    'content' => 'This is an example post.',
+  ]
+);
+```
+
+### update_or_create
+
+The `update_or_create()` method will retrieve the first model matching the query,
+create it if it does not exist, or update it if it exists. The second argument
+is an array of attributes to set on the model if it is created.
+
+```php
+use App\Models\Post;
+
+// Retrieve the first post with the title "example" or create a new post.
+$post = Post::update_or_create(
+  [
+    'title' => 'example',
+  ],
+  [
+    'content' => 'This is an example post.',
+  ]
+);
+```
+
+## Querying Multiple Models
+
+Multiple models of the same type (posts/terms/etc.) can be queried together.
+There are some limitations and features that cannot be used including query
+scopes.
+
+```php
+use Mantle\Database\Query\Post_Query_Builder;
+
+use App\Models\Post;
+use App\Models\Another_Post;
+
+Post_Query_Builder::create( [ Post::class, Another_Post::class ] )
+  ->whereMeta( 'shared-meta', 'meta-value' )
+	->get();
+```
 
 ## Pagination
 
@@ -202,20 +483,4 @@ The paginator will return the results in a JSON format.
   "path": "\/path",
   "previous_url": null
 }
-```
-
-# Querying Multiple Models
-Multiple models of the same type (posts/terms/etc.) can be queried together.
-There are some limitations and features that cannot be used including query
-scopes.
-
-```php
-use Mantle\Database\Query\Post_Query_Builder;
-
-use App\Models\Post;
-use App\Models\Another_Post;
-
-Post_Query_Builder::create( [ Post::class, Another_Post::class ] )
-  ->whereMeta( 'shared-meta', 'meta-value' )
-	->get();
 ```
