@@ -46,7 +46,7 @@ Route::get( '/controller-endpoint', [ Controller_Class::class, 'method_to_invoke
 A controller can be generated through the CLI.
 
 ```bash
-wp mantle make:controller <name>
+bin/mantle make:controller <name>
 ```
 
 #### Invokable Controllers
@@ -108,23 +108,77 @@ generating URLs or redirects via the helper `route` function.
 $url = route( 'route-name' );
 ```
 
-### Route Groups
-Routes can be registered in groups to make passing a common set of arguments
-easy.
+### Route Middleware
+
+Middleware can be used to filter incoming requests and the response sent to the
+browser. Think of it like a WordPress filter on top of the request and the end
+response.
+
+#### Example Middleware
+```php
+/**
+ * Example_Middleware class file.
+ *
+ * @package Mantle
+ */
+
+namespace App\Middleware;
+
+use Closure;
+use Mantle\Http\Request;
+
+/**
+ * Example Middleware
+ */
+class Example_Middleware {
+  /**
+   * Handle the request.
+   *
+   * @param Request $request Request object.
+   * @param Closure $next Callback to proceed.
+   */
+  public function handle( Request $request, Closure $next ) {
+		// Modify the request or bail early.
+		$request->setMethod( 'POST' );
+
+		/**
+		 * @var Mantle\Http\Response
+		 */
+		$response = $next( $request );
+
+		// Modify the response.
+		$response->headers->set( 'Special-Header', 'Value' );
+
+		return $response;
+  }
+}
+```
+
+#### Authentication Middleware
+
+Included with Mantle, a route can check a user's capability before allowing them
+to view a page.
 
 ```php
-Route::group(
-  [
-    'middleware' => 'middleware-to-apply',
-    'prefix'     => 'prefix/to/use',
-  ],
-  function() {
-    // Register a route with a prefix here!
-  }
-);
+use Mantle\Facade\Route;
+
+Route::get('/route-to-protect', function() {
+  // The current user can 'manage_options'.
+} )->middleware( 'can:manage_options', Example_Middleware::class );
+```
+
+### Route Prefix
+
+Routes can be prefixed to make it easier to group routes together.
+
+```php
+Route::prefix( 'prefix/to/use' )->group( function() {
+	// Register a route with a prefix here!
+} );
 ```
 
 ### Available Router Methods
+
 The router has all HTTP request methods available:
 
 ```php
@@ -137,6 +191,7 @@ Route::options( $uri, $callback );
 ```
 
 ### Requests Pass-Through to WordPress Routing
+
 By default, requests will pass down to WordPress if there is no match in Mantle.
 That can be changed inside of `Route_Service_Provider`. If the request doesn't
 have a match, the request will 404 and terminate before going through
@@ -324,69 +379,18 @@ public function resolve_route_binding( $value, $field = null ) {
 }
 ```
 
-### Route Middleware
-Middleware can be used to filter incoming requests and the response sent to the
-browser. Think of it like a WordPress filter on top of the request and the end
-response.
-
-#### Example Middleware
-```php
-/**
- * Example_Middleware class file.
- *
- * @package Mantle
- */
-
-namespace App\Middleware;
-
-use Closure;
-use Mantle\Http\Request;
-
-/**
- * Example Middleware
- */
-class Example_Middleware {
-  /**
-   * Handle the request.
-   *
-   * @param Request $request Request object.
-   * @param Closure $next Callback to proceed.
-   */
-  public function handle( Request $request, Closure $next ) {
-		// Modify the request or bail early.
-		$request->setMethod( 'POST' );
-
-		/**
-		 * @var Mantle\Http\Response
-		 */
-		$response = $next( $request );
-
-    // Modify the response.
-		$response->headers->set( 'Special-Header', 'Value' );
-
-    return $response;
-  }
-}
-```
-
-#### Authentication Middleware
-Included with Mantle, a route can check a user's capability before allowing them
-to view a page.
-
-```php
-Route::get('/route-to-protect', function() {
-  // The current user can 'manage_options'.
-} )->middleware( 'can:manage_options', Example_Middleware::class );
-```
-
 ## Responses
+
 Responses for routed requests can come in all shapes and sizes. Underneath all
 of it, the response will always come out to be a
 `Symfony\Component\HttpFoundation\Response` object. The `response()` helper
 exists to help with returning responses.
 
 #### Strings & Arrays
+
 ```php
+use Mantle\Facade\Route;
+
 Route::get( '/', function () {
     return 'Hello World';
 } );
@@ -422,6 +426,8 @@ For more information about views, read the 'Templating' documentation.
 Redirects can be generated using the `response()` helper.
 
 ```php
+use Mantle\Facade\Route;
+
 Route::get( '/logout', function() {
   return response()->redirect_to( '/home' );
 } );
@@ -445,6 +451,8 @@ Registering a REST API route requires a different function call if you do not
 wish to use a closure.
 
 ```php
+use Mantle\Facade\Route;
+
 Route::rest_api( 'namespace/v1', '/route-to-use', function() {
   return [ 1, 2, 3 ];
 } );
@@ -454,6 +462,9 @@ Routes can also be registered using the same HTTP verbs web routes use with some
 minor differences.
 
 ```php
+use Mantle\Facade\Route;
+use WP_REST_Request;
+
 Route::rest_api(
 	'namespace/v1',
 	function() {
@@ -478,6 +489,8 @@ REST API routes can also be registered using the same arguments you would pass
 to `register_rest_route()`.
 
 ```php
+use Mantle\Facade\Route;
+
 Route::rest_api(
 	'namespace/v1',
 	function() {
@@ -496,12 +509,46 @@ Route::rest_api(
 );
 ```
 
+### Using Controllers
+
+REST API routes can also use controllers to handle the request. You can use a
+specific method on a controller or make the controller invokeable to handle the
+request.
+
+```php
+use Mantle\Facade\Route;
+use WP_REST_Request;
+
+Route::rest_api(
+	'namespace/v1',
+	function() {
+		Route::get( '/example-endpoint', Example_Controller::class );
+		Route::get( '/another-endpoint', [ Another_Example_Controller::class, 'method' ] );
+	}
+);
+
+class Example_Controller {
+	public function __invoke( WP_REST_Request $request ) {
+		return [ 1, 2, 3 ];
+	}
+}
+
+class Another_Example_Controller {
+	public function method( WP_REST_Request $request ) {
+		return [ 1, 2, 3 ];
+	}
+}
+```
+
 ### Using Middleware
+
 REST API routes also support the same [Route Middleware](#route-middleware) that
 web requests use. The only difference is that web requests are passed a Mantle
 Request object while REST API requests are passed a `WP_REST_Request` one.
 
 ```php
+use Mantle\Facade\Route;
+
 Route::middleware( Example_Middleware::class )->group(
 	function() {
 		Route::rest_api( 'namespace/v1', '/example-route', function() { /* ... */ } );
@@ -519,6 +566,7 @@ matched route.
 
 ```php
 use Mantle\Http\Routing\Events\Route_Matched;
+
 Event::listen(
 	Route_Matched::class,
 	function( Route_Matched $event ) {
