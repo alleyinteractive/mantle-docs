@@ -3,7 +3,24 @@
 ## Requirements
 
 Mantle has two system requirements to run: PHP to be at least running 8.0 and
-WordPress to be at least 5.9.
+WordPress to be at least 5.9. Mantle supports up to PHP 8.2.
+
+## How Can I Use Mantle?
+
+Mantle supports two different modes of operation:
+
+1. **This is the most common setup:** As a plugin/theme framework for a
+   WordPress site. It normally lives in `wp-content/plugins/mantle.` and uses
+    [`alleyinteractive/mantle`](https://github.com/alleyinteractive/mantle) as
+    the starter package for this mode.
+2. In isolation in an existing code base. The Mantle framework provides all it's
+   own default configuration and service providers and doesn't require most of
+   the code in `alleyinteractive/mantle` to function. This mode is useful for
+    integrating Mantle into an existing code base and using one of it's features
+    like queue or routing without setting up the rest of the application.
+
+    For more information on this mode, see the [Using Mantle in
+    Isolation](#using-mantle-in-isolation) section.
 
 ## Installing Mantle on a Site
 
@@ -67,3 +84,5 @@ Mantle installed as a plugin.
 Mantle should be loaded through a `mu-plugin`, `client-mu-plugin`, or another
 initialization script as a plugin. To ensure that all features work correctly,
 Mantle should be loaded before the `muplugins_loaded` action is fired.
+
+## Using Mantle in Isolation

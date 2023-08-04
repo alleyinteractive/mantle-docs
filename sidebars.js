@@ -38,6 +38,7 @@ const sidebars = {
         id: 'architecture/architecture',
       },
       items: [
+        'architecture/bootloader',
         'architecture/architecture',
         'architecture/configuration',
       ],

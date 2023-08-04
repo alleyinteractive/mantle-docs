@@ -2,9 +2,8 @@
 
 # Overview
 
-Below is the current proposed directory structure for sites using Mantle. This
-will certainly change and expand as Mantle develops. The tree is assumed to be
-placed inside of a `wp-content/plugin/{site}` folder.
+Below is the current proposed directory structure for sites using Mantle. The
+tree is assumed to be placed inside of a `wp-content/plugin/{site}` folder.
 
 ```
 .
@@ -25,7 +24,7 @@ placed inside of a `wp-content/plugin/{site}` folder.
 │   └── app.php
 ├── database
 │   ├── factories
-│   │   └── post-factory.php
+│   │   └── class-post-factory.php
 │   └── seeds
 │       └── class-database-seeder.php
 ├── routes
@@ -41,31 +40,38 @@ placed inside of a `wp-content/plugin/{site}` folder.
 ```
 
 # Root Directory
+
 ## The App Directory
+
 The `app` diretory contains the core code of your application. This includes
 console commands, routes, models, providers, and more. Most of the application
 will live inside of this folder. By default this folder is namespaced `App` and
 autoloaded using a WordPress-style autoloader.
 
 ## The Bootstrap Directory
+
 The `bootstrap` directory contains the `app.php` file which bootstraps and loads the
 framework. It can also contain a `cache` folder which contains framework
 generated files for performance optimization including routes and packages.
 
 ## The Config Directory
+
 The `config` directory contains the application configuration. For more
 information about this, read the Configuration documentation page.
 
 ## The Database Directory
+
 The `database` directory contains the database factories and seeders used to
 initialize the database for testing. For more information about this, read the
 'Model Factory' documentation page.
 
 ## The Routes Directory
+
 The `routes` directory contains all of the application's HTTP route definitions.
 By default, this includes `web.php` and `rest-api.php` for web and REST API
 routes, respectively.
 
 ## The Tests Directory
+
 The `tests` directory contains the automated tests for the application powered
 by PHPUnit and the Mantle Test Framework.

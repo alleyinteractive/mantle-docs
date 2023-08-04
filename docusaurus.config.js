@@ -60,7 +60,6 @@ const config = {
       algolia: {
         appId: 'Y3WWPYIIL4',
         apiKey: 'c92c3230a91695a1b01b2d74ed79d959',
-        // todo: enable once the site is reindedexed.
         contextualSearch: false,
         indexName: 'mantle',
         searchPagePath: false,
