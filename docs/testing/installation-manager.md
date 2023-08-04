@@ -169,6 +169,21 @@ most use-cases but there are some limitations. For example, if you're creating
 database tables or performing complex SQL queries, you may run into issues and
 are better off not using SQLite.
 
+### Excluding Files from Rsync
+
+If you'd like to exclude files from being rsync'd to the testing installation,
+you can use the `exclusions()` method. This method accepts an array of files
+that will be passed to `rsync` and be excluded from the rsync process.
+
+```php
+\Mantle\Testing\manager()
+  ->exclusions( [
+    'vendor/',
+    'node_modules/',
+  ] )
+  ->install();
+```
+
 ## Modifying the WordPress Installation
 
 The Installation Manager supports fluent methods for modifying the WordPress
