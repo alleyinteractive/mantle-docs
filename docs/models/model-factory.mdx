@@ -189,6 +189,14 @@ The Content
 <!-- /wp:namespace/block -->
 ```
 
+Faker also supports generating paragraph blocks using the
+`paragraph_block()`/`paragraph_blocks()` methods.
+
+```php
+$this->faker->paragraph_block( int $sentences = 3 ): string
+$this->faker->paragraph_blocks( int $count = 3, bool $as_text = true ): string|array
+```
+
 ### Factory States
 
 You can define states for a factory by defining a method on the factory and use
