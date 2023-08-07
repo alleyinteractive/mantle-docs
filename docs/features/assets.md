@@ -28,10 +28,10 @@ Mantle is configured to have a development mode and a build mode to make it easy
 to develop and build your application.
 
 ```bash
-// Development mode
+# Development mode
 npm run dev
 
-// Build mode
+# Build mode
 npm run build
 ```
 
