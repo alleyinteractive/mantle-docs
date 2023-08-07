@@ -162,7 +162,7 @@ class Database_Seeder extends Seeder {
 	 * Run the seeder.
 	 */
 	public function run() {
-		factory( Project::class, 10 )->create();
+		Project::factory()->create_many( 10 );
 	}
 }
 ```
