@@ -32,7 +32,7 @@ If you need to update the stored snapshot, you can either delete the
 For more information about snapshot testing, see the [Spatie's PHPUnit Snapshot
 Package Documentation](https://github.com/spatie/phpunit-snapshot-assertions).
 
-## Testing Remote Requests With Snapshot Testing
+## Testing Requests
 
 [HTTP request tests](/docs/testing/requests) can use snapshot testing to test the
 response of a remote request. This is useful for testing the response of a an
