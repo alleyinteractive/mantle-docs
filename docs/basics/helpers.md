@@ -16,20 +16,23 @@ app( Specific_Binding::class );
 ```
 
 ### `config()`
+
 Retrieve a configuration value for the application in a dot-notation.
 
 ```php
 config( 'app.value-to.get', 'default value' );
 ```
 
-### `mantle_base_path()`
+### `base_path()`
+
 Retrieve the base path to the application.
 
 ```php
-mantle_base_path();
+base_path();
 ```
 
 ### `response()`
+
 Helper to build a response for a route (see 'Requests Lifecycle').
 
 ```php
@@ -98,9 +101,18 @@ abort_unless( $value_to_check, 404 );
 The `Mantle\Support\Arr` class contains all the Laravel array helper
 methods you might be familiar with (some methods have been renamed to match
 WordPress coding standards). You can reference those
-[here](https://laravel.com/docs/7.x/helpers#arrays).
+[here](https://laravel.com/docs/10.x/helpers#arrays).
 
 ## String Helpers
+
 The `Mantle\Support\Str` class contains all the Laravel string helper
 methods you might be familiar with. You can reference those
-[here](https://laravel.com/docs/7.x/helpers#strings).
+[here](https://laravel.com/docs/10.x/helpers#strings).
+
+This also includes the `str()` helper:
+
+```php
+use function Mantle\Support\Helpers\str;
+
+str( 'example string' )->title(); // Example String
+```
