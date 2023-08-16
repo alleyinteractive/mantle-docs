@@ -40,7 +40,7 @@ current context. The kernel will then boot and setup the application.
 ### Web
 
 The web context will boot the HTTP application kernel
-(`Mantle\Framework\Http\Kernel`) which can be override by an application
+(`Mantle\Framework\Http\Kernel`) which can be overridden by an application
 binding. The HTTP kernel will send the current request through [Mantle
 Routing](/docs/basics/requests) on the `parse_request` WordPress action.
 
