@@ -86,3 +86,33 @@ initialization script as a plugin. To ensure that all features work correctly,
 Mantle should be loaded before the `muplugins_loaded` action is fired.
 
 ## Using Mantle in Isolation
+
+Mantle supports the use of the framework and its features in complete isolation,
+without the need of the starter code in `alleyinteractive/mantle`. Using the
+Application Bootloader, you can instantiate the Mantle
+framework in one line and use it's features in any code base.
+
+```php
+bootloader()->boot();
+```
+
+:::tip
+For more information on the Bootloader, see the [Bootloader Documentation](/docs/architecture/bootloader).
+:::
+
+For example, if you want to use Mantle's Queue feature in an existing code base,
+you can do so by booting the framework and then using the `dispatch()` helper
+(see the [queue documentation](/docs/features/queue) for more information).
+
+```php
+// Boot the application.
+bootloader()->boot();
+
+// Dispatch a job.
+dispatch( new MyJob() );
+
+// Dispatch an anonymous job.
+dispatch( function () {
+  // Do something expensive here.
+} );
+```

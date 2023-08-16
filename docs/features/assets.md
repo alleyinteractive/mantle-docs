@@ -39,7 +39,7 @@ npm run build
 
 Mantle's build system is powered by Webpack and configured via the
 `webpack.config.js` file. Out of the box, you will be able to build standalone
-entires as well as WordPress blocks using either JavaScript or TypeScript.
+entries as well as WordPress blocks using either JavaScript or TypeScript.
 
 ## Standalone Entries
 
@@ -49,14 +49,14 @@ adding an `index.js`/`index.ts` file. For example, if you wanted to create an
 entry for your application's homepage, you could create a `entries/home`
 directory and add an `index.ts` file.
 
-Once you have created an entry, you can register it and enqueue it via
+Once you have created an entry, you can register and enqueue it via
 [Registering Assets](#registering-assets).
 
 :::tip What is a webpack entry?
 
 A webpack entry is a file that webpack will use to start building your
 application. It is the entry point to your application. For example, you could
-have an entry point for your application''s homepage and another for articles.
+have an entry point for your application's homepage and another for articles.
 
 :::
 

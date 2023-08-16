@@ -74,18 +74,18 @@ use Mantle\Queue\Queueable;
 class Example_Job implements Job, Can_Queue {
 	use Queueable, Dispatchable;
 
-    /**
-     * Create a new job instance.
-     *
-     * @param Post $post
-     */
-    public function __construct( public Post $post ) {}
+	/**
+	 * Create a new job instance.
+	 *
+	 * @param Post $post
+	 */
+	public function __construct( public Post $post ) {}
 
 	/**
 	 * Handle the job.
 	 */
 	public function handle( Example_Service $service ) {
-        // Service is automatically injected at runtime.
+		// Service is automatically injected at runtime.
 	}
 }
 ```

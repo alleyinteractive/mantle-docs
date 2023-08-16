@@ -136,6 +136,7 @@ class Example_Middleware {
    *
    * @param Request $request Request object.
    * @param Closure $next Callback to proceed.
+	 * @return \Mantle\Http\Response
    */
   public function handle( Request $request, Closure $next ) {
 		// Modify the request or bail early.

@@ -1,11 +1,11 @@
 # Bootloader
 
-The Mantle Bootloader class is responsible for instantiating the application and
-loading the framework given the current context. It removes the need for
-boilerplate code to be included in projects but still allows for the flexibility
-to do so if they so choose. This works well to support running Mantle as apart
-of a `alleyinteractive/mantle`-based plugin OR in isolation in a larger
-codebase.
+The Mantle Bootloader class is responsible for instantiating the
+application/container and load the framework given the current context. It
+removes the need for boilerplate code to be included in projects but still
+allows for the flexibility to do so if they so choose. This works well to
+support running Mantle as apart of a `alleyinteractive/mantle`-based plugin OR
+in isolation in a larger codebase.
 
 The core of the bootloader is this:
 
@@ -48,7 +48,7 @@ Routing](/docs/basics/requests) on the `parse_request` WordPress action.
 
 Using the `bin/mantle` console application included with Mantle OR running a
 command via WP-CLI will boot the console kernel (`Mantle\Framework\Console`)
-which can also be override by an application binding.
+which can also be overridden by an application binding.
 
 If we're running in WP-CLI mode, the application will register a `wp mantle`
 command that will proxy the request to the console application. If we're running
