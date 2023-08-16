@@ -109,3 +109,14 @@ class Kernel extends Console_Kernel {
 ```
 
 ## Command Arguments / Options
+
+Arguments and options can be included in the signature of the command. Arguments
+are required and options are optional. The signature is defined as a string with
+the following format:
+
+```
+{argument} [--option]
+```
+
+The arguments/options can be retrieved from the command's
+`argument( $key )`/`option( $key )` methods.
