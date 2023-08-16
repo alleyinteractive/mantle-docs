@@ -97,7 +97,7 @@ bootloader()->boot();
 ```
 
 :::tip
-For more information on the Bootloader, see the [Bootloader Documentation](/docs/architecture/bootloader).
+For more information on the Bootloader, see the [Bootloader documentation](/docs/architecture/bootloader).
 :::
 
 For example, if you want to use Mantle's Queue feature in an existing code base,
