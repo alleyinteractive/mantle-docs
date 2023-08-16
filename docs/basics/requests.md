@@ -6,11 +6,11 @@ WordPress's `add_rewrite_rule()` at all.
 
 ```php
 Route::get( '/example-route', function() {
-  return 'Welcome!';
+	return 'Welcome!';
 } );
 
 Route::get( '/hello/{who}', function( $name ) {
-  return "Welcome {$name}!";
+	return "Welcome {$name}!";
 } );
 ```
 
@@ -28,7 +28,7 @@ At its most basic level, routes can be a simple anonymous function.
 
 ```php
 Route::get( '/endpoint', function() {
-  return 'Hello!';
+	return 'Hello!';
 } );
 ```
 
@@ -94,8 +94,8 @@ Routes can also pass the name to the router through as an array.
 
 ```php
 Route::get( '/posts/{slug}', [
-  'name' => 'named-route',
-  'callback' => function() { ... },
+	'name' => 'named-route',
+	'callback' => function() { ... },
 ] );
 ```
 
@@ -131,14 +131,14 @@ use Mantle\Http\Request;
  * Example Middleware
  */
 class Example_Middleware {
-  /**
-   * Handle the request.
-   *
-   * @param Request $request Request object.
-   * @param Closure $next Callback to proceed.
+	/**
+	 * Handle the request.
+	 *
+	 * @param Request $request Request object.
+	 * @param Closure $next Callback to proceed.
 	 * @return \Mantle\Http\Response
-   */
-  public function handle( Request $request, Closure $next ) {
+	 */
+	public function handle( Request $request, Closure $next ) {
 		// Modify the request or bail early.
 		$request->setMethod( 'POST' );
 
@@ -151,7 +151,7 @@ class Example_Middleware {
 		$response->headers->set( 'Special-Header', 'Value' );
 
 		return $response;
-  }
+	}
 }
 ```
 
@@ -164,7 +164,7 @@ to view a page.
 use Mantle\Facade\Route;
 
 Route::get('/route-to-protect', function() {
-  // The current user can 'manage_options'.
+	// The current user can 'manage_options'.
 } )->middleware( 'can:manage_options', Example_Middleware::class );
 ```
 
@@ -215,14 +215,14 @@ use Mantle\Framework\Providers\Route_Service_Provider as Service_Provider;
  * Route Service Provider
  */
 class Route_Service_Provider extends Service_Provider {
-  /**
-   * Bootstrap any application services.
-   */
-  public function boot() {
-    parent::boot();
+	/**
+	 * Bootstrap any application services.
+	 */
+	public function boot() {
+		parent::boot();
 
-    $this->allow_pass_through_requests();
-  }
+		$this->allow_pass_through_requests();
+	}
 }
 ```
 
@@ -308,7 +308,7 @@ method on the model:
  * @return string
  */
 public function get_route_key_name(): string {
-  return 'slug';
+	return 'slug';
 }
 ```
 
