@@ -8,5 +8,6 @@
   "search.exclude": {
     "**/.docusaurus/*": true,
     "**/build/*": true
-  }
+  },
+  "markdown.editor.filePaste.enabled": false
 }

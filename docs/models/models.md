@@ -22,7 +22,7 @@ User | `Mantle\Database\Model\User`
 Models can be generated through the command:
 
 ```bash
-wp mantle make:model <name> --model_type=<model_type> [--registrable] [--object_name] [--label_singular] [--label_plural]
+bin/mantle make:model <name> --model_type=<model_type> [--registrable] [--object_name] [--label_singular] [--label_plural]
 ```
 
 ## Defining a Model
@@ -84,7 +84,7 @@ class Example_Model extends Term {
 ## Interacting with Models
 
 Setting/updating data with a model can be done using the direct attribute name
-you wish to update or a handy alias (see Core Object).
+you wish to update or a handy alias (see [Core Object](#core-object)).
 
 ```php
 $post->content = 'Content to set.';
@@ -280,7 +280,8 @@ Method | Event
 
 A scope provides a way to add a constraint to a model's query easily.
 
-### Global Scope.
+### Global Scope
+
 Using a global scope, a model can become a subset of a parent model. For example, a
 `User` model can be used to define a user object while an `Admin` model can
 describe an admin user. Underneath they are both user objects but the `Admin`
@@ -354,6 +355,7 @@ class Post extends Base_Post {
 ```
 
 #### Using a Local Scope
+
 To use a local scope, you may call the scope methods with querying the model
 without the `scope` prefix. Scopes can be chained in the query, too.
 
@@ -361,4 +363,25 @@ without the `scope` prefix. Scopes can be chained in the query, too.
 Posts::active()->get();
 
 Posts::ofType( 'type-to-query' )->get();
+```
+
+## Creating a Dynamic Model
+
+A dynamic model is a model that is not defined in the application but is
+created on the fly. This is useful for creating a model for a post type that
+isn't defined in the application.
+
+Once the dynamic model is created, it can be used like any other model in the
+application.
+
+```php
+use Mantle\Database\Model\Post;
+
+$model = Post::for( 'my-custom-post-type' );
+
+// Create a new instance of the model.
+$instance = $model->create( [ 'title' => 'Example Title' ] );
+
+// Query the model.
+$results = $model->where( 'post_status', 'publish' )->get();
 ```

@@ -5,17 +5,39 @@ run in the background instead of blocking the user's request. By default, the
 queue is powered through the WordPress cron but is abstracted so that it could
 add additional providers in the future.
 
-The queue configuration is stored in `config/queue.php` where you can configure
-the default provider and additional parameters such as how long the cron should
-wait before running the next batch of queued tasks.
-
 ## Creating Jobs
 
 Application jobs are stored in the `apps/jobs` directory. Jobs can be generated
 through the `wp-cli` command:
 
 ```bash
-wp mantle make:job Example_Job
+bin/mantle make:job Example_Job
+```
+
+That will generate a new job class in `app/jobs/class-example-job.php` that
+looks like this:
+
+```php
+namespace App\Jobs;
+
+use Mantle\Contracts\Queue\Can_Queue;
+use Mantle\Contracts\Queue\Job;
+use Mantle\Queue\Dispatchable;
+use Mantle\Queue\Queueable;
+
+/**
+ * Example Job that can be queued.
+ */
+class Example_Job implements Job, Can_Queue {
+	use Queueable, Dispatchable;
+
+	/**
+	 * Handle the job.
+	 */
+	public function handle() {
+		// Handle it here!
+	}
+}
 ```
 
 ## Dispatching Jobs
@@ -26,7 +48,54 @@ application.
 ```php
 use App\Jobs\Example_Job;
 
-Example_Job::dispatch( $post_data_to_include );
+Example_Job::dispatch( $arguments_to_pass_to_constructor );
+```
+
+Any arguments passed to the `dispatch` method will be passed to the job's
+constructor. The job will be serialized and stored in the database until it is
+processed.
+
+If you need any application services in your job, you can typehint them in the
+handle method and they will be injected automatically:
+
+```php
+namespace App\Jobs;
+
+use App\Models\Post;
+use App\Services\Example_Service;
+use Mantle\Contracts\Queue\Can_Queue;
+use Mantle\Contracts\Queue\Job;
+use Mantle\Queue\Dispatchable;
+use Mantle\Queue\Queueable;
+
+/**
+ * Example Job that can be queued.
+ */
+class Example_Job implements Job, Can_Queue {
+	use Queueable, Dispatchable;
+
+	/**
+	 * Create a new job instance.
+	 *
+	 * @param Post $post
+	 */
+	public function __construct( public Post $post ) {}
+
+	/**
+	 * Handle the job.
+	 */
+	public function handle( Example_Service $service ) {
+		// Service is automatically injected at runtime.
+	}
+}
+```
+
+The above job can be dispatched like this:
+
+```php
+$post = App\Models\Post::find( 1 );
+
+Example_Job::dispatch( $post );
 ```
 
 ### Dispatching Closures

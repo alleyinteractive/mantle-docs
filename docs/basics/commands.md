@@ -1,42 +1,38 @@
-# Commands
+# Console Command
 
 ## Introduction
-Mantle provides a `wp-cli` integration to help make writing commands easier.
-This will guide you through creating a command and interacting with input.
 
-## Writing Commands
-Commands live in the `app/console` directory.
+Mantle provides a console application that is integrated with WP-CLI to make
+running commands easier. Out of the box, Mantle includes a `bin/mantle` console
+application that can do a number of things without connecting to WordPress or
+the database.
 
-### Generating a Command
 ```bash
-wp mantle make:command <name>
+bin/mantle <command>
 ```
 
-### Registering a Command
-Commands can be added to the `app/console/class-kernel.php` file in your
-application.
+The `bin/mantle` application allows you to generate classes, models, etc. as
+well as discover the current state of the application. For example, you can run
+`bin/mantle model:discover` to automatically register all the models in the
+application without needing to install WordPress. This is incredibly useful in a
+CI/CD environment where you want to prepare the application for deployment.
 
-```php
-namespace App\Console;
+The application also integrates with WP-CLI. Running `wp mantle <command>` will
+provide an even larger set of commands that can be run through the application
+and interact with WordPress/the database.
 
-use Mantle\Console\Kernel as Console_Kernel;
+### Generating a Command
 
-/**
- * Application Console Kernel
- */
-class Kernel extends Console_Kernel {
-  /**
-   * The commands provided by the application.
-   *
-   * @var array
-   */
-  protected $commands = [
-    Command_To_Register::class,
-  ];
-}
+To generate a new command, you may use the `make:command` command. This command
+will create a new command class in the `app/console` directory. The command will
+also be automatically discovered and registered by the application.
+
+```bash
+bin/mantle make:command <name>
 ```
 
 ### Command Structure
+
 After generating a command, you should verify the `$name` and `$synopsis`
 properties which determine the name and arguments/flags for the command,
 respectively. The `$synopsis` property is the `wp-cli` definition of the
@@ -60,43 +56,14 @@ class Example_Command extends Command {
    *
    * @var string
    */
-  protected $name = 'example_command';
-
-  /**
-   * Command Short Description.
-   *
-   * @var string
-   */
-  protected $short_description = '';
-
-  /**
-   * Command Description.
-   *
-   * @var string
-   */
-  protected $description = '';
-
-  /**
-   * Command synopsis.
-   *
-   * Supports registering command arguments in a string or array format.
-   * For example:
-   *
-   *     <argument> --example-flag
-   *
-   * @var string|array
-   */
-  protected $synopsis = '';
+  protected $signature = 'example:my-command {argument} [--flag]';
 
   /**
    * Callback for the command.
-   *
-   * @param array $args Command Arguments.
-   * @param array $assoc_args Command flags.
    */
-  public function handle( array $args, array $assoc_args ) {
+  public function handle() {
     // Write to the console.
-    $this->log( 'Message to write.' );
+    $this->line( 'Message to write.' );
 
     // Error to the console.
     $this->error( 'Error message but does not exit without the second argument being true' );
@@ -113,3 +80,43 @@ class Example_Command extends Command {
   }
 }
 ```
+
+## Registering a Command
+
+Once generated, the commands should automatically be registered by the
+application. If for some reason that doesn't work or you wish to manually
+register commands, you can add them to the `app/console/class-kernel.php` file
+in your application:
+
+```php
+namespace App\Console;
+
+use Mantle\Console\Kernel as Console_Kernel;
+
+/**
+ * Application Console Kernel
+ */
+class Kernel extends Console_Kernel {
+  /**
+   * The commands provided by the application.
+   *
+   * @var array
+   */
+  protected $commands = [
+    Command_To_Register::class,
+  ];
+}
+```
+
+## Command Arguments / Options
+
+Arguments and options can be included in the signature of the command. Arguments
+are required and options are optional. The signature is defined as a string with
+the following format:
+
+```
+{argument} [--option]
+```
+
+The arguments/options can be retrieved from the command's
+`argument( $key )`/`option( $key )` methods.

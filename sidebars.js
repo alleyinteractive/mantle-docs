@@ -38,6 +38,7 @@ const sidebars = {
         id: 'architecture/architecture',
       },
       items: [
+        'architecture/bootloader',
         'architecture/architecture',
         'architecture/configuration',
       ],
@@ -110,6 +111,7 @@ const sidebars = {
         'testing/deprecation-incorrect-usage',
         'testing/hooks',
         'testing/remote-requests',
+        'testing/snapshot-testing',
         'testing/traits',
         'testing/users',
         'testing/cron',

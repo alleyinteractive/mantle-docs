@@ -7,9 +7,12 @@ assertive formats.
 
 ## Declaring Hook Usage
 
-Inside your unit test declare the hooks you expect to fire, optionally
-specifying the amount of times and the return values. Then run the subsequent
-function you wish to unit test and Mantle will handle the assertions.
+Inside your unit test you can declare the hook(s) you expect to fire and
+optionally specifying the amount of times and their return values. This is done
+via the `$this->expectApplied()` method.
+
+Once declared, you can then run the subsequent function that will apply the
+WordPress filter and Mantle will handle the assertions.
 
 ```php
 $this->expectApplied( 'action_to_check' )
@@ -23,10 +26,11 @@ Define how many times a hook was applied. You can specify the number of times
 directly with `times()` or use `once()`, `twice()`, or `never()` instead.
 
 ```php
+$this->expectApplied( 'action_to_check' )->once();
 $this->expectApplied( 'action_to_check' )->twice();
+$this->expectApplied( 'action_to_check' )->never();
 
-do_action( 'action_to_check', 'value_to_check' );
-do_action( 'action_to_check', 'value_to_check' );
+// Perform the do_action() calls...
 ```
 
 ### Defining Arguments
@@ -48,10 +52,18 @@ apply_filters( 'filter_to_check', 'value_to_check' );
 Define the expected return value for the filter. Return values can be specified
 using `andReturn(mixed $value)` or with some helper functions.
 
-* `andReturn(mixed $value)`: Returns with the value of `$value`.
-* `andReturnNull()`: Returns `null`.
-* `andReturnFalse()`: Returns `false.`
-* `andReturnTrue()`: Returns `true`.
+- `andReturn(mixed $value)`: Returns with the value of `$value`.
+- `andReturnNull()`: Returns `null`.
+- `andReturnTrue()`: Returns `true`.
+- `andReturnTruthy()`: Returns `true` if the value is truthy.
+- `andReturnFalse()`: Returns `false.`
+- `andReturnFalsy()`: Returns `false` if the value is falsy.
+- `andReturnEmpty()`: Returns `true` if the value is empty.
+- `andReturnNotEmpty()`: Returns `false` if the value is not empty.
+- `andReturnArray()`: Returns an array.
+- `andReturnInstanceOf( string $class )`: Returns an instance of `$class`.
+- `andReturnString()`: Returns a string.
+- `andReturnInteger()`: Returns an integer.
 
 ```php
 $this->expectApplied( 'falsey_filter_to_check' )
@@ -65,9 +77,13 @@ apply_filters( 'falsey_filter_to_check', true );
 ## Asserting Hook Usage
 
 Hooks can be asserted against after they have already been applied. This can be
-used interchangeably. No setup or declarations are required.
+done using the `$this->assertHookApplied()` method and can be used
+interchangeably with `expectApplied()`.
 
 ```php
+// Assert that 'the_hook' was applied twice.
 $this->assertHookApplied( 'the_hook', 2 );
-$this->assertHookNotApplied( 'the_hook_that_didnt_run' );
+
+// Assert that 'my_custom_hook' was not applied.
+$this->assertHookNotApplied( 'my_custom_hook' );
 ```

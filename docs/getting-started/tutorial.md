@@ -77,7 +77,7 @@ return [
 ## Creating a Factory
 
 Instead of having to open up `wp-admin` and create data yourself, we can use
-[Mantle's Factories](../models/model-factory.md) to create data for us. Open
+[Mantle's Factories](/docs/models/model-factory) to create data for us. Open
 up your terminal and use the `make:factory` command:
 
 ```bash
@@ -162,7 +162,7 @@ class Database_Seeder extends Seeder {
 	 * Run the seeder.
 	 */
 	public function run() {
-		factory( Project::class, 10 )->create();
+		Project::factory()->create_many( 10 );
 	}
 }
 ```

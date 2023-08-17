@@ -25,10 +25,7 @@ for your application.
  * Run the database seeds.
  */
 public function run() {
-    factory( \App\User::class, 50 )
-      ->create()
-      ->each
-      ->save();
+    \App\Models\User::factory()->create_many( 50 );
 }
 ```
 

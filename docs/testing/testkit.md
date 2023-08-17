@@ -69,12 +69,12 @@ Mantle will already be loaded from PHPUnit.
 \Mantle\Testing\manager()
 	->before( ... )
 	->after( ... )
+	->theme( 'twentytwenty' )
 	->loaded( function() {
 		// The loaded callback is fired on 'wp_loaded'.
 		// You can use this callback to load the main file of a plugin, theme, etc.
 
-		// Setup any dependencies once WordPress is loaded, such as themes.
-		switch_theme( 'twentytwenty' );
+		// Setup any dependencies once WordPress is loaded...
 	}
 );
 ```
