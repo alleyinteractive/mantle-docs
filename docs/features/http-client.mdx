@@ -442,7 +442,7 @@ $response = $client->post( '/example-endpoint', [
 ] );
 ```
 
-### Middleware
+## Middleware
 
 Requests can have middleware applied to them to allow the request and the
 response to be modified. One use case is to calculate a checksum header based on
@@ -462,7 +462,7 @@ $client = Http_Client::create()
   } );
 ```
 
-### Concurrent Requests
+## Concurrent Requests
 
 Sometimes, you may wish to make multiple HTTP requests concurrently. In other
 words, you want several requests to be dispatched at the same time instead of
