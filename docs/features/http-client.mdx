@@ -415,6 +415,8 @@ returned by WordPress. No exceptions are thrown by default.
 Optionally, you can opt for an exception to be thrown if an error occurs:
 
 ```php
+use Mantle\Facade\Http;
+
 try {
   Http::throw_exception()->post(...);
 } catch ( \Mantle\Http_Client\Http_Client_Exception $e ) {
@@ -430,9 +432,9 @@ include built-in authentication, you could create a reusable API client by
 returning `Mantle\Http_Client\Http_Client`:
 
 ```php
-use Mantle\Http_Client\Http_Client;
+use Mantle\Http_Client\Factory;
 
-$client = Http_Client::create()
+$client = Factory::create()
   ->base_url( 'https://httpbin.org' )
   ->with_token( '<token>' );
 
@@ -450,10 +452,9 @@ body of the request and pass that along with the request:
 
 ```php
 use Closure;
-use Mantle\Http_Client\Http_Client;
+use Mantle\Http_Client\Factory;
 
-$client = Http_Client::create()
-  ->base_url( 'https://api.github.com' )
+$client = Factory::base_url( 'https://api.github.com' )
   ->middleware( function ( Http_Client $client, Closure $next ) {
     $client->with_header( 'Authorization', md5( $client->url() . $client->body() ) );
 
