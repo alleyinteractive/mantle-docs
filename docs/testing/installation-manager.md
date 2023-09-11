@@ -126,7 +126,7 @@ Mantle\Testing\manager()
 	->install();
 ```
 
-If your project does include a `mu-plugin` folder, it will be ignored and will
+If your project does include a `mu-plugins` folder, it will be ignored and will
 not be rsync'd to the testing installation.
 
 ### Including Memcache Object Cache Drop-In
