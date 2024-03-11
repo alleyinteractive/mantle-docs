@@ -48,14 +48,19 @@ protected $listen = [
 
 Events can be manually written or generated for you:
 
-	wp mantle make:event
+```
+wp mantle make:event
+```
 
 Listeners can also be automatically generated for you:
 
-	wp mantle make:listener <name> [<event>]
+```
+wp mantle make:listener <name> [<event>]
+```
 
 The `make:listener` command supports passing a specific event to automatically
 listen for.
+
 ### Manually Registering Events
 
 Event listeners can be registered via the `Event_Service_Provider` or by
@@ -323,4 +328,6 @@ cache of all files on the site. By default Mantle will ignore all `test` and
 `vendor/` files. The default search path is the `wp-content/` folder of your
 installation.
 
-	wp mantle hook-usage <hook> [--search-path] [--format]
+```
+wp mantle hook-usage <hook> [--search-path] [--format]
+```
