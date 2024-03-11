@@ -18,6 +18,7 @@ Routes are defined in the `routes/web.php` file by default and controlled by
 application's `Route_Service_Provider` located in the application
 
 ## Registering Routes
+
 Routes are registered for the application in the `routes/` folder of the
 application. Underneath all of it, routes are a wrapper on-top of [Symfony
 routing](https://symfony.com/doc/current/routing.html) with a fluent-interface
@@ -33,6 +34,7 @@ Route::get( '/endpoint', function() {
 ```
 
 ### Controller Routes
+
 You can use a controller to handle routes as well. In the future, resource and
 automatic controller routing will be added.
 
@@ -81,6 +83,7 @@ wp mantle make:controller --invokable
 ```
 
 ### Named Routes
+
 Naming a route provides an easy-to-reference way of generating URLs for a
 route.
 
@@ -115,6 +118,7 @@ browser. Think of it like a WordPress filter on top of the request and the end
 response.
 
 #### Example Middleware
+
 ```php
 /**
  * Example_Middleware class file.
@@ -275,11 +279,13 @@ class Product extends Post {
 
 
 ## Route Model Binding
+
 Routes support model binding that will automatically resolve a model based on a
 route parameter and a type-hint on the route method. This supports implicit and
 explicit binding from a service provider.
 
 ### Implicit Binding
+
 Mantle will automatically resolve models that are type-hinted for the route's
 method. For example:
 
@@ -313,6 +319,7 @@ public function get_route_key_name(): string {
 ```
 
 ### Explicit Binding
+
 To register an explicit binding, use the router's model method to specify the
 class for a given parameter. You should define your explicit model bindings in
 the boot method of the `Route_Service_Provider` class:
@@ -325,7 +332,7 @@ public function boot() {
 }
 ```
 
-Next, define a route that contains a {user} parameter:
+Next, define a route that contains a `{user}` parameter:
 
 ```php
 Route::get( 'profile/{user}', function ( App\User $user ) {
@@ -333,7 +340,7 @@ Route::get( 'profile/{user}', function ( App\User $user ) {
 } );
 ```
 
-Since we have bound all {user} parameters to the `App\User` model, a `User`
+Since we have bound all `{user}` parameters to the `App\User` model, a `User`
 instance will be injected into the route. So, for example, a request to
 `profile/1` will inject the `User` instance from the database which has an ID of
 `1`.
@@ -417,6 +424,7 @@ locations. Mantle support automatically register the current theme and parent
 theme as view locations.
 
 ##### Default View Locations
+
 - Active Theme
 - Parent of Active Theme
 - `{root of mantle site}/views`
@@ -424,6 +432,7 @@ theme as view locations.
 For more information about views, read the 'Templating' documentation.
 
 ### Redirect to Endpoint and Route
+
 Redirects can be generated using the `response()` helper.
 
 ```php
@@ -443,11 +452,13 @@ Route::get( '/oh-no', function() {
 ```
 
 ## REST API Routing
+
 Mantle supports registering to the WordPress REST API directly. REST API Routes
 are registered underneath with native core functions and does not use the
 Symfony-based routing that web requests pass through.
 
 ### Registering Routes
+
 Registering a REST API route requires a different function call if you do not
 wish to use a closure.
 

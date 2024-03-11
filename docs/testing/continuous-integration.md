@@ -9,8 +9,7 @@ GitHub Actions or Buddy.
 
 :::tip Are you transitioning an existing site to Mantle's Test Framework?
 
-Be sure to checkout [Transitioning to Test Framework using Mantle
-Testkit](./testkit.md) for more information.
+Be sure to checkout [Transitioning to Test Framework using Mantle Testkit](./testkit.md) for more information.
 :::
 
 ## Differences from Core Tests

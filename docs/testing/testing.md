@@ -41,8 +41,7 @@ composer phpunit
 :::tip Interested in using the testing framework outside of a Mantle application?
 
 [Mantle Testkit](./testkit.md) is a standalone package that can be used to run
-Mantle's testing framework in any WordPress project. [Learn more about Mantle
-Testkit](./testkit.md).
+Mantle's testing framework in any WordPress project. [Learn more about Mantle Testkit](./testkit.md).
 :::
 
 ## Creating Tests
@@ -143,9 +142,8 @@ directory to run tests against.
 Mantle can rsync your project to within a working WordPress installation without needing to run any
 rsync command yourself. This is useful for themes or more integrated projects
 that need to run tests against a fully integrated WordPress installation. Within
-your `tests/bootstrap.php` file, you can use the [Installation
-Manager](./installation-manager.md) to rsync your project to the WordPress
-installation:
+your `tests/bootstrap.php` file, you can use the [Installation Manager](./installation-manager.md)
+to rsync your project to the WordPress installation:
 
 ```php
 // Rsync a plugin to live as a plugin within a WordPress installation.

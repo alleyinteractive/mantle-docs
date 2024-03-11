@@ -4,13 +4,13 @@ title: Testkit
 
 # Mantle Testkit
 
-Mantle Testkit is a standalone package for using the [Mantle Testing
-Framework](./testing.md) on non-Mantle based projects. That means that you can
-use the great features of the Mantle Testing Framework on your existing
-projects/plugins/themes without needing to do any more refactoring.
+Mantle Testkit is a standalone package for using the
+[Mantle Testing Framework](./testing.md) on non-Mantle based projects.
+That means that you can use the great features of the Mantle Testing Framework
+on your existing projects/plugins/themes without needing to do any more refactoring.
 
-This document acts as a guide to transitioning your project to using [Mantle
-Testkit](./testkit.md) for use of the Mantle Testing Library outside of Mantle.
+This document acts as a guide to transitioning your project to using
+[Mantle Testkit](./testkit.md) for use of the Mantle Testing Library outside of Mantle.
 
 :::info
 Testkit should only be used on projects that do not use or define a Mantle

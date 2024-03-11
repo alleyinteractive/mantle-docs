@@ -27,9 +27,10 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "^3.0.0",
-    "@docusaurus/types": "^3.0.0",
-    "typescript": "^5.0.0"
+    "@docusaurus/module-type-aliases": "^3.1.1",
+    "@docusaurus/tsconfig": "^3.1.1",
+    "@docusaurus/types": "^3.1.1",
+    "typescript": "^5.4.2"
   },
   "browserslist": {
     "production": [
@@ -44,6 +45,6 @@
     ]
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   }
 }
