@@ -1,11 +1,10 @@
-// @ts-check
-// Note: type annotations allow type checking and IDEs autocompletion
+import type {Config} from '@docusaurus/types';
 
-const lightCodeTheme = require('prism-react-renderer/themes/github');
-const darkCodeTheme = require('prism-react-renderer/themes/dracula');
+const {themes} = require('prism-react-renderer');
+const lightTheme = themes.github;
+const darkTheme = themes.dracula;
 
-/** @type {import('@docusaurus/types').Config} */
-const config = {
+const config: Config = {
   title: 'Mantle by Alley',
   tagline: 'Mantle is a framework for building large, robust websites and applications with WordPress',
   url: 'https://mantle.alley.com',
@@ -88,6 +87,10 @@ const config = {
             label: 'Docs',
           },
           {
+            type: 'docsVersionDropdown',
+            position: 'right',
+          },
+          {
             href: 'https://github.com/alleyinteractive/mantle-docs',
             label: 'GitHub',
             position: 'right',
@@ -100,8 +103,8 @@ const config = {
       },
       prism: {
         additionalLanguages: ['php'],
-        theme: lightCodeTheme,
-        darkTheme: darkCodeTheme,
+        theme: lightTheme,
+        darkTheme: darkTheme,
       },
     }),
 };

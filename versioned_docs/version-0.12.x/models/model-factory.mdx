@@ -1,0 +1,644 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import CodeBlock from '@theme/CodeBlock';
+
+# Model Factory
+
+## Introduction
+
+Models can use factories to automatically generate data for your application.
+They're incredibly useful to get 'real' data in place without the bloat of a
+database dump.
+
+Out of the box, a model does not need a factory defined. It will fallback to the
+core factory for the respective model type. For example, a post model will
+fallback to the Mantle default post factory. However, if you want to define a
+factory for a model, you can do so. See
+[Defining Custom Factory for a Model](#defining-custom-factory-for-a-model) for
+more information.
+
+## Creating Models Using Factories
+
+You can use the `factory()` method on a model to retrieve the factory for the
+respective model and start creating models.
+
+```php
+use App\Models\Post;
+
+Post::factory()->create(); // int
+```
+
+### Create a Single Instance
+
+Create a model from the factory definition and optionally override it with your
+own arguments with `create()`. Returns the ID of the created model.
+
+```php
+use App\Models\Post;
+
+Post::factory()->create(); // int
+
+Post::factory()->create(
+  [
+    'post_title' => 'My Custom Title',
+  ]
+);
+```
+
+
+### Create Multiple Instances
+
+Create multiple models from the factory definition and optionally override it
+with your own arguments using `create_many()`. Returns an array of IDs of the
+created models.
+
+```php
+use App\Models\Post;
+
+Post::factory()->create_many( 3 ); // int[]
+
+Post::factory()->create_many(
+  3,
+  [
+    'post_title' => 'My Custom Title',
+  ]
+);
+```
+
+### Create and Get a Single Instance
+
+Create a model from the factory definition and optionally override it with your
+own arguments using `create_and_get()`. Returns the created model.
+
+```php
+use App\Models\Post;
+
+Post::factory()->create_and_get(); // \App\Models\Post
+
+Post::factory()->create_and_get(
+  [
+    'post_title' => 'My Custom Title',
+  ]
+);
+```
+
+:::tip The return value of `create_and_get()` depends on how the factory is used
+
+`create_and_get()` will return either the model instance or the underlying "core
+object" (WP_Post/WP_User/WP_Term/etc.) depending on the configuration of the
+factory. When a factory is used via the `Model::factory()` method,
+`create_and_get()` will return the model instance. When a factory is used via
+the `static::factory()->post` method in unit tests, `create_and_get()` will
+return the underlying "core object".
+:::
+
+## Defining Custom Factory for a Model
+
+Out of the box, any model that does not have a factory defined will fallback to
+the core factory for the respective model type.
+
+| Model Type | Core Factory |
+| ---------- | ------------ |
+| Attachment | Mantle\Database\Factory\Attachment_Factory |
+| Site       | Mantle\Database\Factory\Blog_Factory |
+| Comment    | Mantle\Database\Factory\Comment_Factory |
+| Network    | Mantle\Database\Factory\Network_Factory |
+| Post       | Mantle\Database\Factory\Post_Factory |
+| Term       | Mantle\Database\Factory\Term_Factory |
+| User       | Mantle\Database\Factory\User_Factory |
+
+These factories provide a basic definition for the model. If you want to define
+a custom factory for a model, you can do so by creating a custom factory for
+your model.
+
+### Generating a Factory
+
+You can create a  by creating a factory in the
+`database/factories` folder. The expected factory name is:
+
+    App\Database\Factories\{Model_Name}_Factory
+
+This can be generated using the `make:factory` command:
+
+```bash
+bin/mantle make:factory {name} {--model_type=} {--object_name=}
+```
+
+### Using Custom Model Factory
+
+Once a factory is generated, you can modify the `definition()` method of the
+factory to define the data that should be generated. The `definition()` method
+should return an array of data that will be used to create the model.
+
+```php
+namespace App\Database\Factory;
+
+use App\Models\Example_Post_Model;
+
+/**
+ * Example Post Model Factory
+ *
+ * @extends \Mantle\Database\Factory\Post_Factory<\App\Models\Example_Post_Model>
+ */
+class Example_Post_Model_Factory extends \Mantle\Database\Factory\Post_Factory {
+  /**
+	 * Model to use when creating objects.
+	 *
+	 * @var class-string
+	 */
+	protected string $model = Example_Post_Model::class;
+
+	/**
+	 * Define the model's default state.
+	 *
+	 * @return array
+	 */
+	public function definition(): array {
+		return [
+			'post_title'   => $this->faker->sentence,
+			'post_content' => $this->faker->paragraph,
+			'post_status'  => 'publish',
+			'post_type'    => 'post',
+		];
+	}
+}
+```
+
+#### Generating Blocks
+
+All factories have an instance of [Faker](https://fakerphp.github.io/) available
+to them on the `$this->faker` property. This can be used to generate blocks
+using the `block()` method. You can optionally include attributes and content.
+
+```php
+$this->faker->block(
+	'namespace/block',
+	'The Content',
+	[
+		'exampleAttr' => true,
+		'another' => false,
+	]
+);
+```
+
+Which would produce this:
+
+```html
+<!-- wp:namespace/block {"exampleAttr":true,"another":false} -->
+The Content
+<!-- /wp:namespace/block -->
+```
+
+Faker also supports generating paragraph blocks using the
+`paragraph_block()`/`paragraph_blocks()` methods.
+
+```php
+$this->faker->paragraph_block( int $sentences = 3 ): string
+$this->faker->paragraph_blocks( int $count = 3, bool $as_text = true ): string|array
+```
+
+### Factory States
+
+You can define states for a factory by defining a method on the factory and use
+the `state()` method to define the state. The `state()` method accepts an array
+of data to use when creating the model.
+
+```php
+use Mantle\Database\Factory\Post_Factory;
+
+public function my_custom_state(): Post_Factory {
+  return $this->state(
+    [
+      'post_title' => 'My Custom Title',
+    ]
+  );
+}
+```
+
+You can then use the state when creating a model:
+
+```php
+$example_post = Example_Post_Model::factory()->my_custom_state()->create();
+```
+
+## Generating Content
+
+See [Creating Models Using Factories](#creating-models-using-factories) for more
+information about the `create()`/`create_many()`/`create_and_get()` methods.
+
+<Tabs>
+  <TabItem value="model-factory" label="Model Factory" default>
+
+```php
+use App\Models\Post;
+use App\Models\Category;
+
+$post_id = Post::factory()
+  ->with_meta( [ 'key' => 'value' ] )
+  ->create();
+
+$term_id = Category::factory()->tag
+  ->with_meta( [ 'key' => 'value' ] )
+  ->create();
+
+// ...
+```
+  </TabItem>
+  <TabItem value="testing" label="Standalone Testing Factory">
+
+```php
+use App\Models\Post;
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class Test_Case extends Testkit_Test_Case {
+
+  public function test_factory() {
+    $post_id = static::factory()->post
+      ->with_meta( [ 'key' => 'value' ] )
+      ->create();
+
+    // ...
+
+    $term_id = static::factory()->tag->with_meta(
+      [
+        'key' => 'value',
+      ]
+    )->create();
+
+    // ...
+  }
+}
+```
+  </TabItem>
+</Tabs>
+
+### Generating Posts/Terms with Meta
+
+Posts and terms can be generated with meta by calling the `with_meta` method on
+the factory:
+
+<Tabs>
+  <TabItem value="model-factory" label="Model Factory" default>
+
+```php
+use App\Models\Post;
+use App\Models\Category;
+
+$post_id = Post::factory()
+  ->with_meta( [ 'key' => 'value' ] )
+  ->create();
+
+$term_id = Category::factory()->tag
+  ->with_meta( [ 'key' => 'value' ] )
+  ->create();
+
+// ...
+```
+  </TabItem>
+  <TabItem value="testing" label="Standalone Testing Factory">
+
+```php
+use App\Models\Post;
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class Test_Case extends Testkit_Test_Case {
+
+  public function test_factory() {
+    $post_id = static::factory()->post
+      ->with_meta( [ 'key' => 'value' ] )
+      ->create();
+
+    // ...
+
+    $term_id = static::factory()->tag->with_meta(
+      [
+        'key' => 'value',
+      ]
+    )->create();
+
+    // ...
+  }
+}
+```
+  </TabItem>
+</Tabs>
+
+
+### Generating Posts with Terms
+
+Posts can be generated with terms by calling the `with_terms()` method on the
+factory:
+
+<Tabs>
+  <TabItem value="model-factory" label="Model Factory" default>
+
+```php
+use App\Models\Post;
+use App\Models\Tag;
+
+$tag_id = Tag::factory()->create();
+
+$post_id = Post::factory()->with_terms(
+  // Pass in taxonomy => slug pairs
+  [
+    'category' => [
+      'category_a',
+      'category_b',
+    ],
+  ],
+
+  // Pass in a single taxonomy => slug pair.
+  [
+    'post_tag' => 'single-tag',
+  ],
+
+  // Pass in term ID(s).
+  $tag_id,
+
+  // Or pass in term objects.
+  Tag::factory()->create_and_get(),
+)->create();
+
+// ...
+```
+  </TabItem>
+  <TabItem value="testing" label="Standalone Testing Factory">
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class Test_Case extends Testkit_Test_Case {
+
+  public function test_factory() {
+    $tag_id = static::factory()->tag->create();
+
+    $post_id = static::factory()->post->with_terms(
+      // Pass in taxonomy => slug pairs
+      [
+        'category' => [
+          'category_a',
+          'category_b',
+        ],
+      ],
+
+      // Pass in a single taxonomy => slug pair.
+      [
+        'post_tag' => 'single-tag',
+      ],
+
+      // Pass in term ID(s).
+      $tag_id,
+
+      // Or pass in term objects.
+      static::factory()->tag->create_and_get(),
+    )->create();
+
+    // ...
+  }
+}
+```
+  </TabItem>
+</Tabs>
+
+### Generating Terms with Posts
+
+Terms can be generated with posts by calling the `with_posts()` method on the
+term factory:
+
+<Tabs>
+  <TabItem value="model-factory" label="Model Factory" default>
+
+```php
+use App\Models\Post;
+use App\Models\Tag;
+
+$post_id = Post::factory()->create();
+
+$term_id = Tag::factory()->with_posts(
+  // Pass in post ID(s).
+  $post_id,
+
+  // Or pass in post objects.
+  Post::factory()->create_and_get(),
+)->create();
+
+// ...
+```
+  </TabItem>
+  <TabItem value="testing" label="Standalone Testing Factory">
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class Test_Case extends Testkit_Test_Case {
+
+  public function test_factory() {
+    $post_id = static::factory()->post->create();
+
+    $term_id = static::factory()->tag->with_posts(
+      // Pass in post ID(s).
+      $post_id,
+
+      // Or pass in post objects.
+      static::factory()->post->create_and_get(),
+    )->create();
+
+    // ...
+  }
+}
+```
+  </TabItem>
+</Tabs>
+
+### Generating Post with Thumbnail
+
+Posts can be generated with a thumbnail by calling the `with_thumbnail` method
+on the post factory:
+
+<Tabs>
+  <TabItem value="model-factory" label="Model Factory" default>
+
+```php
+use App\Models\Post;
+
+Post::factory()->with_thumbnail()->create_and_get();
+```
+  </TabItem>
+  <TabItem value="testing" label="Standalone Testing Factory">
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class Test_Case extends Testkit_Test_Case {
+
+  public function test_factory() {
+    $post = static::factory()->post->with_thumbnail()->create_and_get();
+
+    // ...
+  }
+}
+```
+  </TabItem>
+</Tabs>
+
+### Generating Posts with a Custom Post Type
+
+Posts can be generated with a custom post type by calling the `with_post_type()`
+method on the factory:
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class Test_Case extends Testkit_Test_Case {
+
+  public function test_factory() {
+    $post_id = static::factory()->post->with_post_type( 'custom_post_type' )->create();
+  }
+}
+```
+
+### Generating an Ordered Set of Posts
+
+Mantle includes a helper to create an ordered set of posts that are evenly
+spaced out. This can be useful when trying to populate a page with a set of
+posts and want to verify the order of the posts on the page.
+
+<Tabs>
+  <TabItem value="model-factory" label="Model Factory" default>
+
+```php
+use App\Models\Post;
+
+$post_ids = Post::factory()->create_ordered_set( 10 );
+```
+  </TabItem>
+  <TabItem value="testing" label="Standalone Testing Factory">
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class Test_Case extends Testkit_Test_Case {
+
+  public function test_create_ordered_set() {
+    $post_ids = static::factory()->post->create_ordered_set( 10 );
+  }
+}
+```
+  </TabItem>
+</Tabs>
+
+The above post IDs are evenly spaced an hour apart starting from a month ago.
+The start date and the separation can also be adjusted:
+
+```php
+use Carbon\Carbon;
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class Test_Case extends Testkit_Test_Case {
+
+  public function test_create_ordered_set() {
+    $post_ids = static::factory()->post->create_ordered_set(
+      10,
+      [],
+      // Start creating the post a year ago.
+      Carbon::now()->subYear(),
+      // Spread them out by a day.
+      DAY_IN_SECONDS,
+    );
+  }
+}
+```
+
+### Generating an Attachment with a Real Image File
+
+By default, all attachments generated by the factory won't have a "real" file
+included with it for performance. You can opt to create an attachment with a
+real image file by calling the `with_image()` method on the attachment factory:
+
+<Tabs>
+  <TabItem value="model-factory" label="Model Factory" default>
+
+```php
+use App\Models\Attachment;
+
+Attachment::factory()->with_image()->create_and_get();
+```
+
+You can also pass a local file to use as the image:
+
+```php
+use App\Models\Attachment;
+
+Attachment::factory()->with_image(
+  __DIR__ . '/image.jpg'
+)->create_and_get();
+```
+  </TabItem>
+  <TabItem value="testing" label="Standalone Testing Factory">
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class Test_Case extends Testkit_Test_Case {
+
+  public function test_factory() {
+    $attachment_id = static::factory()->attachment->with_image()->create();
+
+    // ...
+  }
+}
+```
+
+You can also pass a local file to use as the image:
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class Test_Case extends Testkit_Test_Case {
+
+  public function test_factory() {
+    $attachment_id = static::factory()->attachment->with_image(
+      __DIR__ . '/image.jpg'
+    )->create();
+
+    // ...
+  }
+}
+```
+  </TabItem>
+</Tabs>
+
+### Factory Middleware
+
+Mantle includes a middleware system that allows you to hook into the factory
+process and modify the data before it's saved to the database. This can be
+useful if you want to modify the data before it's saved or if you want to
+perform some action after the data is saved. The factory itself uses middleware
+to assign terms to posts after they're saved, set meta, and more.
+
+Middleware can be added to the factory by calling the `with_middleware()` method:
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class Test_Case extends Testkit_Test_Case {
+
+  protected $custom_factory;
+
+  protected function setUp(): void {
+    parent::setUp();
+
+    $this->custom_factory = static::factory()->post->with_middleware(
+      function ( array $args, \Closure $next ) {
+        // Modify the arguments (if needed).
+
+        // Call the next middleware
+        $result = $next( $args );
+
+        // Modify the result (if needed).
+
+        return $result;
+      }
+  }
+}
+```

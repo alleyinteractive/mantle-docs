@@ -119,16 +119,16 @@ const sidebars = {
         'testing/pest',
       ],
     },
-    {
-      type: 'category',
-      label: 'Packages',
-      link: {
-        type: 'generated-index',
-      },
-      items: [
-        'packages/browser-testing',
-      ],
-    },
+    // {
+    //   type: 'category',
+    //   label: 'Packages',
+    //   link: {
+    //     type: 'generated-index',
+    //   },
+    //   items: [
+    //     'packages/browser-testing',
+    //   ],
+    // },
   ],
 };
 

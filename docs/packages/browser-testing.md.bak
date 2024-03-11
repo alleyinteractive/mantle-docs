@@ -16,6 +16,11 @@ Dusk](https://github.com/laravel/dusk/graphs/contributors) and we are thankful
 to have it as apart of our framework!
 :::
 
+:::warning Experimental
+Browser Testing is currently not fully supported with Mantle and is considered
+experimental. We are working to make it fully supported in the future.
+:::
+
 ## Installation
 
 To get started, you should add the `alleyinteractive/mantle-browser-testing`
@@ -1651,30 +1656,32 @@ application might be to create a playlist. Instead of re-writing the logic to
 create a playlist in each test, you may define a `createPlaylist` method on a
 page class:
 
-    <?php
+```php
+<?php
 
-    namespace Tests\Browser\Pages;
+namespace Tests\Browser\Pages;
 
-    use Mantle\Browser_Testing\Browser;
+use Mantle\Browser_Testing\Browser;
 
-    class Dashboard extends Page
+class Dashboard extends Page
+{
+    // Other page methods...
+
+    /**
+     * Create a new playlist.
+     *
+     * @param  Browser  $browser
+     * @param  string  $name
+     * @return void
+     */
+    public function createPlaylist( Browser $browser, $name )
     {
-        // Other page methods...
-
-        /**
-         * Create a new playlist.
-         *
-         * @param  Browser  $browser
-         * @param  string  $name
-         * @return void
-         */
-        public function createPlaylist( Browser $browser, $name )
-        {
-            $browser->type('name', $name)
-                    ->check('share')
-                    ->press('Create Playlist');
-        }
+        $browser->type('name', $name)
+                ->check('share')
+                ->press('Create Playlist');
     }
+}
+```
 
 Once the method has been defined, you may use it within any test that utilizes
 the page. The browser instance will automatically be passed as the first
@@ -1703,75 +1710,76 @@ manually write the browser automation logic to select a date in dozens of tests
 throughout your test suite. Instead, we can define a component to represent
 the date picker, allowing us to encapsulate that logic within the component:
 
-    <?php
+```php
+<?php
 
-    namespace Tests\Browser\Components;
+namespace Tests\Browser\Components;
 
-    use Mantle\Browser_Testing\Browser;
-    use Mantle\Browser_Testing\Component as BaseComponent;
+use Mantle\Browser_Testing\Browser;
+use Mantle\Browser_Testing\Component as BaseComponent;
 
-    class DatePicker extends BaseComponent
+class DatePicker extends BaseComponent
+{
+    /**
+     * Get the root selector for the component.
+     *
+     * @return string
+     */
+    public function selector()
     {
-        /**
-         * Get the root selector for the component.
-         *
-         * @return string
-         */
-        public function selector()
-        {
-            return '.date-picker';
-        }
-
-        /**
-         * Assert that the browser page contains the component.
-         *
-         * @param  Browser  $browser
-         * @return void
-         */
-        public function assert( Browser $browser )
-        {
-            $browser->assertVisible($this->selector());
-        }
-
-        /**
-         * Get the element shortcuts for the component.
-         *
-         * @return array
-         */
-        public function elements()
-        {
-            return [
-                '@date-field' => 'input.datepicker-input',
-                '@year-list' => 'div > div.datepicker-years',
-                '@month-list' => 'div > div.datepicker-months',
-                '@day-list' => 'div > div.datepicker-days',
-            ];
-        }
-
-        /**
-         * Select the given date.
-         *
-         * @param  \Mantle\Brower_Testing\Browser  $browser
-         * @param  int  $year
-         * @param  int  $month
-         * @param  int  $day
-         * @return void
-         */
-        public function selectDate( Browser $browser, $year, $month, $day )
-        {
-            $browser->click('@date-field')
-                    ->within('@year-list', function ( $browser ) use ( $year ) {
-                        $browser->click( $year );
-                    })
-                    ->within('@month-list', function ( $browser ) use ( $month ) {
-                        $browser->click( $month );
-                    })
-                    ->within('@day-list', function ( $browser ) use ( $day ) {
-                        $browser->click( $day );
-                    } );
-        }
+        return '.date-picker';
     }
 
+    /**
+     * Assert that the browser page contains the component.
+     *
+     * @param  Browser  $browser
+     * @return void
+     */
+    public function assert( Browser $browser )
+    {
+        $browser->assertVisible($this->selector());
+    }
+
+    /**
+     * Get the element shortcuts for the component.
+     *
+     * @return array
+     */
+    public function elements()
+    {
+        return [
+            '@date-field' => 'input.datepicker-input',
+            '@year-list' => 'div > div.datepicker-years',
+            '@month-list' => 'div > div.datepicker-months',
+            '@day-list' => 'div > div.datepicker-days',
+        ];
+    }
+
+    /**
+     * Select the given date.
+     *
+     * @param  \Mantle\Brower_Testing\Browser  $browser
+     * @param  int  $year
+     * @param  int  $month
+     * @param  int  $day
+     * @return void
+     */
+    public function selectDate( Browser $browser, $year, $month, $day )
+    {
+        $browser->click('@date-field')
+                ->within('@year-list', function ( $browser ) use ( $year ) {
+                    $browser->click( $year );
+                })
+                ->within('@month-list', function ( $browser ) use ( $month ) {
+                    $browser->click( $month );
+                })
+                ->within('@day-list', function ( $browser ) use ( $day ) {
+                    $browser->click( $day );
+                } );
+    }
+}
+```
 
 ### Using Components
 
@@ -1779,30 +1787,31 @@ Once the component has been defined, we can easily select a date within the date
 picker from any test. And, if the logic necessary to select a date changes, we
 only need to update the component:
 
-    <?php
+```
+<?php
 
-    namespace Tests\Browser;
+namespace Tests\Browser;
 
-    use Illuminate\Foundation\Testing\DatabaseMigrations;
-    use Mantle\Browser_Testing\Browser;
-    use Tests\Browser\Components\DatePicker;
-    use Tests\Browser_Test_Case;
+use Mantle\Browser_Testing\Browser;
+use Tests\Browser\Components\DatePicker;
+use Tests\Browser_Test_Case;
 
-    class ExampleTest extends Browser_Test_Case
+class ExampleTest extends Browser_Test_Case
+{
+    /**
+        * A basic component test example.
+        *
+        * @return void
+        */
+    public function testBasicExample()
     {
-        /**
-         * A basic component test example.
-         *
-         * @return void
-         */
-        public function testBasicExample()
-        {
-            $this->browse(function ( Browser $browser ) {
-                $browser->visit('/')
-                        ->within(new DatePicker, function ( $browser ) {
-                            $browser->selectDate(2019, 1, 30);
-                        })
-                        ->assertSee('January');
-            } );
-        }
+        $this->browse(function ( Browser $browser ) {
+            $browser->visit('/')
+                    ->within(new DatePicker, function ( $browser ) {
+                        $browser->selectDate(2019, 1, 30);
+                    })
+                    ->assertSee('January');
+        } );
     }
+}
+```
