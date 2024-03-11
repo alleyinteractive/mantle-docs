@@ -87,6 +87,10 @@ const config: Config = {
             label: 'Docs',
           },
           {
+            type: 'docsVersionDropdown',
+            position: 'right',
+          },
+          {
             href: 'https://github.com/alleyinteractive/mantle-docs',
             label: 'GitHub',
             position: 'right',
