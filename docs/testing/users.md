@@ -60,10 +60,13 @@ use Tests\Test_Case;
 
 class ContributorTest extends Test_Case {
     #[Acting_As( 'contributor' )]
-    public function test_contributor_cannot_access_admin_pages() {
-        $this->get( '/some-admin-only-page/' )
-             ->assertForbidden();
+    public function test_contributor_has_read_cap() {
+        $this->assertTrue( current_user_can( 'read' ) );
     }
+
+     public function test_guest_has_no_caps() {
+          $this->assertFalse( current_user_can( 'read' ) );
+     }
 }
 ```
 
@@ -85,7 +88,7 @@ Also supports checking if the current user is a specific user or role:
 ```php
 $this->assertAuthenticated( 'administrator' );
 
-$this->assertAuthenticatedAs( $user );
+$this->assertAuthenticated( $user );
 ```
 
 ### `assertGuest()`
