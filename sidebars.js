@@ -90,6 +90,7 @@ const sidebars = {
         'features/hooks',
         'features/http-client',
         'features/queue',
+        'features/support',
         'features/scheduling-tasks',
       ],
     },
