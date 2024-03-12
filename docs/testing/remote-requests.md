@@ -21,10 +21,26 @@ API](https://developer.wordpress.org/reference/functions/wp_remote_request/)
 Intercept all remote requests with a specified response code and body.
 
 ```php
-$this->fake_request()
-  ->with_response_code( 404 )
-  ->with_body( 'test body' );
+namespace App\Tests;
+
+class ExampleRequestTest extends Test_Case {
+  /**
+   * Example test.
+   */
+  public function test_example() {
+    $this->fake_request()
+      ->with_response_code( 404 )
+      ->with_body( 'test body' );
+
+    // You can now make a remote request and it will return a 404.
+    $response = wp_remote_get( 'https://example.com/' );
+  }
+}
 ```
+
+The `fake_request()` method returns a `Mantle\Testing\Mock_Http_Response` object
+that can allow you to fluently build a response. See [generating responses](#generating-responses)
+for more information about building a response.
 
 ### Faking Multiple Endpoints
 
@@ -32,27 +48,45 @@ Faking a specific endpoint, `testing.com` will return a 404 while `github.com`
 will return a 500.
 
 ```php
-$this->fake_request( 'https://testing.com/*' )
-  ->with_response_code( 404 )
-  ->with_body( 'test body' );
+namespace App\Tests;
 
-$this->fake_request( 'https://github.com/*' )
-  ->with_response_code( 500 )
-  ->with_body( 'fake body' );
+class ExampleRequestTest extends Test_Case {
+  /**
+   * Example test.
+   */
+  public function test_example() {
+    $this->fake_request( 'https://testing.com/*' )
+      ->with_response_code( 404 )
+      ->with_body( 'test body' );
+
+    $this->fake_request( 'https://github.com/*' )
+      ->with_response_code( 500 )
+      ->with_body( 'fake body' );
+  }
+}
 ```
 
-You can also pass an array with a set of responses (or a callback) using the
-`Mantle\Testing\Mock_Http_Response` class and `mock_http_response` helper:
+Depending on your preferred style, you can also pass an array of URLs and
+responses to be faked using the `mock_http_response()` helper:
 
 ```php
+namespace App\Tests;
+
 use function Mantle\Testing\mock_http_response;
 
-$this->fake_request(
-  [
-    'https://github.com/*'  => mock_http_response()->with_body( 'github' ),
-    'https://twitter.com/*' => mock_http_response()->with_body( 'twitter' ),
-  ]
-);
+class ExampleRequestTest extends Test_Case {
+  /**
+   * Example test.
+   */
+  public function test_example() {
+    $this->fake_request(
+      [
+        'https://github.com/*'  => mock_http_response()->with_body( 'github' ),
+        'https://twitter.com/*' => mock_http_response()->with_body( 'twitter' ),
+      ]
+    );
+  }
+}
 ```
 
 ### Faking With a Callback
@@ -62,96 +96,243 @@ closure that will be invoked when a request is being faked. It should return a
 mocked HTTP response:
 
 ```php
-use function Mantle\Testing\mock_http_sequence;
+namespace App\Tests;
 
-$this->fake_request(
-  function( string $url, array $request_args ) {
-    if ( false === strpos( $url, 'alley.co' ) ) {
-      return;
-    }
+use function Mantle\Testing\mock_http_response;
 
-    return mock_http_sequence()
-      ->with_response_code( 123 )
-      ->with_body( 'alley!' );
+class ExampleRequestTest extends Test_Case {
+  /**
+   * Example test.
+   */
+  public function test_example() {
+    $this->fake_request(
+      function( string $url, array $request_args ) {
+        if ( false === strpos( $url, 'alley.co' ) ) {
+          return;
+        }
+
+        return mock_http_response()
+          ->with_response_code( 123 )
+          ->with_body( 'alley!' );
+      }
+    );
   }
-);
+}
 ```
 
 ### Faking Response Sequences
 
 Sometimes a single URL should return a series of fake responses in a specific
-order. This can be accomplished via `Mock_Http_Sequence` class and
-`mock_http_sequence` helper to build the response sequence:
+order. This can be accomplished via `Mantle\Testing\Mock_Http_Sequence` class
+and `mock_http_sequence` helper to build the response sequence.
+
+In the following example, the first request to `github.com` will return a 200,
+the second a 400, and the third a 500:
 
 ```php
+namespace App\Tests;
+
 use function Mantle\Testing\mock_http_sequence;
 
-$this->fake_request(
-  [
-    'https://github.com/*' => mock_http_sequence()
-      ->push_status( 200 )
-      ->push_status( 400 )
-      ->push_status( 500 )
-  ],
-);
+class ExampleRequestTest extends Test_Case {
+  /**
+   * Example test.
+   */
+  public function test_example() {
+    $this->fake_request(
+      [
+        'https://github.com/*' => mock_http_sequence()
+          ->push_status( 200 )
+          ->push_status( 400 )
+          ->push_status( 500 )
+      ],
+    );
+  }
+}
 ```
 
 Any request made in the above example will use a response in the defined
 sequence. When all the responses in a sequence have been consumed, further
-requests will throw an exception. You can also specify a default response that
-will be returned when there are no responses left in the sequence:
+requests will throw an exception because there are no remaining responses that
+can be returned.. You can also specify a default response that will be returned
+when there are no responses left in the sequence:
 
 ```php
+namespace App\Tests;
+
 use function Mantle\Testing\mock_http_response;
 use function Mantle\Testing\mock_http_sequence;
 
-$this->fake_request(
-  [
-    'https://github.com/*' => Mock_Http_Sequence()
-      ->push( mock_http_response()->with_json( [ 1, 2, 3 ] )
-      ->push( mock_http_response()->with_json( [ 4, 5, 6 ] )
-      ->when_empty( mock_http_response()->with_json( [ 4, 5, 6 ] )
-  ],
-);
+class ExampleRequestTest extends Test_Case {
+  /**
+   * Example test.
+   */
+  public function test_example() {
+    $this->fake_request(
+      [
+        'https://github.com/*' => mock_http_sequence()
+          ->push( mock_http_response()->with_json( [ 1, 2, 3 ] )
+          ->push( mock_http_response()->with_json( [ 4, 5, 6 ] )
+          ->when_empty( mock_http_response()->with_json( [ 4, 5, 6 ] )
+      ],
+    );
+  }
+}
 ```
 
-## Generating a Response
+### Generating Responses
 
 `Mantle\Testing\Mock_Http_Response` class and `mock_http_response()` helper
-exists to help you fluently build a WordPress-style remote response.
+exists to help you fluently build a mock remote response. The following methods
+are available to build a response and can be chained together:
+
+#### `with_status( int $status )` / `with_response_code( int $status )`
+
+Create a response with a specific status code.
 
 ```php
 use function Mantle\Testing\mock_http_response;
 
-// 404 response.
-mock_http_response()
-  ->with_response_code( 404 )
-  ->with_body( 'test body' );
+mock_http_response()->with_status( 200 );
+```
 
-// JSON response.
-mock_http_response()
-  ->with_json( [ 1, 2, 3 ] );
+#### `with_body( string $body )`
 
-// Redirect response.
-mock_http_response()
-  ->with_redirect( 'https://wordpress.org/' );
+Create a response with a specific body.
+
+```php
+use function Mantle\Testing\mock_http_response;
+
+mock_http_response()->with_body( 'test body' );
+```
+
+#### `with_json( $payload )`
+
+Create a response with a JSON body and set the `Content-Type` header to
+`application/json`.
+
+```php
+use function Mantle\Testing\mock_http_response;
+
+mock_http_response()->with_json( [ 1, 2, 3 ] );
+```
+
+#### `with_xml( string $payload )`
+
+Create a response with an XML body and set the `Content-Type` header to
+`application/xml`.
+
+```php
+use function Mantle\Testing\mock_http_response;
+
+mock_http_response()->with_xml( '<xml></xml>' );
+```
+
+#### `with_header( string $key, string $value )`
+
+Create a response with a specific header.
+
+```php
+use function Mantle\Testing\mock_http_response;
+
+mock_http_response()->with_header( 'Content-Type', 'application/json' );
+```
+
+#### `with_headers( array $headers )`
+
+Create a response with specific headers.
+
+```php
+use function Mantle\Testing\mock_http_response;
+
+mock_http_response()->with_headers( [ 'Content-Type' => 'application/json' ] );
+```
+
+#### `with_cookie( \WP_Http_Cookie $cookie )`
+
+Create a response with a specific cookie.
+
+```php
+use function Mantle\Testing\mock_http_response;
+
+$cookie = new \WP_Http_Cookie();
+$cookie->name = 'test';
+$cookie->value = 'value';
+
+mock_http_response()->with_cookie( $cookie );
+```
+
+#### `with_redirect( string $url, int $code = 301 )`
+
+Create a response with a specific redirect.
+
+```php
+use function Mantle\Testing\mock_http_response;
+
+mock_http_response()->with_redirect( 'https://wordpress.org/' );
+```
+
+#### `with_temporary_redirect( string $url )`
+
+Create a response with a specific temporary redirect.
+
+```php
+use function Mantle\Testing\mock_http_response;
+
+mock_http_response()->with_temporary_redirect( 'https://wordpress.org/' );
+```
+
+#### `with_file( string $path )`
+
+Create a response with a file as the response body. The appropriate
+`Content-Type` header will be set based on the file extension.
+
+```php
+use function Mantle\Testing\mock_http_response;
+
+mock_http_response()->with_file( '/path/to/file' );
+```
+
+#### `with_filename( string $filename )`
+
+Create a response with a specific filename.
+
+```php
+use function Mantle\Testing\mock_http_response;
+
+mock_http_response()->with_filename( 'test.txt' );
 ```
 
 ## Asserting Requests
 
 All remote requests can be asserted against, even if they're not being faked by
-the test case. Mantle will log if an actual remote request is being made
+the test case. Mantle will always log if an actual remote request is being made
 during a unit test.
 
+### Assertions
+
+#### `assertRequestSent( string|callable|null $url_or_callback = null, int $expected_times = null )`
+
+Assert that a request was sent to a specific URL.
+
 ```php
-$this->assertRequestSent( 'https://alley.com/' );
-$this->assertRequestNotSent( 'https://anothersite.com/' );
-$this->assertNoRequestSent();
-$this->assertRequestCount( int $number );
+namespace App\Tests;
+
+class ExampleRequestTest extends Test_Case {
+  /**
+   * Example test.
+   */
+  public function test_example() {
+    Http::get( 'https://example.com/' );
+
+    $this->assertRequestSent( 'https://example.com/' );
+  }
+}
 ```
 
-Requests can also be asserted against using a callback that is passed the
-`Mantle\Http_Client\Request` object:
+Sometimes you may want to assert that a request was sent with specific mix of
+headers/methods/body requirements. This can be done using a callback that is
+passed the `Mantle\Http_Client\Request` object:
 
 ```php
 use Mantle\Facade\Http;
@@ -163,18 +344,81 @@ class Example_Test extends Test_Case {
     Http::with_basic_auth( 'user', 'pass' )
       ->get( 'https://example.com/basic-auth/' );
 
+    // Assert that a request was sent with an authorization header,
+    // is a GET request and to a specific URL.
     $this->assertRequestSent( fn ( Request $request ) => $request
       ->has_header( 'Authorization', 'Basic dXNlcjpwYXNz' )
       && 'https://example.com/basic-auth/' === $request->url()
       && 'GET' === $request->method()
     );
 
+    // Assert that a request was not sent with a specific header,
     $this->assertRequestNotSent( fn ( Request $request ) => $request
       ->has_header( 'Content-Type', 'application-json' )
       && 'https://example.com/get/' === $request->url()
       && 'GET' === $request->method()
     );
+  }
+}
+```
 
+#### `assertRequestNotSent( string|callable|null $url_or_callback = null )`
+
+Assert that a request was not sent to a specific URL.
+
+```php
+namespace App\Tests;
+
+use Tests\Test_Case;
+
+class ExampleRequestTest extends Test_Case {
+  /**
+   * Example test.
+   */
+  public function test_example() {
+    Http::get( 'https://example.com/' );
+
+    $this->assertRequestNotSent( 'https://example.com/not-sent/' );
+  }
+}
+```
+
+#### `assertNoRequestSent()`
+
+Assert that no requests were sent.
+
+```php
+namespace App\Tests;
+
+use Tests\Test_Case;
+
+class ExampleRequestTest extends Test_Case {
+  /**
+   * Example test.
+   */
+  public function test_example() {
+    $this->assertNoRequestSent();
+  }
+}
+```
+
+#### `assertRequestCount( int $number )`
+
+Assert that a specific number of requests were sent.
+
+```php
+namespace App\Tests;
+
+use Tests\Test_Case;
+
+class ExampleRequestTest extends Test_Case {
+  /**
+   * Example test.
+   */
+  public function test_example() {
+    Http::get( 'https://example.com/' );
+
+    $this->assertRequestCount( 1 );
   }
 }
 ```
@@ -182,10 +426,15 @@ class Example_Test extends Test_Case {
 ## Preventing Stray Requests
 
 If you would like to ensure that all requests are faked during a unit test, you
-can use the `$this->prevent_stray_requests()` method. This will throw an exception if
-any requests are made that are not faked.
+can use the `$this->prevent_stray_requests()` method. This will throw an
+`RuntimeException` instance if any requests are made that do not have a
+corresponding fake.
 
 ```php
+namespace App\Tests;
+
+use Tests\Test_Case;
+
 class Example_Test extends Test_Case {
   protected function setUp(): void {
     parent::setUp();
@@ -208,3 +457,57 @@ class Example_Test extends Test_Case {
 ```
 
 Stray requests can be re-enabled by calling `$this->allow_stray_requests()`.
+
+```php
+namespace App\Tests;
+
+use Tests\Test_Case;
+
+class Example_Test extends Test_Case {
+  protected function setUp(): void {
+    parent::setUp();
+
+    $this->prevent_stray_requests();
+  }
+
+  public function test_example() {
+    $this->fake_request( 'https://alley.com/*' )
+      ->with_response_code( 200 )
+      ->with_body( 'alley!' );
+
+    Http::get( 'https://alley.com/' );
+
+    $this->allow_stray_requests();
+
+    // An exception is not thrown because stray requests are allowed.
+    Http::get( 'https://github.com/' );
+  }
+}
+```
+
+You can also use the `Mantle\Testing\Concerns\Prevent_Remote_Requests` trait to
+prevent stray requests in all tests in a test case.
+
+```php
+namespace App\Tests;
+
+use Tests\Test_Case;
+
+use Mantle\Testing\Concerns\Prevent_Remote_Requests;
+
+class Example_Test extends Test_Case {
+  use Prevent_Remote_Requests;
+
+  public function test_example() {
+    $this->fake_request( 'https://alley.com/*' )
+      ->with_response_code( 200 )
+      ->with_body( 'alley!' );
+
+    // An 'alley!' response is returned.
+    Http::get( 'https://alley.com/' );
+
+    // An exception is thrown because the request was not faked.
+    Http::get( 'https://github.com/' );
+  }
+}
+```
