@@ -33,7 +33,13 @@ const config: Config = {
       {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
-          editUrl: 'https://github.com/alleyinteractive/mantle-docs/tree/main/',
+          editUrl: ({ docPath, version }) => {
+            if ('current' === version) {
+              return `https://github.com/alleyinteractive/mantle-docs/edit/main/docs/${docPath}`;
+            }
+
+            return `https://github.com/alleyinteractive/mantle-docs/edit/main/versioned_docs/version-${version}/${docPath}`;
+          },
         },
         sitemap: {
           changefreq: 'weekly',
