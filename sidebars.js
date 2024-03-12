@@ -90,8 +90,24 @@ const sidebars = {
         'features/hooks',
         'features/http-client',
         'features/queue',
-        'features/support',
         'features/scheduling-tasks',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Support',
+      collapsed: true,
+      link: {
+        type: 'doc',
+        id: 'support/support',
+      },
+      items: [
+        'support/collections',
+        'support/conditionable',
+        'support/hookable',
+        'support/macroable',
+        'support/singleton',
+        'support/strings',
       ],
     },
     {
