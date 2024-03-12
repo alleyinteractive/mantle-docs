@@ -29,9 +29,8 @@ const config: Config = {
 
   presets: [
     [
-      'classic',
-      /** @type {import('@docusaurus/preset-classic').Options} */
-      ({
+      '@docusaurus/preset-classic',
+      {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           editUrl: 'https://github.com/alleyinteractive/mantle-docs/tree/main/',
@@ -52,64 +51,63 @@ const config: Config = {
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
         },
-      }),
+      },
     ],
   ],
 
-  themeConfig:
-    /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
-    ({
-      algolia: {
-        appId: 'Y3WWPYIIL4',
-        apiKey: 'c92c3230a91695a1b01b2d74ed79d959',
-        contextualSearch: false,
-        indexName: 'mantle',
-        searchPagePath: false,
+  themeConfig: {
+    algolia: {
+      appId: 'Y3WWPYIIL4',
+      apiKey: 'c92c3230a91695a1b01b2d74ed79d959',
+      contextualSearch: false,
+      indexName: 'mantle',
+      searchPagePath: false,
+    },
+    colorMode: {
+      defaultMode: 'dark',
+      respectPrefersColorScheme: true,
+    },
+    metadata: [
+      { name: 'google-site-verification', content: '9j6GWEdJJsL1zqzPRBMYahbaFg0NNj-NVglppOfGyJE' },
+      { name: 'apple-mobile-web-app-capable', content: 'yes' },
+      { name: 'apple-mobile-web-app-status-bar-style', content: 'black' },
+      { property: 'og:image', content: 'https://repository-images.githubusercontent.com/261240189/e61bc280-2d73-11eb-92d0-249447854ca0' },
+    ],
+    navbar: {
+      title: 'Mantle by Alley',
+      logo: {
+        alt: 'Mantle by Alley',
+        src: 'img/logo-no-text.svg',
       },
-      colorMode: {
-        defaultMode: 'dark',
-        respectPrefersColorScheme: true,
-      },
-      metadata: [
-        { name: 'google-site-verification', content: '9j6GWEdJJsL1zqzPRBMYahbaFg0NNj-NVglppOfGyJE' },
-        { name: 'apple-mobile-web-app-capable', content: 'yes' },
-        { name: 'apple-mobile-web-app-status-bar-style', content: 'black' },
-        { property: 'og:image', content: 'https://repository-images.githubusercontent.com/261240189/e61bc280-2d73-11eb-92d0-249447854ca0' },
-      ],
-      navbar: {
-        title: 'Mantle by Alley',
-        logo: {
-          alt: 'Mantle by Alley',
-          src: 'img/logo-no-text.svg',
+      items: [
+        {
+          type: 'doc',
+          // href: '/docs/getting-started/installation',
+          docId: 'getting-started/installation',
+          position: 'left',
+          label: 'Docs',
         },
-        items: [
-          {
-            type: 'doc',
-            docId: 'getting-started/installation',
-            position: 'left',
-            label: 'Docs',
-          },
-          {
-            type: 'docsVersionDropdown',
-            position: 'right',
-          },
-          {
-            href: 'https://github.com/alleyinteractive/mantle-docs',
-            label: 'GitHub',
-            position: 'right',
-          },
-        ],
-      },
-      footer: {
-        style: 'dark',
-        copyright: `Copyright &copy; ${new Date().getFullYear()} <a href="https://alley.com/">Alley</a>. Built with Docusaurus.`,
-      },
-      prism: {
-        additionalLanguages: ['php'],
-        theme: lightTheme,
-        darkTheme: darkTheme,
-      },
-    }),
+        {
+          type: 'docsVersionDropdown',
+          position: 'right',
+        },
+        {
+          href: 'https://github.com/alleyinteractive/mantle-docs',
+          label: 'GitHub',
+          position: 'right',
+        },
+      ],
+    },
+    footer: {
+      style: 'dark',
+      copyright: `Copyright &copy; ${new Date().getFullYear()} <a href="https://alley.com/">Alley</a>. Built with Docusaurus.`,
+    },
+    prism: {
+      additionalLanguages: ['php'],
+      theme: lightTheme,
+      darkTheme: darkTheme,
+    },
+  },
 };
 
 module.exports = config;
