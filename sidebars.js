@@ -67,7 +67,7 @@ const sidebars = {
       },
       items: [
         'models/models',
-        'models/querying-models',
+        'models/query-builder',
         'models/model-relationships',
         'models/model-registration',
         'models/model-factory',

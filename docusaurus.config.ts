@@ -40,6 +40,12 @@ const config: Config = {
 
             return `https://github.com/alleyinteractive/mantle-docs/edit/main/versioned_docs/version-${version}/${docPath}`;
           },
+          // lastVersion: 'current',
+          versions: {
+            current: {
+              label: '1.x',
+            },
+          },
         },
         sitemap: {
           changefreq: 'weekly',
