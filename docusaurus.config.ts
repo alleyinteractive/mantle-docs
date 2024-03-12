@@ -39,7 +39,10 @@ const config: Config = {
         sitemap: {
           changefreq: 'weekly',
           priority: 0.5,
-          ignorePatterns: ['/tags/**'],
+          ignorePatterns: [
+            '/tags/**',
+            '/next/**',
+          ],
           filename: 'sitemap.xml',
         },
         googleAnalytics: {
