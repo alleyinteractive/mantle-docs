@@ -129,6 +129,10 @@ Mantle\Testing\manager()
 If your project does include a `mu-plugins` folder, it will be ignored and will
 not be rsync'd to the testing installation.
 
+You can also set the `MANTLE_INSTALL_VIP_MU_PLUGINS` environmental variable to
+`true` to automatically include the WordPress VIP MU Plugins in your testing
+installation.
+
 ### Including Memcache Object Cache Drop-In
 
 If your project uses the [Memcache Object Cache Drop-In](https://raw.githubusercontent.com/Automattic/wp-memcached/HEAD/object-cache.php),
@@ -140,6 +144,10 @@ Mantle\Testing\manager()
 	->with_object_cache()
 	->install();
 ```
+
+You can also set the `MANTLE_INSTALL_OBJECT_CACHE` environmental variable to
+`true` to automatically include the Memcache Object Cache Drop-In in your testing
+installation.
 
 :::note
 
@@ -163,6 +171,9 @@ To enable SQLite, you can use the `with_sqlite()` method:
   ->with_sqlite()
   ->install();
 ```
+
+You can also set the `MANTLE_USE_SQLITE` environmental variable to `true` to use
+SQLite for testing by default.
 
 By default, Mantle will use MySQL for the database. SQLite will work well for
 most use-cases but there are some limitations. For example, if you're creating
