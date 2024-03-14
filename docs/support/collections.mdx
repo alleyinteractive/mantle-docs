@@ -1,0 +1,579 @@
+import TOCInline from '@theme/TOCInline';
+
+# Collections
+
+Mantle includes [Laravel's collections package](https://laravel.com/docs/master/collections)
+with support for all of its methods and with some special customizations to make
+it easier to work with WordPress. For example, you can pass a `WP_Query` object
+to the `collect` helper function and it will automatically convert it to a
+collection of `WP_Post` objects.
+
+## Usage
+
+You can use the `collect` helper function to create a new collection from an
+array or an object. You can also use the `collect` method on any collection
+instance to create a new collection from the items in the original collection.
+
+```php
+use function Mantle\Support\Helpers\collect;
+
+$collection = collect( [ 1, 2, 3 ] );
+```
+
+You can then use any of the methods available on the collection instance to
+manipulate the items in the collection.
+
+```php
+use function Mantle\Support\Helpers\collect;
+
+$collection = collect( [ 1, 2, 3 ] )->map( function( $item ) {
+    return $item * 2;
+} );
+```
+
+Collections can be treated like arrays, so you can use array accessors to get
+items from the collection.
+
+```php
+use function Mantle\Support\Helpers\collect;
+
+$collection = collect( [ 1, 2, 3 ] );
+
+$item = $collection[0]; // 1
+```
+
+## Available Methods
+
+<TOCInline toc={toc} minHeadingLevel={3} />
+
+### add
+
+`add( $item )`
+
+### all
+
+`all()`
+
+### average
+
+`average( $callback = null )`
+
+### avg
+
+`avg( $callback = null )`
+
+### chunk
+
+`chunk( $size )`
+
+### collapse
+
+`collapse()`
+
+### collect
+
+`collect()`
+
+### combine
+
+`combine( $values )`
+
+### concat
+
+`concat( $source )`
+
+### contains_one_item
+
+`contains_one_item(): bool`
+
+### contains_strict
+
+`contains_strict( $key, $value = null )`
+
+### contains_strict
+
+`contains_strict( $key, $value = null )`
+
+### contains
+
+`contains( $key, $operator = null, $value = null )`
+
+### count_by
+
+`count_by( $callback = null )`
+
+### count
+
+`count(): int`
+
+### cross_join
+
+`cross_join( ...$lists )`
+
+### dd
+
+`dd( ...$args ): void`
+
+### diff_assoc_using
+
+`diff_assoc_using( $items, callable $callback )`
+
+### diff_assoc
+
+`diff_assoc( $items )`
+
+### diff_keys_using
+
+`diff_keys_using( $items, callable $callback )`
+
+### diff_keys
+
+`diff_keys( $items )`
+
+### diff_using
+
+`diff_using( $items, callable $callback )`
+
+### diff
+
+`diff( $items )`
+
+### doesnt_contain
+
+`doesnt_contain( $key, $operator = null, $value = null )`
+
+### dump
+
+`dump(): static`
+
+### duplicates_strict
+
+`duplicates_strict( $callback = null )`
+
+### duplicates
+
+`duplicates( $callback = null, $strict = false )`
+
+### each_spread
+
+`each_spread( callable $callback )`
+
+### each
+
+`each( callable $callback )`
+
+### every
+
+`every( $key, $operator = null, $value = null )`
+
+### except
+
+`except( $keys )`
+
+### filter
+
+`filter( callable $callback = null )`
+
+### first_where
+
+`first_where( $key, $operator = null, $value = null )`
+
+### first
+
+`first( callable $callback = null, $default = null )`
+
+### flat_map
+
+`flat_map( callable $callback )`
+
+### flatten
+
+`flatten( $depth = INF )`
+
+### flip
+
+`flip()`
+
+### for_page
+
+`for_page( $page, $per_page )`
+
+### forget
+
+`forget( $keys )`
+
+### get
+
+`get( $key, $default = null )`
+
+### getIterator
+
+`getIterator(): Traversable`
+
+### group_by
+
+`group_by( $group_by, $preserve_keys = false )`
+
+### has
+
+`has( $key ): bool`
+
+### implode
+
+`implode( $value, $glue = null )`
+
+### intersect_assoc_using
+
+`intersect_assoc_using( $items, callable $callback )`
+
+### intersect_assoc
+
+`intersect_assoc( $items )`
+
+### intersect_by_keys
+
+`intersect_by_keys( $items )`
+
+### intersect
+
+`intersect( $items )`
+
+### is_empty
+
+`is_empty(): bool`
+
+### is_not_empty
+
+`is_not_empty()`
+
+### join
+
+`join( $glue, $final_glue = '' )`
+
+### jsonSerialize
+
+`jsonSerialize(): mixed`
+
+### key_by
+
+`key_by( $key_by )`
+
+### keys
+
+`keys()`
+
+### last
+
+`last( callable $callback = null, $default = null )`
+
+### map_into
+
+`map_into( $class )`
+
+### map_spread
+
+`map_spread( callable $callback )`
+
+### map_to_dictionary
+
+`map_to_dictionary( callable $callback )`
+
+### map_to_groups
+
+`map_to_groups( callable $callback )`
+
+### map_with_keys
+
+`map_with_keys( callable $callback )`
+
+### map
+
+`map( callable $callback )`
+
+### max
+
+`max( $callback = null )`
+
+### median
+
+`median( $key = null )`
+
+### merge_recursive
+
+`merge_recursive( $items )`
+
+### merge
+
+`merge( $items )`
+
+### min
+
+`min( $callback = null )`
+
+### mode
+
+`mode( $key = null )`
+
+### nth
+
+`nth( $step, $offset = 0 )`
+
+### offsetExists
+
+`offsetExists( mixed $key ): bool`
+
+### offsetGet
+
+`offsetGet( mixed $key ): mixed`
+
+### offsetSet
+
+`offsetSet( mixed $key, mixed $value ): void`
+
+### offsetUnset
+
+`offsetUnset( mixed $key ): void`
+
+### only_children
+
+`only_children( $keys )`
+
+### only
+
+`only( $keys )`
+
+### pad
+
+`pad( $size, $value )`
+
+### partition
+
+`partition( $key, $operator = null, $value = null )`
+
+### pipe
+
+`pipe( callable $callback )`
+
+### pluck
+
+`pluck( $value, $key = null )`
+
+### pop
+
+`pop()`
+
+### prepend
+
+`prepend( $value, $key = null )`
+
+### pull
+
+`pull( $key, $default = null )`
+
+### push
+
+`push( ...$values )`
+
+### put
+
+`put( $key, $value )`
+
+### random
+
+`random( $number = null )`
+
+### reduce
+
+`reduce( callable $callback, $initial = null )`
+
+### reject
+
+`reject( $callback = true )`
+
+### replace_recursive
+
+`replace_recursive( $items )`
+
+### replace
+
+`replace( $items )`
+
+### reverse
+
+`reverse()`
+
+### search
+
+`search( $value, $strict = false )`
+
+### shift
+
+`shift()`
+
+### shuffle
+
+`shuffle( $seed = null )`
+
+### skip
+
+`skip( $count )`
+
+### slice
+
+`slice( $offset, $length = null )`
+
+### some
+
+`some( $key, $operator = null, $value = null )`
+
+### sort_by_desc
+
+`sort_by_desc( $callback, $options = SORT_REGULAR )`
+
+### sort_by
+
+`sort_by( $callback, $options = SORT_REGULAR, $descending = false )`
+
+### sort_desc
+
+`sort_desc( $options = SORT_REGULAR )`
+
+### sort_keys_desc
+
+`sort_keys_desc( $options = SORT_REGULAR )`
+
+### sort_keys
+
+`sort_keys( $options = SORT_REGULAR, $descending = false )`
+
+### sort
+
+`sort( $callback = null )`
+
+### splice
+
+`splice( $offset, $length = null, $replacement = [] )`
+
+### split
+
+`split( $number_of_groups )`
+
+### sum
+
+`sum( $callback = null )`
+
+### take
+
+`take( $limit )`
+
+### tap
+
+`tap( callable $callback )`
+
+### to_array
+
+`to_array()`
+
+### to_base
+
+`to_base()`
+
+### to_json
+
+`to_json( $options = 0 )`
+
+### toArray
+
+`toArray()`
+
+### transform
+
+`transform( callable $callback )`
+
+### trim
+
+`trim( string $char_list = "\n\r\t\v\x00" )`
+
+### union
+
+`union( $items )`
+
+### unique_strict
+
+`unique_strict( $key = null )`
+
+### unique
+
+`unique( $key = null, $strict = false )`
+
+### unless_empty
+
+`unless_empty( callable $callback, callable $default = null )`
+
+### unless_not_empty
+
+`unless_not_empty( callable $callback, callable $default = null )`
+
+### values
+
+`values()`
+
+### when_empty
+
+`when_empty( callable $callback, callable $default = null )`
+
+### when_not_empty
+
+`when_not_empty( callable $callback, callable $default = null )`
+
+### where_between
+
+`where_between( $key, $values )`
+
+### where_in_strict
+
+`where_in_strict( $key, $values )`
+
+### where_in
+
+`where_in( $key, $values, $strict = false )`
+
+### where_instance_of
+
+`where_instance_of( $type )`
+
+### where_not_between
+
+`where_not_between( $key, $values )`
+
+### where_not_in_strict
+
+`where_not_in_strict( $key, $values )`
+
+### where_not_in
+
+`where_not_in( $key, $values, $strict = false )`
+
+### where_not_null
+
+`where_not_null( $key = null )`
+
+### where_null
+
+`where_null( $key = null )`
+
+### where_strict
+
+`where_strict( $key, $value )`
+
+### where
+
+`where( $key, $operator = null, $value = null )`
+
+### zip
+
+`zip( ...$items )`
+
+### __toString
+
+`__toString()`
