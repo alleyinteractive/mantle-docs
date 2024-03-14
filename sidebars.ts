@@ -9,10 +9,9 @@
  Create as many sidebars as you want.
  */
 
-// @ts-check
+import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 
-/** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
-const sidebars = {
+const sidebars: SidebarsConfig = {
   docs: [
     {
       type: 'category',
@@ -91,23 +90,23 @@ const sidebars = {
         'features/http-client',
         'features/queue',
         'features/scheduling-tasks',
-      ],
-    },
-    {
-      type: 'category',
-      label: 'Support',
-      collapsed: true,
-      link: {
-        type: 'doc',
-        id: 'support/support',
-      },
-      items: [
-        'support/collections',
-        'support/conditionable',
-        'support/hookable',
-        'support/macroable',
-        'support/singleton',
-        'support/strings',
+        {
+          type: 'category',
+          label: 'Support',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'support/support',
+          },
+          items: [
+            'support/collections',
+            'support/conditionable',
+            'support/hookable',
+            'support/macroable',
+            'support/singleton',
+            'support/strings',
+          ],
+        },
       ],
     },
     {
@@ -136,6 +135,7 @@ const sidebars = {
         'testing/pest',
       ],
     },
+    // TODO: Enable this again when packages are ready.
     // {
     //   type: 'category',
     //   label: 'Packages',
@@ -149,4 +149,4 @@ const sidebars = {
   ],
 };
 
-module.exports = sidebars;
+export default sidebars;
