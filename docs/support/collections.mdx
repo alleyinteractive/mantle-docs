@@ -48,532 +48,1036 @@ $item = $collection[0]; // 1
 
 ### add
 
-`add( $item )`
+The `add` method adds an item to the collection.
+
+```php
+$collection = collect( [ 1, 2, 3 ] )->add( 4 );
+```
 
 ### all
 
-`all()`
+The `all` method gets all of the items in the collection.
+
+```php
+$items = collect( [ 1, 2, 3 ] )->all();
+```
 
 ### average
 
-`average( $callback = null )`
+Alias for the `avg` method.
 
 ### avg
 
-`avg( $callback = null )`
+Get the average value of a given key.
+
+```php
+$average = collect( [ 1, 2, 3 ] )->average();
+
+$average = collect( [
+    [ 'name' => 'John', 'age' => 30 ],
+    [ 'name' => 'Jane', 'age' => 25 ],
+] )->average( 'age' );
+```
 
 ### chunk
 
-`chunk( $size )`
+Chunk the collection into smaller collections of a given size.
+
+```php
+$chunks = collect( [ 1, 2, 3, 4, 5 ] )->chunk( 2 );
+
+// [[1, 2], [3, 4], [5]]
+```
 
 ### collapse
 
-`collapse()`
+Collapse the collection of arrays into a single, flat collection.
 
-### collect
+```php
+$collection = collect( [ [ 1, 2, 3 ], [ 4, 5, 6 ] ] )->collapse();
 
-`collect()`
+// [1, 2, 3, 4, 5, 6]
+```
 
 ### combine
 
-`combine( $values )`
+Combine the values of the collection with the values of another array or collection.
+
+```php
+$collection = collect( [ 'name', 'age' ] )->combine( [ 'John', 30 ] );
+// ['name' => 'John', 'age' => 30]
+```
 
 ### concat
 
-`concat( $source )`
+Concatenate values of the given array or collection to the collection.
+
+```php
+$collection = collect( [ 1, 2, 3 ] )->concat( [ 4, 5, 6 ] );
+// [1, 2, 3, 4, 5, 6]
+```
 
 ### contains_one_item
 
-`contains_one_item(): bool`
+Determine if the collection contains only one item.
+
+```php
+$containsOneItem = collect( [ 1 ] )->contains_one_item(); // true
+```
 
 ### contains_strict
 
-`contains_strict( $key, $value = null )`
+Determine if the collection contains a given key / value pair.
 
-### contains_strict
-
-`contains_strict( $key, $value = null )`
+```php
+$contains = collect( [ 'name' => 'John' ] )->contains_strict( 'name', 'John' ); // true
+```
 
 ### contains
 
-`contains( $key, $operator = null, $value = null )`
+Determine if the collection contains a given item.
+
+```php
+$contains = collect( [ 1, 2, 3 ] )->contains( 2 ); // true
+```
 
 ### count_by
 
-`count_by( $callback = null )`
+Count the occurrences of values in the collection.
+
+```php
+$counts = collect( [ 1, 2, 2, 3, 3, 3 ] )->count_by();
+// [1 => 1, 2 => 2, 3 => 3]
+```
 
 ### count
 
-`count(): int`
+Get the number of items in the collection.
+
+```php
+$count = collect( [ 1, 2, 3 ] )->count(); // 3
+```
 
 ### cross_join
 
-`cross_join( ...$lists )`
+Cross join with the given lists, returning all possible permutations.
+
+```php
+$collection = collect( [ 1, 2 ] )->cross_join( [ 'a', 'b' ] );
+```
 
 ### dd
 
-`dd( ...$args ): void`
+Dump the collection and end the script execution.
 
-### diff_assoc_using
-
-`diff_assoc_using( $items, callable $callback )`
+```php
+collect( [ 1, 2, 3 ] )->dd();
+```
 
 ### diff_assoc
 
-`diff_assoc( $items )`
+Diff the collection with the given items, key and value-wise.
 
-### diff_keys_using
+```php
+$diff = collect( [ 'name' => 'John' ] )->diff_assoc( [ 'name' => 'Jane' ] );
+// ['name' => 'John']
+```
 
-`diff_keys_using( $items, callable $callback )`
+### diff_assoc_using
+
+Diff the collection with the given items, using a callback to compute the difference.
+
+```php
+$diff = collect( [ 'name' => 'John' ] )->diff_assoc_using( [ 'name' => 'Jane' ], function( $a, $b ) {
+    return $a === $b;
+} );
+// ['name' => 'John']
+```
 
 ### diff_keys
 
-`diff_keys( $items )`
+Diff the collection with the given items, key-wise.
 
-### diff_using
-
-`diff_using( $items, callable $callback )`
+```php
+$diff = collect( [ 'name' => 'John' ] )->diff_keys( [ 'name' => 'Jane' ] );
+```
 
 ### diff
 
-`diff( $items )`
+Compare the collection against another item or items using strict comparison.
+
+```php
+$diff = collect( [ 1, 2, 3 ] )->diff( [ 2, 3, 4 ] );
+// [0 => 1]
+```
 
 ### doesnt_contain
 
-`doesnt_contain( $key, $operator = null, $value = null )`
+Determine if the collection does not contain a given key / value pair.
+
+```php
+$doesntContain = collect( [ 'name' => 'John' ] )->doesnt_contain( 'name', 'Jane' ); // true
+```
 
 ### dump
 
-`dump(): static`
+Dump the collection.
+
+```php
+collect( [ 1, 2, 3 ] )->dump();
+```
 
 ### duplicates_strict
 
-`duplicates_strict( $callback = null )`
+Get the items in the collection that have duplicate values.
+
+```php
+$duplicates = collect( [ 1, 2, 2, 3, 3, 3 ] )->duplicates_strict();
+// [2, 3]
+```
 
 ### duplicates
 
-`duplicates( $callback = null, $strict = false )`
+Get the items in the collection that have duplicate values.
+
+```php
+$duplicates = collect( [ 1, 2, 2, 3, 3, 3 ] )->duplicates();
+// [2, 3]
+```
 
 ### each_spread
 
-`each_spread( callable $callback )`
+Iterate over the collection's items, passing each nested item value into the given callback:
+
+```php
+collect( [ [ 'John', 30 ], [ 'Jane', 25 ] ] )->each_spread( function( $name, $age ) {
+    // ...
+} );
+```
 
 ### each
 
-`each( callable $callback )`
+Iterate over the items in the collection.
+
+```php
+collect( [ 1, 2, 3 ] )->each( function( $item ) {
+    // ...
+} );
+```
 
 ### every
 
-`every( $key, $operator = null, $value = null )`
+Determine if all items in the collection pass the given truth test.
+
+```php
+$every = collect( [ 1, 2, 3 ] )->every( function( $item ) {
+    return $item > 0;
+} );
+```
 
 ### except
 
-`except( $keys )`
+Get all items except for those with the specified keys.
+
+```php
+$collection = collect( [ 'name' => 'John', 'age' => 30 ] )->except( 'age' );
+// ['name' => 'John']
+```
 
 ### filter
 
-`filter( callable $callback = null )`
+Filter the items in the collection using the given callback.
+
+```php
+$collection = collect( [ 1, 2, 3 ] )->filter( function( $item ) {
+    return $item > 1;
+} );
+```
 
 ### first_where
 
-`first_where( $key, $operator = null, $value = null )`
+Get the first item from the collection where the given key / value pair is true.
+
+```php
+$item = collect( [ 'name' => 'John', 'age' => 30 ] )->first_where( 'age', '>', 25 );
+```
 
 ### first
 
-`first( callable $callback = null, $default = null )`
+Get the first item from the collection.
+
+```php
+$item = collect( [ 1, 2, 3 ] )->first();
+```
 
 ### flat_map
 
-`flat_map( callable $callback )`
+Map a collection and flatten the result by a single level.
+
+```php
+$collection = collect( [ [ 1, 2 ], [ 3, 4 ] ] )->flat_map( function( array $values ) {
+    return array_map( function( $value ) {
+        return $value * 2;
+    }, $values );
+} );
+```
 
 ### flatten
 
-`flatten( $depth = INF )`
+Flatten a multi-dimensional collection into a single dimension.
+
+```php
+$collection = collect( [ [ 1, 2 ], [ 3, 4 ] ] )->flatten();
+```
 
 ### flip
 
-`flip()`
+Flip the items in the collection.
+
+```php
+$collection = collect( [ 'name' => 'John', 'age' => 30 ] )->flip();
+```
 
 ### for_page
 
-`for_page( $page, $per_page )`
+Get a new collection containing the items for a given page.
+
+```php
+$collection = collect( [ 1, 2, 3, 4, 5 ] )->for_page( 2, 2 );
+// [3, 4]
+```
 
 ### forget
 
-`forget( $keys )`
+Remove an item from the collection by key.
+
+```php
+$collection = collect( [ 'name' => 'John', 'age' => 30 ] )->forget( 'age' );
+```
 
 ### get
 
-`get( $key, $default = null )`
+Get an item from the collection.
 
-### getIterator
-
-`getIterator(): Traversable`
+```php
+$item = collect( [ 'name' => 'John', 'age' => 30 ] )->get( 'name' );
+```
 
 ### group_by
 
-`group_by( $group_by, $preserve_keys = false )`
+Group an associative array by a field or using a callback.
+
+```php
+$collection = collect( [
+    [ 'name' => 'John', 'age' => 30 ],
+    [ 'name' => 'Jane', 'age' => 25 ],
+] )->group_by( 'age' );
+```
 
 ### has
 
-`has( $key ): bool`
+Determine if an item exists in the collection by key.
+
+```php
+$has = collect( [ 'name' => 'John', 'age' => 30 ] )->has( 'name' );
+```
 
 ### implode
 
-`implode( $value, $glue = null )`
+Join the items in the collection.
 
-### intersect_assoc_using
-
-`intersect_assoc_using( $items, callable $callback )`
+```php
+$joined = collect( [ 'name', 'age' ] )->implode( ', ' );
+```
 
 ### intersect_assoc
 
-`intersect_assoc( $items )`
+Intersect the collection with the given items, key and value-wise.
+
+```php
+$intersect = collect( [ 'name' => 'John' ] )->intersect_assoc( [ 'name' => 'Jane' ] );
+```
 
 ### intersect_by_keys
 
-`intersect_by_keys( $items )`
+Intersect the collection with the given items by key.
+
+```php
+$intersect = collect( [ 'name' => 'John' ] )->intersect_by_keys( [ 'name' => 'Jane' ] );
+```
 
 ### intersect
 
-`intersect( $items )`
+Intersect the collection with the given items.
+
+```php
+... = collect( [ 1, 2, 3 ] )->intersect( [ 2, 3, 4 ] );
+```
 
 ### is_empty
 
-`is_empty(): bool`
+Determine if the collection is empty.
+
+```php
+$isEmpty = collect( [] )->is_empty();
+```
 
 ### is_not_empty
 
-`is_not_empty()`
+Determine if the collection is not empty.
+
+```php
+$isNotEmpty = collect( [ 1, 2, 3 ] )->is_not_empty();
+```
 
 ### join
 
-`join( $glue, $final_glue = '' )`
+Join the items in the collection.
 
-### jsonSerialize
-
-`jsonSerialize(): mixed`
+```php
+$joined = collect( [ 'name', 'age' ] )->join( ', ' );
+```
 
 ### key_by
 
-`key_by( $key_by )`
+Key an associative array by a field or using a callback.
+
+```php
+$collection = collect( [
+    [ 'name' => 'John', 'age' => 30 ],
+    [ 'name' => 'Jane', 'age' => 25 ],
+] )->key_by( 'name' );
+```
 
 ### keys
 
-`keys()`
+Get the keys of the collection items.
+
+```php
+$keys = collect( [ 'name' => 'John', 'age' => 30 ] )->keys();
+```
 
 ### last
 
-`last( callable $callback = null, $default = null )`
+Get the last item from the collection.
+
+```php
+$item = collect( [ 1, 2, 3 ] )->last();
+```
 
 ### map_into
 
-`map_into( $class )`
+Map the collection into a new class.
+
+```php
+$collection = collect( [ 'John', 'Jane' ] )->map_into( User::class );
+```
 
 ### map_spread
 
-`map_spread( callable $callback )`
+Iterates over the collection's items, passing each nested item value into the given callback:
+
+```php
+$collection = collect( [ [ 'John', 30 ], [ 'Jane', 25 ] ] )->map_spread( function( $name, $age ) {
+    return $name . ' is ' . $age . ' years old';
+} );
+```
 
 ### map_to_dictionary
 
-`map_to_dictionary( callable $callback )`
+Map the collection to a dictionary.
+
+```php
+$dictionary = collect( [ 'name' => 'John', 'age' => 30 ] )->map_to_dictionary( function( $value, $key ) {
+    return [ $key, $value ];
+} );
+```
 
 ### map_to_groups
 
-`map_to_groups( callable $callback )`
+Alias to `map_to_dictionary`.
 
 ### map_with_keys
 
-`map_with_keys( callable $callback )`
+Map the collection with the given key / value pairs.
+
+```php
+$collection = collect( [
+    [
+        'name' => 'John',
+        'department' => 'Sales',
+        'email' => 'john@example.com',
+    ],
+    [
+        'name' => 'Jane',
+        'department' => 'Marketing',
+        'email' => 'jane@example.com',
+    ]
+] );
+
+$collection = $collection->map_with_keys( function( $item ) {
+    return [ $item['name'] => $item['email'] ];
+} );
+```
 
 ### map
 
-`map( callable $callback )`
+Map the items in the collection to a new callback.
+
+```php
+$collection = collect( [ 1, 2, 3 ] )->map( function( $item ) {
+    return $item * 2;
+} );
+```
 
 ### max
 
-`max( $callback = null )`
+Get the max value of a given key.
+
+```php
+$max = collect( [ 1, 2, 3 ] )->max();
+```
 
 ### median
 
-`median( $key = null )`
+Get the median value of a given key.
+
+```php
+$median = collect( [ 1, 2, 3 ] )->median();
+```
 
 ### merge_recursive
 
-`merge_recursive( $items )`
+Merge the collection with the given items, recursively.
+
+```php
+$collection = collect( [ 'name' => 'John' ] )->merge_recursive( [ 'name' => 'Jane' ] );
+```
 
 ### merge
 
-`merge( $items )`
+Merge the collection with the given items.
+
+```php
+$collection = collect( [ 'name' => 'John' ] )->merge( [ 'name' => 'Jane' ] );
+```
 
 ### min
 
-`min( $callback = null )`
+Get the min value of a given key.
+
+```php
+$min = collect( [ 1, 2, 3 ] )->min();
+```
 
 ### mode
 
-`mode( $key = null )`
+Get the mode value of a given key.
+
+```php
+$mode = collect( [ 1, 2, 2, 3, 3, 3 ] )->mode();
+```
 
 ### nth
 
-`nth( $step, $offset = 0 )`
+Create a new collection consisting of every n-th element.
 
-### offsetExists
-
-`offsetExists( mixed $key ): bool`
-
-### offsetGet
-
-`offsetGet( mixed $key ): mixed`
-
-### offsetSet
-
-`offsetSet( mixed $key, mixed $value ): void`
-
-### offsetUnset
-
-`offsetUnset( mixed $key ): void`
+```php
+$collection = collect( [ 1, 2, 3, 4, 5, 6 ] )->nth( 2 );
+// [2, 4, 6]
+```
 
 ### only_children
 
-`only_children( $keys )`
+Create a new collection consisting of only keys that are children of the given keys.
+
+```php
+$collection = collect( [
+    [
+        'name' => 'John',
+        'department' => 'Sales',
+        'email' => 'john@example.com',
+    ],
+    [
+        'name' => 'Jane',
+        'department' => 'Marketing',
+        'email' => 'jane@example.com',
+    ]
+] );
+
+$collection = $collection->only_children( [ 'email', 'name' ] );
+// [['name' => 'John', 'email' => 'john@example.com'], ['name' => 'Jane', 'email' => 'jane@example.com']]
+```
 
 ### only
 
-`only( $keys )`
+Create a new collection consisting of the given keys.
+
+```php
+$collection = collect( [
+    'name' => 'John',
+    'department' => 'Sales',
+] )->only( [ 'name' ] );
+```
 
 ### pad
 
-`pad( $size, $value )`
+Pad the collection to the specified size with a value.
+
+```php
+$collection = collect( [ 1, 2, 3 ] )->pad( 5, 0 );
+// [1, 2, 3, 0, 0]
+```
 
 ### partition
 
-`partition( $key, $operator = null, $value = null )`
+Partition the collection into two arrays using the given callback or key.
+
+```php
+$collection = collect( [ 1, 2, 3, 4, 5 ] )->partition( function( $value, $key ) {
+    return $value > 2;
+} );
+```
 
 ### pipe
 
-`pipe( callable $callback )`
+Pass the collection to the given closure and returns the result of the executed closure.
+
+```php
+$collection = collect( [ 1, 2, 3 ] );
+
+$piped = $collection->pipe( function ( Collection $collection ) {
+    return $collection->sum();
+} );
+
+// 6
+```
 
 ### pluck
 
-`pluck( $value, $key = null )`
+Get an array with the values of a given key.
+
+```php
+$plucked = collect( [
+    [ 'name' => 'John', 'department' => 'Sales' ],
+    [ 'name' => 'Jane', 'department' => 'Marketing' ],
+] )->pluck( 'name' );
+```
 
 ### pop
 
-`pop()`
+Remove and return the last item from the collection.
+
+```php
+$item = collect( [ 1, 2, 3 ] )->pop(); // 3
+```
 
 ### prepend
 
-`prepend( $value, $key = null )`
+Prepend an item to the beginning of the collection.
+
+```php
+$collection = collect( [ 1, 2, 3 ] )->prepend( 0 );
+```
 
 ### pull
 
-`pull( $key, $default = null )`
+Removes and returns an item from the collection by key.
+
+```php
+$item = collect( [ 'name' => 'John' ] )->pull( 'name' );
+```
 
 ### push
 
-`push( ...$values )`
+Push an item onto the end of the collection.
+
+```php
+$collection = collect( [ 1, 2, 3 ] )->push( 4 );
+```
 
 ### put
 
-`put( $key, $value )`
+Put an item in the collection by key.
+
+```php
+$collection = collect( [ 'name' => 'John' ] )->put( 'age', 30 );
+```
 
 ### random
 
-`random( $number = null )`
+Return a random item from the collection.
+
+```php
+$random = collect( [ 1, 2, 3 ] )->random();
+```
 
 ### reduce
 
-`reduce( callable $callback, $initial = null )`
+Reduce the collection to a single value.
+
+```php
+$reduced = collect( [ 1, 2, 3 ] )->reduce( function( $carry, $item ) {
+    return $carry + $item;
+} );
+```
 
 ### reject
 
-`reject( $callback = true )`
+Filter items in the collection using the given callback.
+
+```php
+$collection = collect( [ 1, 2, 3 ] )->reject( function( $item ) {
+    return $item > 1;
+} );
+```
 
 ### replace_recursive
 
-`replace_recursive( $items )`
+Replace items in the collection with the given items, recursively.
+
+```php
+$collection = collect( [ 'name' => 'John' ] )->replace_recursive( [ 'name' => 'Jane' ] );
+```
 
 ### replace
 
-`replace( $items )`
+Replace items in the collection with the given items.
+
+```php
+$collection = collect( [ 'name' => 'John' ] )->replace( [ 'name' => 'Jane' ] );
+```
 
 ### reverse
 
-`reverse()`
+Reverse items in the collection.
+
+```php
+$collection = collect( [ 1, 2, 3 ] )->reverse();
+```
 
 ### search
 
-`search( $value, $strict = false )`
+Search the collection for a given value and return the corresponding key if successful.
+
+```php
+$key = collect( [ 'name' => 'John' ] )->search( 'John' );
+```
 
 ### shift
 
-`shift()`
+Remove and return the first item from the collection.
+
+```php
+$item = collect( [ 1, 2, 3 ] )->shift(); // 1
+```
 
 ### shuffle
 
-`shuffle( $seed = null )`
+Shuffle the items in the collection.
+
+```php
+$collection = collect( [ 1, 2, 3 ] )->shuffle();
+```
 
 ### skip
 
-`skip( $count )`
+Skip the first n items.
+
+```php
+$collection = collect( [ 1, 2, 3 ] )->skip( 2 );
+```
 
 ### slice
 
-`slice( $offset, $length = null )`
+Slice the collection by the given offset and length.
+
+```php
+$collection = collect( [ 1, 2, 3 ] )->slice( 1, 2 ); // [2, 3]
+```
 
 ### some
 
-`some( $key, $operator = null, $value = null )`
+Alias for the `contains` method.
 
 ### sort_by_desc
 
-`sort_by_desc( $callback, $options = SORT_REGULAR )`
+Sort the collection by the given callback in descending order.
+
+```php
+$collection = collect( [ 3, 2, 1 ] )->sort_by_desc( function( $item ) {
+    return $item;
+} );
+```
 
 ### sort_by
 
-`sort_by( $callback, $options = SORT_REGULAR, $descending = false )`
+Sort the collection by the given callback.
+
+```php
+$collection = collect( [ 1, 3, 2 ] )->sort_by( function( $item ) {
+    return $item;
+} );
+```
 
 ### sort_desc
 
-`sort_desc( $options = SORT_REGULAR )`
+Sort the collection in descending order.
+
+```php
+$collection = collect( [ 3, 2, 1 ] )->sort_desc();
+```
 
 ### sort_keys_desc
 
-`sort_keys_desc( $options = SORT_REGULAR )`
+Sort the collection by keys in descending order.
+
+```php
+$collection = collect( [ 'b' => 2, 'a' => 1 ] )->sort_keys_desc();
+```
 
 ### sort_keys
 
-`sort_keys( $options = SORT_REGULAR, $descending = false )`
+Sort the collection by keys.
+
+```php
+$collection = collect( [ 'b' => 2, 'a' => 1 ] )->sort_keys();
+```
 
 ### sort
 
-`sort( $callback = null )`
+Sort the collection with an optional callback.
 
+```php
+$collection = collect( [ 3, 2, 1 ] )->sort();
+```
 ### splice
 
-`splice( $offset, $length = null, $replacement = [] )`
+Remove and return a portion of the collection.
+
+```php
+$collection = collect( [ 1, 2, 3, 4, 5 ] )->splice( 1, 2 );
+```
 
 ### split
 
-`split( $number_of_groups )`
+Split the collection into the given number of groups.
+
+```php
+$collection = collect( [ 1, 2, 3, 4, 5 ] )->split( 2 ); // [[1, 2, 3], [4, 5]]
+```
 
 ### sum
 
-`sum( $callback = null )`
+Get the sum of the given values.
+
+```php
+$sum = collect( [ 1, 2, 3 ] )->sum();
+
+$sum = collect( [
+    [ 'name' => 'John', 'age' => 30 ],
+    [ 'name' => 'Jane', 'age' => 25 ],
+] )->sum( 'age' );
+```
 
 ### take
 
-`take( $limit )`
+Take the first or last n items.
 
-### tap
-
-`tap( callable $callback )`
+```php
+$collection = collect( [ 1, 2, 3 ] )->take( 2 );
+```
 
 ### to_array
 
-`to_array()`
+Convert the collection to a plain array.
 
-### to_base
-
-`to_base()`
+```php
+$array = collect( [ 1, 2, 3 ] )->to_array();
+```
 
 ### to_json
 
-`to_json( $options = 0 )`
+Convert the collection to its JSON representation.
+
+```php
+$json = collect( [ 1, 2, 3 ] )->to_json();
+```
 
 ### toArray
 
-`toArray()`
-
-### transform
-
-`transform( callable $callback )`
+Alias for the `to_array` methods.
 
 ### trim
 
-`trim( string $char_list = "\n\r\t\v\x00" )`
+Trim the collection's string values.
 
-### union
-
-`union( $items )`
+```php
+$collection = collect( [ ' John ', ' Jane ' ] )->trim();
+```
 
 ### unique_strict
 
-`unique_strict( $key = null )`
+Filter the collection with a strict comparison.
+
+```php
+$collection = collect( [ 1, 2, 2, 3, 3, 3 ] )->unique_strict();
+```
 
 ### unique
 
-`unique( $key = null, $strict = false )`
+Filter the collection for unique items.
+
+```php
+$collection = collect( [ 1, 2, 2, 3, 3, 3 ] )->unique();
+```
 
 ### unless_empty
 
-`unless_empty( callable $callback, callable $default = null )`
+Execute a callback if the collection is not empty.
+
+```php
+$collection = collect( [ 1, 2, 3 ] )->unless_empty( function( $collection ) {
+    // ...
+} );
+```
 
 ### unless_not_empty
 
-`unless_not_empty( callable $callback, callable $default = null )`
+Execute a callback if the collection is empty.
+
+```php
+$collection = collect( [] )->unless_not_empty( function( $collection ) {
+    // ...
+} );
+```
 
 ### values
 
-`values()`
+Get the values of the collection items.
+
+```php
+$values = collect( [ 'name' => 'John', 'age' => 30 ] )->values();
+```
 
 ### when_empty
 
-`when_empty( callable $callback, callable $default = null )`
+Execute a callback if the collection is empty.
+
+```php
+$collection = collect( [] )->when_empty( function( $collection ) {
+    // ...
+} );
+```
 
 ### when_not_empty
 
-`when_not_empty( callable $callback, callable $default = null )`
+Execute a callback if the collection is not empty.
+
+```php
+$collection = collect( [ 1, 2, 3 ] )->when_not_empty( function( $collection ) {
+    // ...
+} );
+```
 
 ### where_between
 
-`where_between( $key, $values )`
+Filter the collection by determining if a specific item is between two values.
+
+```php
+$collection = collect( [
+    [ 'name' => 'Jack', 'age' => 35 ],
+    [ 'name' => 'John', 'age' => 30 ],
+    [ 'name' => 'Jane', 'age' => 25 ],
+] )->where_between( 'age', [ 25, 30 ] );
+```
 
 ### where_in_strict
 
-`where_in_strict( $key, $values )`
+Filter the collection by determining if a specific key / value pair is in the given array.
+
+```php
+$collection = collect( [ 'name' => 'John' ] )->where_in_strict( 'name', [ 'John' ] );
+```
 
 ### where_in
 
-`where_in( $key, $values, $strict = false )`
+Filter the collection by determining if a specific key / value pair is in the given array.
+
+```php
+$collection = collect( [ 'name' => 'John' ] )->where_in( 'name', [ 'John' ] );
+```
 
 ### where_instance_of
 
-`where_instance_of( $type )`
+Filter the collection by determining if a specific item is an instance of the given class.
+
+```php
+$collection = collect( [ new User, new Post ] )->where_instance_of( User::class );
+```
 
 ### where_not_between
 
-`where_not_between( $key, $values )`
+Filter the collection by determining if a specific item is not between two values.
+
+```php
+$collection = collect( [
+    [ 'name' => 'Jack', 'age' => 35 ],
+    [ 'name' => 'John', 'age' => 30 ],
+    [ 'name' => 'Jane', 'age' => 25 ],
+] )->where_not_between( 'age', [ 25, 30 ] );
+```
 
 ### where_not_in_strict
 
-`where_not_in_strict( $key, $values )`
+Filter the collection by determining if a specific key / value pair is not in the given array.
+
+```php
+$collection = collect( [ 'name' => 'John' ] )->where_not_in_strict( 'name', [ 'Jane' ] );
+```
 
 ### where_not_in
 
-`where_not_in( $key, $values, $strict = false )`
+Filter the collection by determining if a specific key / value pair is not in the given array.
+
+```php
+$collection = collect( [ 'name' => 'John' ] )->where_not_in( 'name', [ 'Jane' ] );
+```
 
 ### where_not_null
 
-`where_not_null( $key = null )`
+Filter the collection by determining if a specific key / value pair is not null.
+
+```php
+$collection = collect( [ 'name' => 'John' ] )->where_not_null( 'name' );
+```
 
 ### where_null
 
-`where_null( $key = null )`
+Filter the collection by determining if a specific key / value pair is null.
+
+```php
+$collection = collect( [ 'name' => null ] )->where_null( 'name' );
+```
 
 ### where_strict
 
-`where_strict( $key, $value )`
+Filter the collection by determining if a specific key / value pair is true.
+
+```php
+$collection = collect( [ 'name' => 'John' ] )->where_strict( 'name', 'John' );
+```
 
 ### where
 
-`where( $key, $operator = null, $value = null )`
+Filter the collection by determining if a specific key / value pair is true.
+
+```php
+$collection = collect( [ 'name' => 'John' ] )->where( 'name', 'John' );
+$collection = collect( [ 'name' => 'John' ] )->where( 'name', '!=', 'John' );
+```
 
 ### zip
 
-`zip( ...$items )`
-
-### __toString
-
-`__toString()`
+The `zip` method merges together the values of the given array with the values
+of the original collection at their corresponding index:
