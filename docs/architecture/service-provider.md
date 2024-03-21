@@ -123,3 +123,5 @@ class Example_Provider extends Service_Provider {
 	}
 }
 ```
+
+See [Hookable](../features/support/hookable.md) for more information.
