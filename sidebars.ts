@@ -104,7 +104,6 @@ const sidebars: SidebarsConfig = {
             'support/hookable',
             'support/macroable',
             'support/singleton',
-            'support/strings',
           ],
         },
       ],
