@@ -37,8 +37,9 @@ const sidebars: SidebarsConfig = {
         id: 'architecture/architecture',
       },
       items: [
-        'architecture/bootloader',
         'architecture/architecture',
+        'architecture/bootloader',
+        'architecture/service-provider',
         'architecture/configuration',
       ],
     },
