@@ -104,41 +104,45 @@ create "real" data quickly.
 
 // phpcs:disable Squiz.Commenting.FunctionComment.MissingParamComment
 
-namespace App\Factory;
+namespace {{ namespace }};
 
-use Faker\Generator as Faker;
 use Mantle\Support\Str;
 use App\Models\Project;
 
 /**
- * Factory definition.
+ * Project Factory
  *
- * @var \Mantle\Database\Factory\Factory $factory
+ * @extends \Mantle\Database\Factory\Post_Factory<\App\Models\Project, \WP_Post, Project>
  */
-$factory->define(
-	Project::class, // phpcs:ignore
-	function ( Faker $faker ) {
-		return [
-			'post_title'   => $faker->sentence,
-			'post_content' => $faker->paragraph,
-			'post_status'  => 'publish',
-			'post_type'    => 'project',
+class Project_Factory extends \Mantle\Database\Factory\Post_Factory {
+	/**
+	 * Model to use when creating objects.
+	 *
+	 * @var class-string<Project>
+	 */
+	protected string $model = Project::class;
 
-			'meta' 				=> [
-				'project_owner' => $faker->name,
-				'project_email' => $faker->email,
-			],
+	/**
+	 * Define the model's default state.
+	 *
+	 * @return array<string, mixed>
+	 */
+	public function definition(): array {
+		return [
+			'post_title'   => $this->faker->sentence,
+			'post_content' => $this->faker->paragraph,
+			'post_status'  => 'publish',
+			'post_type'    => '{{ object_name }}',
 		];
 	}
-);
-
+}
 ```
 
 ## Seeding Some Data
 
 By default Mantle includes a seeder in every project in the
-`wp-content/plugins/my-project/database/seeds/class-database-seeder.php` file.
-Let's open that file up and include our new factory.
+`<my-project>/database/seeds/class-database-seeder.php` file. Let's open that
+file up and include our new factory.
 
 ```php
 <?php

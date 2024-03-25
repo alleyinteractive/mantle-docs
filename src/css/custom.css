@@ -57,3 +57,7 @@ article a {
   font-size: 1.2rem;
   line-height: 2rem;
 }
+
+pre {
+  tab-size: 4;
+}

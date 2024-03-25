@@ -108,9 +108,6 @@ you can do so by booting the framework and then using the `dispatch()` helper
 // Boot the application.
 bootloader()->boot();
 
-// Dispatch a job.
-dispatch( new MyJob() );
-
 // Dispatch an anonymous job.
 dispatch( function () {
   // Do something expensive here.

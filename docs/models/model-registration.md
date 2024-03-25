@@ -1,3 +1,7 @@
+---
+title: Registration
+---
+
 # Model Registration
 
 Mantle can help you spend less time writing registration code and more time building

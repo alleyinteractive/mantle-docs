@@ -1,3 +1,7 @@
+---
+title: Relationships
+---
+
 # Model Relationships
 
 ## Introduction
@@ -121,7 +125,7 @@ error being thrown.
 ## Querying Relationships
 
 Relationships can be queried by using the method on the model (which uses a
-[query builder](./querying-models.md) to construct the query).
+[query builder](./query-builder.md) to construct the query).
 
 ```php
 $post->sponsors()->get();

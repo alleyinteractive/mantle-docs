@@ -7,7 +7,17 @@
   status = 301
   force = true
 [[redirects]]
-  from = "https://mantle.alley.com/testing-started/test-framework.html"
-  to = "https://mantle.alley.com/docs/testing"
+  from = "/testing-started/test-framework.html"
+  to = "/docs/testing"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/docs/next/models/querying-models"
+  to = "/docs/next/models/query-builder"
+  status = 301
+  force = true
+[[redirects]]
+  from = "/docs/models/querying-models"
+  to = "/docs/models/query-builder"
   status = 301
   force = true
