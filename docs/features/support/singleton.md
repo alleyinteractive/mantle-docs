@@ -7,7 +7,7 @@ instance of a class to be shared across the entire program.
 :::note
 
 If you are working with the Mantle Framework you should use the
-[Container's `singleton` method](../architecture/architecture.md) to create a
+[Container's `singleton` method](../../architecture/architecture.md) to create a
 singleton instance of a class.
 :::
 
