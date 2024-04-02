@@ -12,7 +12,9 @@ websites.
 Models can auto-register the object type they represent (a post type for a post
 model, a taxonomy for a taxonomy model). They can be generated through a `wp-cli` command:
 
-    bin/mantle make:model Product --model_type=post --registrable
+```bash
+bin/mantle make:model Product --model_type=post --registrable
+```
 
 That will generate a model that represents the `product` post type.
 
@@ -51,7 +53,9 @@ from the `app/models` directory in your application. Mantle will discover your
 models after updating composer and generating a new model. They can be manually
 discovered by running the model discovery command:
 
-    wp mantle model:discover
+```bash
+bin/mantle model:discover
+```
 
 ### Manual Model Registration
 

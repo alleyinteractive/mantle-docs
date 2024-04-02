@@ -124,6 +124,9 @@ $post->content = 'Content to set.';
 
 // is the same as...
 $post->post_content = 'Content to set.';
+
+// Save the post.
+$post->save();
 ```
 
 ### Field Aliases
@@ -135,6 +138,9 @@ Alias | Field
 ----- | -----
 `content` | `post_content`
 `date` | `post_date`
+`date_gmt` | `post_date_gmt`
+`modified` | `post_modified`
+`modified_gmt` | `post_modified_gmt`
 `description` | `post_excerpt`
 `id` | `ID`
 `title` | `post_title`
@@ -173,7 +179,47 @@ $post->delete( true );
 $term->delete();
 ```
 
-### Working with Meta
+### Interacting with Dates
+
+Post models support setting both the published and modified dates. The dates are
+expected to be datetime strings.
+
+```php
+$post->created = '2021-01-01 12:00:00';
+$post->modified = '2021-01-01 12:00:00';
+
+// Save the post.
+$post->save();
+```
+
+You can also retrieve and set the dates as `Carbon`/`DateTimeInterface` objects
+using the `dates` attribute.
+
+```php
+use Carbon\Carbon;
+
+// Retrieve the created date.
+$created = $post->dates->created; // Carbon\Carbon
+$created_gmt = $post->dates->created_gmt; // Carbon\Carbon
+
+// Retrieve the modified date.
+$modified = $post->dates->modified; // Carbon\Carbon
+$modified_gmt = $post->dates->modified_gmt; // Carbon\Carbon
+
+// Set the created date as a Carbon object.
+$post->dates->created = now()->subDay();
+
+// Set the created date as a string.
+$post->dates->created = '2021-01-01 12:00:00';
+
+// Save the post.
+$post->save();
+```
+
+You can get/set the published date using the `created` attribute and the
+modified date using the `modified` attribute.
+
+### Interacting with Meta
 
 The `Post`, `Term`, and `User` model types support setting meta easily. Models
 support a fluent way of setting meta using the `meta` attribute. The meta will
@@ -244,13 +290,15 @@ These methods will automatically update the model's meta without needing to call
 the `save()` method. If a model is not saved yet an exception will be thrown.
 :::
 
-### Working with Terms
+### Interacting with Terms
 
 The `Post` model support interacting with terms through
 [relationships](./model-relationships.md) or through the model directly. The
 model supports multiple methods to make setting terms on a post simple:
 
 ```php
+use App\Models\Post;
+
 $category = Category::whereName( 'Example Category' )->first();
 
 // Save the category to a post.
@@ -269,6 +317,8 @@ Terms can also be set when creating a post (specifying the taxonomy is
 optional):
 
 ```php
+use App\Models\Post;
+
 $post = new Post( [
   'title' => 'Example Title',
   'terms' => [ $category ],
@@ -287,6 +337,8 @@ Models also support simpler `get_terms`/`set_terms` methods for function based
 setting of a post's terms:
 
 ```php
+use App\Models\Post;
+
 $post = Post::find( 1234 );
 
 // Set the terms on a model.
@@ -321,7 +373,8 @@ core_object(): object|null
 
 In the spirit of interoperability, you can listen to model events in a uniform
 way across all model types. Currently only `Post` and `Term` models support
-events. Model events can be registered inside or outside a model.
+events. Model events can be registered inside or outside a model. One common
+place to register events is in the `boot` method of a model:
 
 ```php
 namespace App\Models;
@@ -337,17 +390,91 @@ class Post extends Base_Post {
 }
 ```
 
-The following events are supported:
+### Supported Events
 
-Method | Event
------- | -----
-`created` | After a model is created.
-`updating` | Before a model is updated.
-`updated` | After a model is updated.
-`deleting` | Before a model is deleted.
-`deleted` | After a model is deleted.
-`trashing` | Before a model is trashed.
-`trashed` | After a model is trashed.
+#### created
+
+Fired after a model is created and exists in the database.
+
+```php
+use App\Models\Post;
+
+Post::created( function( $post ) {
+  // Fired after the model is created.
+} );
+```
+
+#### updating
+
+Fired before a model is updated.
+
+```php
+use App\Models\Post;
+
+Post::updating( function( $post ) {
+  // Fired before the model is updated.
+} );
+```
+
+#### updated
+
+Fired after a model is updated.
+
+```php
+use App\Models\Post;
+
+Post::updated( function( $post ) {
+  // Fired after the model is updated.
+} );
+```
+
+#### deleting
+
+Fired before a model is deleted.
+
+```php
+use App\Models\Post;
+
+Post::deleting( function( $post ) {
+  // Fired before the model is deleted.
+} );
+```
+
+#### deleted
+
+Fired after a model is deleted.
+
+```php
+use App\Models\Post;
+
+Post::deleted( function( $post ) {
+  // Fired after the model is deleted.
+} );
+```
+
+#### trashing
+
+Fired before a model is trashed.
+
+```php
+use App\Models\Post;
+
+Post::trashing( function( $post ) {
+  // Fired before the model is trashed.
+} );
+```
+
+#### trashed
+
+Fired after a model is trashed.
+
+```php
+use App\Models\Post;
+
+Post::trashed( function( $post ) {
+  // Fired after the model is trashed.
+} );
+```
 
 :::note
 
