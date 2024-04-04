@@ -9,10 +9,9 @@
  Create as many sidebars as you want.
  */
 
-// @ts-check
+import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 
-/** @type {import('@docusaurus/plugin-content-docs').SidebarsConfig} */
-const sidebars = {
+const sidebars: SidebarsConfig = {
   docs: [
     {
       type: 'category',
@@ -38,8 +37,9 @@ const sidebars = {
         id: 'architecture/architecture',
       },
       items: [
-        'architecture/bootloader',
         'architecture/architecture',
+        'architecture/bootloader',
+        'architecture/service-provider',
         'architecture/configuration',
       ],
     },
@@ -67,11 +67,11 @@ const sidebars = {
       },
       items: [
         'models/models',
-        'models/querying-models',
+        'models/query-builder',
         'models/model-relationships',
         'models/model-registration',
-        'models/model-factory',
         'models/serialization',
+        'models/model-factory',
         'models/seeding',
       ],
     },
@@ -91,6 +91,22 @@ const sidebars = {
         'features/http-client',
         'features/queue',
         'features/scheduling-tasks',
+        {
+          type: 'category',
+          label: 'Support',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'features/support/support',
+          },
+          items: [
+            'features/support/collections',
+            'features/support/conditionable',
+            'features/support/hookable',
+            'features/support/macroable',
+            'features/support/singleton',
+          ],
+        },
       ],
     },
     {
@@ -119,6 +135,7 @@ const sidebars = {
         'testing/pest',
       ],
     },
+    // TODO: Enable this again when packages are ready.
     // {
     //   type: 'category',
     //   label: 'Packages',
@@ -132,4 +149,4 @@ const sidebars = {
   ],
 };
 
-module.exports = sidebars;
+export default sidebars;

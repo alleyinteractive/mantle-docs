@@ -13,7 +13,7 @@ The core of the bootloader is this:
 bootloader()->boot();
 ```
 
-Running that line of code will instantiate the application and load the
+Running that line of code will instantiate the application and loading the
 framework given the current content.
 
 You can also use the bootloader with your own custom application instance (like
@@ -26,6 +26,7 @@ $application = new Application();
 
 // Perform some bindings, override some contracts, etc.
 
+// Boot the application with your custom instance and custom bindings.
 bootloader( $application )->boot();
 ```
 

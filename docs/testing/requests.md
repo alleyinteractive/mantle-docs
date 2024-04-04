@@ -43,7 +43,9 @@ class Example_Test extends TestCase {
 ```
 
 The `get` method makes a `GET` requests to the given URI, and the `assertSee`
-method asserts that the given string is present in the response body.
+method asserts that the given string is present in the response body. All HTTP
+methods are available to use including `get`, `post`, `put`, `patch`, `delete`
+and `options`.
 
 ## Making Requests
 
@@ -76,7 +78,8 @@ $this->following_redirects()
 
 ### Request Cookies
 
-Requests can have cookies included with them:
+Requests can have cookies included with them using the `with_cookie` and
+`with_cookies` methods:
 
 ```php
 $this
@@ -94,7 +97,8 @@ $this
 
 ### Request Headers
 
-Request headers can be set for requests:
+Request headers can be set for requests using the `with_header` and
+`with_headers` methods:
 
 ```php
 $this
@@ -120,18 +124,21 @@ $this->from( 'https://wordpress.org/' )->get( '/example' );
 ### Asserting HTML Responses
 
 HTML responses can be tested against using various methods to assert the
-response, including `assertSee()`, `assertElementExists()`, and
-`assertElementMissing()`.
+response, including `assertSee()`, `assertElementExists()`, `assertElementMissing()`, `assertQuerySelectorExists()`, and `assertQuerySelectorMissing()`.
 
 The `assertElementExists()` and `assertElementMissing()` methods use
 [DOMXPath](https://www.php.net/manual/en/class.domxpath.php) to validate if a
-element exists on the page.
+element exists on the page. The `assertQuerySelectorExists()` and
+`assertQuerySelectorMissing()` methods use the
+[Symfony CSS Selector](https://symfony.com/doc/current/components/css_selector.html)
+to validate if a element exists on the page.
 
 ```php
 $this->get( '/example' )
   ->assertOk()
   ->assertSee( 'mantle' )
-  ->assertElementExists( '//script[@data-testid="example-script"]' );
+  ->assertElementExists( '//script[@data-testid="example-script"]' )
+  ->assertQuerySelectorExists( 'script[data-testid="example-script"]' );
 ```
 
 You can also use other methods to assert if the response has/does not have an
@@ -153,6 +160,8 @@ $this->get( '/example' )
   ->assertElementExistsByTagName( 'div' )
   ->assertElementMissingByTagName( 'script' );
 ```
+
+For more information see [Element Assertions](#element-assertions).
 
 ### Query Assertions
 
@@ -369,6 +378,22 @@ $response->assertRedirect( $uri = null );
 ```
 
 ### Element Assertions
+
+#### assertQuerySelectorExists
+
+Assert that a given CSS selector exists in the response.
+
+```php
+$response->assertQuerySelectorExists( string $selector );
+```
+
+#### assertQuerySelectorMissing
+
+Assert that a given CSS selector does not exist in the response.
+
+```php
+$response->assertQuerySelectorMissing( string $selector );
+```
 
 #### assertElementExists
 

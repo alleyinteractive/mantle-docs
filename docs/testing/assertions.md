@@ -255,3 +255,113 @@ Assert that a style is registered.
 ```php
 $this->assertStyleRegistered( string $handle );
 ```
+
+## Block Assertions
+
+Powered by [Match Blocks](https://github.com/alleyinteractive/wp-match-blocks).
+
+### assertStringMatchesBlock
+
+Assert that a string matches a block with the given optional attributes.
+
+```php
+$this->assertStringMatchesBlock( $string, $args );
+```
+
+### assertStringNotMatchesBlock
+
+Assert that a string does not match a block with the given optional attributes.
+
+```php
+$this->assertStringNotMatchesBlock( $string, $args );
+```
+
+### assertStringHasBlock
+
+Assert that a string has a block with the given optional attributes.
+
+```php
+$this->assertStringHasBlock( $string, $block_name, $attrs );
+```
+
+### assertStringNotHasBlock
+
+Assert that a string does not have a block with the given optional attributes.
+
+```php
+$this->assertStringNotHasBlock( $string, $block_name, $attrs );
+```
+
+### assertPostHasBlock
+
+Assert that a post has a block in its content with the given optional attributes.
+
+```php
+$this->assertPostHasBlock( $post, $block_name, $attrs );
+```
+
+### assertPostNotHasBlock
+
+Assert that a post does not have a block in its content with the given optional attributes.
+
+```php
+$this->assertPostNotHasBlock( $post, $block_name, $attrs );
+```
+
+## Mail Assertions
+
+### assertMailSent
+
+Assert that an email was sent to the given address or callback.
+
+```php
+$this->assertMailSent( 'example@example.com' );
+```
+
+You can also pass a callback to assert that an email was sent to any address
+matching the callback. The callback will be passed an instance of
+`\Mantle\Testing\Mail\Mail_Message`.
+
+```php
+use Mantle\Testing\Mail\Mail_Message;
+
+$this->assertMailSent(
+  fn ( Mail_Message $message ) => $message->to === 'example@example.com' && $message->subject === 'Hello, world!',
+);
+```
+
+### assertMailNotSent
+
+Assert that an email was not sent to the given address or callback.
+
+```php
+$this->assertMailNotSent( 'example@example.com' );
+```
+
+You can also pass a callback to assert that an email was not sent to any address
+matching the callback. The callback will be passed an instance of
+`\Mantle\Testing\Mail\Mail_Message`.
+
+```php
+use Mantle\Testing\Mail\Mail_Message;
+
+$this->assertMailNotSent(
+  fn ( Mail_Message $message ) => $message->to === 'example@example.com,
+);
+```
+
+# assertMailSentCount
+
+Assert that the given number of emails were sent to the given address or
+any address matching the callback.
+
+```php
+$this->assertMailSentCount( 3 );
+$this->assertMailSentCount( 3, 'example@example.com' );
+$this->assertMailSentCount( 3, fn ( Mail_Message $message ) => $message->to === 'example@example.com' );
+```
+
+## HTTP Test Assertions
+
+See [HTTP Testing](./requests.md#available-assertions) for a full list of HTTP
+test assertions.

@@ -6,7 +6,19 @@ object inside of your application. Models can also allow dynamic registration of
 a post type, REST API fields, and more. To make life easier for developers,
 Mantle models were designed with uniformity and simplicity in mind.
 
+:::tip
+The Mantle Framework is not required to use Mantle models or the
+[query builder](./query-builder.md). You can require the package in your
+application with Composer and use the models and query builder in your application.
+
+```bash
+composer require mantle-framework/database
+```
+:::
+
 ## Supported Model Types
+
+The common data structures in WordPress are supported as models:
 
 Data Type | Model Class
 --------- | -----------
@@ -81,6 +93,27 @@ class Example_Model extends Term {
 }
 ```
 
+## Creating a Dynamic Model
+
+A dynamic model is a model that is not defined in the application but is
+created on the fly. This is useful for creating a model for a post type that
+isn't defined in the application.
+
+Once the dynamic model is created, it can be used like any other model in the
+application.
+
+```php
+use Mantle\Database\Model\Post;
+
+$model = Post::for( 'my-custom-post-type' );
+
+// Create a new instance of the model.
+$instance = $model->create( [ 'title' => 'Example Title' ] );
+
+// Query the model.
+$results = $model->where( 'post_status', 'publish' )->get();
+```
+
 ## Interacting with Models
 
 Setting/updating data with a model can be done using the direct attribute name
@@ -91,6 +124,9 @@ $post->content = 'Content to set.';
 
 // is the same as...
 $post->post_content = 'Content to set.';
+
+// Save the post.
+$post->save();
 ```
 
 ### Field Aliases
@@ -101,11 +137,16 @@ $post->post_content = 'Content to set.';
 Alias | Field
 ----- | -----
 `content` | `post_content`
+`date` | `post_date`
+`date_gmt` | `post_date_gmt`
+`modified` | `post_modified`
+`modified_gmt` | `post_modified_gmt`
 `description` | `post_excerpt`
 `id` | `ID`
 `title` | `post_title`
 `name` | `post_title`
 `slug` | `post_name`
+`status` | `post_status`
 
 #### Term Aliases
 
@@ -138,12 +179,101 @@ $post->delete( true );
 $term->delete();
 ```
 
-### Working with Meta
+### Interacting with Dates
 
-The `Post`, `Term`, and `User` model types support setting meta easily. Models
-have a get/set/delete methods for meta:
+Post models support setting both the published and modified dates. The dates are
+expected to be datetime strings.
 
 ```php
+$post->created = '2021-01-01 12:00:00';
+$post->modified = '2021-01-01 12:00:00';
+
+// Save the post.
+$post->save();
+```
+
+You can also retrieve and set the dates as `Carbon`/`DateTimeInterface` objects
+using the `dates` attribute.
+
+```php
+use Carbon\Carbon;
+
+// Retrieve the created date.
+$created = $post->dates->created; // Carbon\Carbon
+$created_gmt = $post->dates->created_gmt; // Carbon\Carbon
+
+// Retrieve the modified date.
+$modified = $post->dates->modified; // Carbon\Carbon
+$modified_gmt = $post->dates->modified_gmt; // Carbon\Carbon
+
+// Set the created date as a Carbon object.
+$post->dates->created = now()->subDay();
+
+// Set the created date as a string.
+$post->dates->created = '2021-01-01 12:00:00';
+
+// Save the post.
+$post->save();
+```
+
+You can get/set the published date using the `created` attribute and the
+modified date using the `modified` attribute.
+
+### Interacting with Meta
+
+The `Post`, `Term`, and `User` model types support setting meta easily. Models
+support a fluent way of setting meta using the `meta` attribute. The meta will
+be queued for saving and saved once you call the `save()` method on the model:
+
+```php
+use App\Models\Post;
+
+$model = Post::factory()->create();
+
+// Retrieve meta value.
+$value = $model->meta->meta_key; // mixed
+
+// Update a meta value as an attribute.
+$model->meta->meta_key = 'meta-value';
+$model->save();
+
+// Delete a meta key.
+unset( $model->meta->meta_key );
+$model->save();
+```
+
+The same syntax is supported for interacting with meta as an array (no
+preference to use one over the other):
+
+```php
+use App\Models\Post;
+
+$model = Post::factory()->create();
+
+// Retrieve meta value.
+$value = $model->meta['meta_key']; // mixed
+
+// Update a meta value as an attribute.
+$model->meta['meta_key'] = 'meta-value';
+$model->save();
+
+// Delete a meta key.
+unset( $model->meta['meta_key'] );
+$model->save();
+```
+
+When interacting with the `meta` attribute, the meta will not be saved until the
+model is saved. This allows you to set multiple meta values before saving the
+model.
+
+You can also interact with meta directly using the `get_meta`, `set_meta`, and
+`delete_meta` methods:
+
+```php
+use App\Models\Post;
+
+$model = Post::factory()->create();
+
 // Meta will be stored immediately unless the model hasn't been saved yet
 // (allows you to set meta before saving the post).
 $model->set_meta( 'meta-key', 'meta-value' );
@@ -154,30 +284,21 @@ $value = $model->get_meta( 'meta-key' ); // mixed
 $model->save( [ 'meta' => [ 'meta-key' => 'meta-value' ] ] );
 ```
 
-Models also support a fluent way of setting meta using the `meta` attribute. The
-meta will be queued for saving and saved once you call the `save()` method on
-the model:
+:::note
 
-```php
-// Retrieve meta value.
-$value = $model->meta->meta_key; // mixed
+These methods will automatically update the model's meta without needing to call
+the `save()` method. If a model is not saved yet an exception will be thrown.
+:::
 
-// Update a meta value.
-$model->meta->meta_key = 'meta-value';
-$model->save();
-
-// Delete a meta key.
-unset( $model->meta->meta_key );
-$model->save();
-```
-
-### Working with Terms
+### Interacting with Terms
 
 The `Post` model support interacting with terms through
 [relationships](./model-relationships.md) or through the model directly. The
 model supports multiple methods to make setting terms on a post simple:
 
 ```php
+use App\Models\Post;
+
 $category = Category::whereName( 'Example Category' )->first();
 
 // Save the category to a post.
@@ -196,17 +317,19 @@ Terms can also be set when creating a post (specifying the taxonomy is
 optional):
 
 ```php
+use App\Models\Post;
+
 $post = new Post( [
-	'title' => 'Example Title',
-	'terms' => [ $category ],
+  'title' => 'Example Title',
+  'terms' => [ $category ],
 ] );
 
 $post = new Post( [
-	'title' => 'Example Title',
-	'terms' => [
-		'category' => [ $category ],
-		'post_tag' => [ $tag ],
-	],
+  'title' => 'Example Title',
+  'terms' => [
+    'category' => [ $category ],
+    'post_tag' => [ $tag ],
+  ],
 ] );
 ```
 
@@ -214,6 +337,8 @@ Models also support simpler `get_terms`/`set_terms` methods for function based
 setting of a post's terms:
 
 ```php
+use App\Models\Post;
+
 $post = Post::find( 1234 );
 
 // Set the terms on a model.
@@ -248,7 +373,8 @@ core_object(): object|null
 
 In the spirit of interoperability, you can listen to model events in a uniform
 way across all model types. Currently only `Post` and `Term` models support
-events. Model events can be registered inside or outside a model.
+events. Model events can be registered inside or outside a model. One common
+place to register events is in the `boot` method of a model:
 
 ```php
 namespace App\Models;
@@ -264,17 +390,96 @@ class Post extends Base_Post {
 }
 ```
 
-The following events are supported:
+### Supported Events
 
-Method | Event
------- | -----
-`created` | After a model is created.
-`updating` | Before a model is updated.
-`updated` | After a model is updated.
-`deleting` | Before a model is deleted.
-`deleted` | After a model is deleted.
-`trashing` | Before a model is trashed.
-`trashed` | After a model is trashed.
+#### created
+
+Fired after a model is created and exists in the database.
+
+```php
+use App\Models\Post;
+
+Post::created( function( $post ) {
+  // Fired after the model is created.
+} );
+```
+
+#### updating
+
+Fired before a model is updated.
+
+```php
+use App\Models\Post;
+
+Post::updating( function( $post ) {
+  // Fired before the model is updated.
+} );
+```
+
+#### updated
+
+Fired after a model is updated.
+
+```php
+use App\Models\Post;
+
+Post::updated( function( $post ) {
+  // Fired after the model is updated.
+} );
+```
+
+#### deleting
+
+Fired before a model is deleted.
+
+```php
+use App\Models\Post;
+
+Post::deleting( function( $post ) {
+  // Fired before the model is deleted.
+} );
+```
+
+#### deleted
+
+Fired after a model is deleted.
+
+```php
+use App\Models\Post;
+
+Post::deleted( function( $post ) {
+  // Fired after the model is deleted.
+} );
+```
+
+#### trashing
+
+Fired before a model is trashed.
+
+```php
+use App\Models\Post;
+
+Post::trashing( function( $post ) {
+  // Fired before the model is trashed.
+} );
+```
+
+#### trashed
+
+Fired after a model is trashed.
+
+```php
+use App\Models\Post;
+
+Post::trashed( function( $post ) {
+  // Fired after the model is trashed.
+} );
+```
+
+:::note
+
+Events do require the Mantle Framework to be instantiated if you are using models in isolation.
+:::
 
 ## Query Scopes
 
@@ -296,12 +501,12 @@ use Mantle\Database\Query\Post_Query_Builder;
 
 class Admin extends User {
   protected static function boot() {
-		static::add_global_scope(
-			'scope-name',
-			function( Post_Query_Builder $query ) {
-				return $query->whereMeta( 'is_admin', '1' );
-			}
-		)
+    static::add_global_scope(
+      'scope-name',
+      function( Post_Query_Builder $query ) {
+        return $query->whereMeta( 'is_admin', '1' );
+      }
+    )
   }
 }
 ```
@@ -315,17 +520,17 @@ use Mantle\Database\Model\Model;
 
 class Admin extends User {
 
-	protected static function boot() {
-		parent::boot();
+  protected static function boot() {
+    parent::boot();
 
-		static::add_global_scope( new Test_Scope() );
-	}
+    static::add_global_scope( new Test_Scope() );
+  }
 }
 
 class Admin_Scope implements Scope {
-	public function apply( Builder $builder, Model $model ) {
-		return $builder->whereMeta( 'is_admin', '1' );
-	}
+  public function apply( Builder $builder, Model $model ) {
+    return $builder->whereMeta( 'is_admin', '1' );
+  }
 }
 ```
 
@@ -344,13 +549,13 @@ use Mantle\Database\Model\Post as Base_Post;
 use Mantle\Database\Query\Post_Query_Builder;
 
 class Post extends Base_Post {
-	public function scopeActive( Post_Query_Builder $query ) {
-		return $query->whereMeta( 'active', '1' );
-	}
+  public function scopeActive( Post_Query_Builder $query ) {
+    return $query->whereMeta( 'active', '1' );
+  }
 
-	public function scopeOfType( Post_Query_Builder $query, string $type ) {
-		return $query->whereMeta( 'type', $type );
-	}
+  public function scopeOfType( Post_Query_Builder $query, string $type ) {
+    return $query->whereMeta( 'type', $type );
+  }
 }
 ```
 
@@ -365,23 +570,21 @@ Posts::active()->get();
 Posts::ofType( 'type-to-query' )->get();
 ```
 
-## Creating a Dynamic Model
+## Querying Models
 
-A dynamic model is a model that is not defined in the application but is
-created on the fly. This is useful for creating a model for a post type that
-isn't defined in the application.
-
-Once the dynamic model is created, it can be used like any other model in the
-application.
+The query builder provides a fluent interface to query models. The query builder
+is a powerful tool to query models in a uniform way. You can call a query
+builder method on the model itself or call the `query()` method to create a new
+query builder instance.
 
 ```php
-use Mantle\Database\Model\Post;
-
-$model = Post::for( 'my-custom-post-type' );
-
-// Create a new instance of the model.
-$instance = $model->create( [ 'title' => 'Example Title' ] );
+use App\Models\Post;
 
 // Query the model.
-$results = $model->where( 'post_status', 'publish' )->get();
+$results = Post::query()->where( 'post_status', 'publish' )->get();
+
+// Or use the model directly.
+$query = Post::where( 'post_status', 'publish' );
 ```
+
+For more information on querying models, see [Querying Models](./query-builder.md).
