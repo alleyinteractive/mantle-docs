@@ -131,6 +131,7 @@ const sidebars: SidebarsConfig = {
         'testing/traits',
         'testing/users',
         'testing/cron',
+        'testing/helpers',
         'testing/continuous-integration',
         'testing/pest',
       ],
