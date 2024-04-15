@@ -379,6 +379,18 @@ $response->assertRedirect( $uri = null );
 
 ### Element Assertions
 
+Element assertions are used to assert the presence, absence, etc. of elements in
+the response body. These assertions use
+[DOMXPath](https://www.php.net/manual/en/class.domxpath.php) and support query
+selectors via the `symfony/css-selector` package.
+
+
+:::tip Are you looking to assert against a HTML string that is not a response?
+
+If you are looking to assert against a HTML string that is not a response, you
+can use the [HTML String](./helpers.md#html-string) helper to make assertions.
+:::
+
 #### assertQuerySelectorExists
 
 Assert that a given CSS selector exists in the response.
@@ -457,6 +469,89 @@ Assert that a given tag name does not exist in the response.
 
 ```php
 $response->assertElementMissingByTagName( string $tag_name );
+```
+
+#### assertElementCount
+
+Assert that the response has the expected number of elements matching the given
+XPath expression.
+
+```php
+$response->assertElementCount( string $expression, int $expected );
+```
+
+#### assertQuerySelectorCount
+
+Assert that the response has the expected number of elements matching the given
+CSS selector.
+
+```php
+$response->assertQuerySelectorCount( string $selector, int $expected );
+```
+
+#### assertElementExistsByTestId
+
+Assert that an element with the given `data-testid` attribute exists in the response.
+
+```php
+$response->assertElementExistsByTestId( string $test_id );
+```
+
+#### assertElementMissingByTestId
+
+Assert that an element with the given `data-testid` attribute does not exist in the response.
+
+```php
+$response->assertElementMissingByTestId( string $test_id );
+```
+
+#### assertElement
+
+Assert that the given element exists in the response and passes the given
+assertion. This can be used to make custom assertions against the element that
+cannot be expressed in a simple XPath expression or query selector.
+
+```php
+$response->assertElement( string $expression, callable $assertion, bool $pass_any = false );
+```
+
+If `$pass_any` is `true`, the assertion will pass if any of the elements pass
+the assertion. Otherwise, all elements must pass the assertion. Let's take a
+look at an example:
+
+```php
+use DOMElement;
+
+$response->assertElement(
+  '//div',
+  fn ( DOMElement $element ) => $this->assertEquals( 'Hello World', $element->textContent )
+    && $this->assertNotEmpty( $element->getAttribute( 'class' ) ) );
+  },
+);
+```
+
+#### assertQuerySelector
+
+Assert that the given CSS selector exists in the response and passes the given
+assertion. Similar to `assertElement`, this can be used to make custom
+assertions against the element that cannot be expressed in a simple XPath
+expression or query selector.
+
+```php
+$response->assertQuerySelector( string $selector, callable $assertion, bool $pass_any = false );
+```
+
+Let's take a look at an example:
+
+```php
+use DOMElement;
+
+$response->assertQuerySelector(
+  'div > p',
+  fn ( DOMElement $element ) => $this->assertEquals( 'Hello World', $element->textContent )
+    && $this->assertNotEmpty( $element->getAttribute( 'class' ) ) );
+  },
+);
 ```
 
 ### Header Assertions
