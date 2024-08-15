@@ -404,7 +404,7 @@ $this->fake_request( 'https://example.com/file' )
 mock_http_response()->with_filename( 'test.txt' );
 ```
 
-### `with_image( ?string $filename = null )`
+#### `with_image( ?string $filename = null )`
 
 Create a response with an image as the response body. The image will be a JPEG
 image by default.

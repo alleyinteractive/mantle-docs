@@ -82,16 +82,13 @@ Requests can have cookies included with them using the `with_cookie` and
 `with_cookies` methods:
 
 ```php
-$this
-  ->with_cookie( 'session', 'cookie-value' );
-  ->get( '/endpoint' );
+$this->with_cookie( 'session', 'cookie-value' )->get( '/endpoint' );
 
 // Pass multiple cookies.
-$this
-  ->with_cookies( [
-    'key'     => 'value',
-    'another' => 'value',
-  ] )
+$this->with_cookies( [
+  'key'     => 'value',
+  'another' => 'value',
+] )
   ->get( '/example' );
 ```
 
@@ -101,16 +98,33 @@ Request headers can be set for requests using the `with_header` and
 `with_headers` methods:
 
 ```php
-$this
-  ->with_header( 'api-key', '<value>' )
-  ->get( '/example' );
+$this->with_header( 'api-key', '<value>' )->get( '/example' );
 
-$this
-  ->with_headers( [
-    'API-Key' => '<value>',
-    'X-Nonce' => 'nonce',
-  ] )
+$this->with_headers( [
+  'API-Key' => '<value>',
+  'X-Nonce' => 'nonce',
+] )
   ->get( '/example' );
+```
+
+The `with_header`/`with_headers` methods can be used to set headers for any
+request but will only be used for that request you are chaining them to. If you
+want to set headers for all requests, you can use the `add_default_header`
+method to set a default header that will be used for all requests:
+
+```php
+$this->add_default_header( 'X-Header-Name', 'header-value' );
+
+$this->add_default_header( [
+  'X-Header-Name' => 'header-value',
+  'X-Another-Header' => 'another-value',
+] );
+```
+
+You can remove the default headers using the `flush_default_headers` method:
+
+```php
+$this->flush_default_headers();
 ```
 
 ### Request Referrer
@@ -121,7 +135,42 @@ The request referrer can be passed using the `from` method:
 $this->from( 'https://wordpress.org/' )->get( '/example' );
 ```
 
-### Asserting HTML Responses
+## Testing Responses
+
+After making a request, you can make assertions against the response using the
+`Mantle\Testing\Test_Response` object returned by the request methods. The class
+has various methods to make assertions against the response with some more
+specific to the type of response (HTML, JSON, etc.).
+
+```php
+namespace Tests\Feature;
+
+use Tests\TestCase;
+
+class ExampleTest extends TestCase {
+  /**
+   * A basic test example.
+   *
+   * @return void
+   */
+  public function test_basic_test() {
+    $post = static::factory()->post->create_and_get( [
+      'post_title' => 'Hello World',
+    ] );
+
+    $this->get( $post->permalink() )
+      ->assertOk()
+      ->assertSee( 'Hello World' );
+  }
+}
+```
+
+All available assertions are listed in the
+[Available Assertions](#available-assertions) section. The following sections will
+provide examples of how to use some of the most common assertions with some examples
+for specific types of responses.
+
+## Testing HTML Responses
 
 HTML responses can be tested against using various methods to assert the
 response, including `assertSee()`, `assertElementExists()`, `assertElementMissing()`, `assertQuerySelectorExists()`, and `assertQuerySelectorMissing()`.

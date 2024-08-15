@@ -17,7 +17,7 @@ you a full solution for making and testing external HTTP requests end-to-end.
 The HTTP Client is installed by default with Mantle. It also supports being used
 outside of the framework.
 
-<Tabs>
+<Tabs groupId="use-preference">
   <TabItem value="framework" label="Framework Use" default>
 
 The Http Client is included with Mantle out of the box.
@@ -68,8 +68,238 @@ $response = $http
   </TabItem>
 </Tabs>
 
+### Request Data
 
-### Responses
+Many HTTP requests include some sort of a payload for `POST`, `PUT`, `PATCH`,
+and `DELETE` methods. These methods access an array of data as their second
+argument. By default these will be sent using JSON:
+
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
+
+    Http::post( 'http://example.org/endpoint', [
+      'name' => 'Mantle',
+    ] );
+    ```
+  </TabItem>
+  <TabItem value="orange" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
+
+    ( new Factory() )->post( 'http://example.org/endpoint', [
+      'name' => 'Mantle',
+    ] );
+    ```
+  </TabItem>
+</Tabs>
+
+#### Sending a Body
+
+Requests can also be made using a form body or a raw body:
+
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
+
+    Http::as_form()->post( 'http://example.org/endpoint', [
+      'name' => 'Mantle',
+    ] );
+
+    Http::with_body( 'raw-body' )->post( 'http://example.org/endpoint' );
+    ```
+  </TabItem>
+  <TabItem value="orange" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
+
+    ( new Factory() )->as_form()->post( 'http://example.org/endpoint', [
+      'name' => 'Mantle',
+    ] );
+
+    ( new Factory() )->with_body( 'raw-body' )->post( 'http://example.org/endpoint' );
+    ```
+  </TabItem>
+</Tabs>
+
+#### GET Request Query Parameters
+
+When making `GET` requests, you can either pass a URL with a query string
+directly or pass an array of key / value pairs as the second argument:
+
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
+
+    // The actual URL will be https://example.org/query?name=mantle
+    Http::get( 'https://example.org/query', [
+      'name' => 'mantle',
+    ] );
+    ```
+  </TabItem>
+  <TabItem value="orange" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
+
+    // The actual URL will be https://example.org/query?name=mantle
+    ( new Factory() )->get( 'https://example.org/query', [
+      'name' => 'mantle',
+    ] );
+    ```
+  </TabItem>
+</Tabs>
+
+### Headers
+
+Headers can be added to a request using the `with_header()` and `with_headers()`
+methods:
+
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    Http::with_headers( [
+      'X-Api-Key' => 'password',
+    ] )->post( 'https://example.org' );
+
+    Http::with_header( 'X-Special-Header', 'value' )->post( 'https://example.org' );
+    ```
+  </TabItem>
+  <TabItem value="orange" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
+
+    ( new Factory() )->with_headers( [
+      'X-Api-Key' => 'password',
+    ] )->post( 'https://example.org' );
+
+    ( new Factory() )->with_header( 'X-Special-Header', 'value' )->post( 'https://example.org' );
+    ```
+  </TabItem>
+</Tabs>
+
+The `accept` method can be used to specify the content type that your
+application is expecting in response:
+
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    Http::accept( 'text/plain' )->post( 'https://example.org' );
+    Http::accept_json()->post( 'https://example.org' );
+    ```
+  </TabItem>
+  <TabItem value="orange" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
+
+    ( new Factory() )->accept( 'text/plain' )->post( 'https://example.org' );
+    ( new Factory() )->accept_json()->post( 'https://example.org' );
+    ```
+  </TabItem>
+</Tabs>
+
+### Authentication
+
+You can specify basic authentication and bearer token credentials with built-in
+helper methods:
+
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    Http::with_basic_auth( 'username', 'password' )->post( 'https://example.org' );
+
+    // Passed as Authorization: Bearer <value>
+    Http::with_token( '<value>' )->post( 'https://example.org' );
+    ```
+  </TabItem>
+  <TabItem value="orange" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
+
+    ( new Factory() )->with_basic_auth( 'username', 'password' )->post( 'https://example.org' );
+
+    // Passed as Authorization: Bearer
+    ( new Factory() )->with_token( '<value>' )->post( 'https://example.org' );
+    ```
+  </TabItem>
+</Tabs>
+
+### Timeout
+
+The `timeout` method may be used to specify a maximum number of seconds to wait
+for a response. The default is 5 seconds:
+
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    Http::timeout( 10 )->post( 'https://example.org' );
+    ```
+  </TabItem>
+  <TabItem value="orange" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
+
+    ( new Factory() )->timeout( 10 )->post( 'https://example.org' );
+    ```
+  </TabItem>
+</Tabs>
+
+### Retries
+
+If you would like HTTP client to automatically retry the request if a client or
+server error occurs, you may use the `retry` method. The `retry` method accepts
+the maximum number of times the request should be attempted and the number of
+milliseconds that Mantle should wait in between attempts:
+
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    Http::retry( 3 )->post( 'https://example.org' );
+    ```
+  </TabItem>
+  <TabItem value="orange" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
+
+    ( new Factory() )->retry( 3 )->post( 'https://example.org' );
+    ```
+  </TabItem>
+</Tabs>
+
+### Error Handling
+
+By default, errors will be handled and converted into a
+`Mantle\Http_Client\Response` object. This includes `WP_Error` objects that are
+returned by WordPress. No exceptions are thrown by default.
+
+Optionally, you can opt for an exception to be thrown if an error occurs:
+
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    try {
+      Http::throw_exception()->post( 'https://example.org' );
+    } catch ( \Mantle\Http_Client\Http_Client_Exception $e ) {
+      // Handle the exception.
+    }
+    ```
+  </TabItem>
+  <TabItem value="orange" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
+
+    try {
+      ( new Factory() )->throw_exception()->post( 'https://example.org' );
+    } catch ( \Mantle\Http_Client\Http_Client_Exception $e ) {
+      // Handle the exception.
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+## Responses
 
 The HTTP client will return an instance of `Mantle\Http_Client\Response`, which
 provides a flexible wrapper on top of the raw WordPress HTTP API response.
@@ -86,7 +316,10 @@ $response->failed(): bool
 $response->forbidden(): bool
 $response->header( string $header )
 $response->headers(): array
+$response->is_blob();
+$response->is_file();
 $response->is_json(): bool
+$response->is_wp_error(): bool
 $response->is_xml(): bool
 $response->json( $key = null, $default = null )
 $response->object()
@@ -106,6 +339,8 @@ allowing you to access JSON/XML response properties directly on the response.
 ```php
 return Http::get( 'https://httpbin.org/json' )['slideshow'];
 ```
+
+### Inspecting Responses
 
 #### Client Error Status Code
 
@@ -259,9 +494,9 @@ use Mantle\Facade\Http;
 $cookies = Http::get( 'https://httpbin.org/cookies' )->cookies();
 ```
 
-#### Response Is JSON
+#### Response is JSON
 
-The `is_json()` method will return `true` if the response is JSON:
+The `is_json()` method will return `true` if the Response is JSON:
 
 ```php
 use Mantle\Facade\Http;
@@ -269,9 +504,40 @@ use Mantle\Facade\Http;
 $response = Http::get( 'https://httpbin.org/json' )->is_json();
 ```
 
-#### Response Is XML
+#### Response is WP Error
 
-The `is_xml()` method will return `true` if the response is XML:
+The `is_wp_error()` method will return `true` if the Response is a WordPress
+error that was converted to a `WP_Error` object:
+
+```php
+use Mantle\Facade\Http;
+
+$response = Http::get( 'https://httpbin.org/status/404' )->is_wp_error();
+```
+
+#### Response is File
+
+The `is_file()` method will return `true` if the Response is a file:
+
+```php
+use Mantle\Facade\Http;
+
+$response = Http::get( 'https://httpbin.org/image/png' )->is_file();
+```
+
+#### Response is Blob
+
+The `is_blob()` method will return `true` if the Response is a blob (binary or file):
+
+```php
+use Mantle\Facade\Http;
+
+$response = Http::get( 'https://httpbin.org/image/png' )->is_blob();
+```
+
+#### Response is XML
+
+The `is_xml()` method will return `true` if the Response is XML:
 
 ```php
 use Mantle\Facade\Http;
@@ -309,119 +575,6 @@ supports retrieving a specific XPath.
 use Mantle\Facade\Http;
 
 $response = Http::get( 'https://httpbin.org/xml' )->xml( '/slideshow/slide' );
-```
-
-### Request Data
-
-Many HTTP requests include some sort of a payload for `POST`, `PUT`, `PATCH`,
-and `DELETE` methods. These methods access an array of data as their second
-argument. By default these will be sent using JSON:
-
-```php
-use Mantle\Facade\Http;
-
-Http::post( 'http://example.org/endpoint', [
-  'name' => 'Mantle',
-] );
-```
-
-#### Sending a Body
-
-Requests can also be made using a form body or a raw body:
-
-```php
-use Mantle\Facade\Http;
-
-Http::as_form()->post( 'http://example.org/endpoint', [
-  'name' => 'Mantle',
-] );
-
-Http::with_body( 'raw-body' )->post( 'http://example.org/endpoint' );
-```
-
-#### GET Request Query Parameters
-
-When making `GET` requests, you can either pass a URL with a query string
-directly or pass an array of key / value pairs as the second argument:
-
-```php
-use Mantle\Facade\Http;
-
-// The actual URL will be https://example.org/query?name=mantle
-Http::get( 'https://example.org/query', [
-  'name' => 'mantle',
-] );
-```
-
-### Headers
-
-Headers can be added to a request using the `with_header()` and `with_headers()`
-methods:
-
-```php
-Http::with_headers( [
-  'X-Api-Key' => 'password',
-] )->post( 'https://example.org' );
-
-Http::with_header( 'X-Special-Header', 'value' )->post( 'https://example.org' );
-```
-
-The `accept` method can be used to specify the content type that your
-application is expecting in response:
-
-```php
-Http::accept( 'text/plain' )->post( 'https://example.org' );
-Http::accept_json()->post( 'https://example.org' );
-```
-
-### Authentication
-
-You can specify basic authentication and bearer token credentials with built-in
-helper methods:
-
-```php
-Http::with_basic_auth( 'username', 'password' )->post( 'https://example.org' );
-
-// Passed as Authorization: Bearer <value>
-Http::with_token( '<value>' )->post( 'https://example.org' );
-```
-
-### Timeout
-
-The `timeout` method may be used to specify a maximum number of seconds to wait
-for a response. The default is 5 seconds:
-
-```php
-Http::timeout( 10 )->post(...);
-```
-
-### Retries
-
-If you would like HTTP client to automatically retry the request if a client or
-server error occurs, you may use the `retry` method. The `retry` method accepts
-the maximum number of times the request should be attempted and the number of
-milliseconds that Mantle should wait in between attempts:
-
-```php
-Http::retry( 3 )->post(...);
-```
-
-### Error Handling
-
-By default, errors will be handled and converted into a
-`Mantle\Http_Client\Response` object. This includes `WP_Error` objects that are
-returned by WordPress. No exceptions are thrown by default.
-
-Optionally, you can opt for an exception to be thrown if an error occurs:
-
-```php
-use Mantle\Facade\Http;
-
-try {
-  Http::throw_exception()->post(...);
-} catch ( \Mantle\Http_Client\Http_Client_Exception $e ) {
-  // Handle the exception.
-}
 ```
 
 ## Base API Client
@@ -474,39 +627,81 @@ Thankfully, you may accomplish this using the `pool` method. The `pool` method
 accepts a closure which receives an `Mantle\Http_Client\Pool` instance,
 allowing you to easily add requests to the request pool for dispatching:
 
-```php
-use Mantle\Http_Client\Pool;
-use Mantle\Facade\Http;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Http_Client\Pool;
+    use Mantle\Facade\Http;
 
-$responses = Http::pool( fn ( Pool $pool ) => [
-    $pool->get( 'http://localhost/first' ),
-    $pool->get( 'http://localhost/second' ),
-    $pool->get( 'http://localhost/third' ),
-] );
+    $responses = Http::pool( fn ( Pool $pool ) => [
+        $pool->get( 'http://localhost/first' ),
+        $pool->get( 'http://localhost/second' ),
+        $pool->get( 'http://localhost/third' ),
+    ] );
 
-return $responses[0]->ok() &&
-  $responses[1]->ok() &&
-  $responses[2]->ok();
-```
+    return $responses[0]->ok() &&
+      $responses[1]->ok() &&
+      $responses[2]->ok();
+    ```
+  </TabItem>
+  <TabItem value="orange" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Pool;
+    use Mantle\Http_Client\Factory;
+
+    $responses = ( new Factory() )->pool( fn ( Pool $pool ) => [
+        $pool->get( 'http://localhost/first' ),
+        $pool->get( 'http://localhost/second' ),
+        $pool->get( 'http://localhost/third' ),
+    ] );
+
+    return $responses[0]->ok() &&
+      $responses[1]->ok() &&
+      $responses[2]->ok();
+    ```
+  </TabItem>
+</Tabs>
 
 As you can see, each response instance can be accessed based on the order it was
 added to the pool. If you wish, you can name the requests using the `as` method,
 which allows you to access the corresponding responses by name:
 
-```php
-use Mantle\Http_Client\Pool;
-use Mantle\Facade\Http;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Http_Client\Pool;
+    use Mantle\Facade\Http;
 
-$responses = Http::pool( fn ( Pool $pool ) => [
-    $pool->as( 'first' )->get( 'http://localhost/first' ),
-    $pool->as( 'second' )->get( 'http://localhost/second' ),
-    $pool->as( 'third' )->get( 'http://localhost/third' ),
-] );
+    $responses = Http::pool( fn ( Pool $pool ) => [
+        $pool->as( 'first' )->get( 'http://localhost/first' ),
+        $pool->as( 'second' )->get( 'http://localhost/second' ),
+        $pool->as( 'third' )->get( 'http://localhost/third' ),
+    ] );
 
-return $responses['first']->ok() &&
-  $responses['second']->ok() &&
-  $responses['third']->ok();
-```
+    return $responses['first']->ok() &&
+      $responses['second']->ok() &&
+      $responses['third']->ok();
+    ```
+  </TabItem>
+  <TabItem value="orange" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Pool;
+    use Mantle\Http_Client\Factory;
+
+    $responses = ( new Factory() )->pool( fn ( Pool $pool ) => [
+        $pool->as( 'first' )->get( 'http://localhost/first' ),
+        $pool->as( 'second' )->get( 'http://localhost/second' ),
+        $pool->as( 'third' )->get( 'http://localhost/third' ),
+    ] );
+
+    return $responses['first']->ok() &&
+      $responses['second']->ok() &&
+      $responses['third']->ok();
+    ```
+  </TabItem>
+</Tabs>
+
+
 
 ## Testing Http Client
 
