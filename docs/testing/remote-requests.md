@@ -18,7 +18,8 @@ API](https://developer.wordpress.org/reference/functions/wp_remote_request/)
 
 ## Faking Requests
 
-Intercept all remote requests with a specified response code and body.
+Intercept all remote requests with a specified response code and body using the
+`$this->fake_request()` method.
 
 ```php
 namespace App\Tests;
@@ -38,9 +39,55 @@ class ExampleRequestTest extends Test_Case {
 }
 ```
 
-The `fake_request()` method returns a `Mantle\Testing\Mock_Http_Response` object
+The `$this->fake_request()` method returns a `Mantle\Testing\Mock_Http_Response` object
 that can allow you to fluently build a response. See [generating responses](#generating-responses)
 for more information about building a response.
+
+### Faking a Specific Endpoint
+
+You can specify a specific endpoint to fake by passing a URL to the
+`$this->fake_request()` method.
+
+```php
+namespace App\Tests;
+
+class ExampleRequestTest extends Test_Case {
+  /**
+   * Example test.
+   */
+  public function test_example() {
+    $this->fake_request( 'https://example.com/path' )
+      ->with_response_code( 404 )
+      ->with_body( 'test body' );
+
+    // You can now make a remote request to `https://example.com/path` and it will
+    // return a 404.
+    $response = wp_remote_get( 'https://example.com/path' );
+  }
+}
+```
+
+You can also use wildcards in the URL to match multiple endpoints. The following
+example will match any request to `https://example.com/*`.
+
+```php
+namespace App\Tests;
+
+class ExampleRequestTest extends Test_Case {
+  /**
+   * Example test.
+   */
+  public function test_example() {
+    $this->fake_request( 'https://example.com/*' )
+      ->with_response_code( 404 )
+      ->with_body( 'test body' );
+
+    // You can now make a remote request to `https://example.com/` and it will
+    // return a 404.
+    $response = wp_remote_get( 'https://example.com/test' );
+  }
+}
+```
 
 ### Faking Multiple Endpoints
 
@@ -111,7 +158,7 @@ class ExampleRequestTest extends Test_Case {
           return;
         }
 
-        return mock_http_response()
+        return $this->mock_response()
           ->with_response_code( 123 )
           ->with_body( 'alley!' );
       }
@@ -142,20 +189,33 @@ class ExampleRequestTest extends Test_Case {
     $this->fake_request(
       [
         'https://github.com/*' => mock_http_sequence()
+          // Push a status code.
           ->push_status( 200 )
-          ->push_status( 400 )
-          ->push_status( 500 )
+
+          // Push a JSON response.
+          ->push_json( [ 1, 2, 3 ] )
+
+          // Push a response with a body.
+          ->push_body( 'test body' )
+
+          // Push a entire response object.
+          ->push( mock_http_response()->with_status( 204 ) )
       ],
     );
   }
 }
 ```
 
-Any request made in the above example will use a response in the defined
-sequence. When all the responses in a sequence have been consumed, further
-requests will throw an exception because there are no remaining responses that
-can be returned.. You can also specify a default response that will be returned
-when there are no responses left in the sequence:
+Any request made in the above example will use a response in the provided
+sequence. There are various helpers such as `push_status`, `push_json`,
+`push_body`, etc. that can be used to help create a response. You can also pass
+a `Mantle\Testing\Mock_Http_Response` object to the `push` method to push a
+specific response.
+
+When all the responses in a sequence have been consumed, further requests will
+throw an exception because there are no remaining responses that can be
+returned. You can also specify a default response that will be returned when
+there are no responses left in the sequence:
 
 ```php
 namespace App\Tests;
@@ -171,8 +231,9 @@ class ExampleRequestTest extends Test_Case {
     $this->fake_request(
       [
         'https://github.com/*' => mock_http_sequence()
-          ->push( mock_http_response()->with_json( [ 1, 2, 3 ] )
-          ->push( mock_http_response()->with_json( [ 4, 5, 6 ] )
+          ->push_status( 200 )
+          ->push_status( 400 )
+          ->push_status( 500 )
           ->when_empty( mock_http_response()->with_json( [ 4, 5, 6 ] )
       ],
     );
@@ -180,11 +241,43 @@ class ExampleRequestTest extends Test_Case {
 }
 ```
 
+### Faking a Specific HTTP Method
+
+By default, a HTTP request will be faked regardless of the method used. If you
+want to fake a request only when a specific method is used, you can pass the
+`method` argument to the `$this->fake_request()` method:
+
+```php
+namespace App\Tests;
+
+class ExampleRequestTest extends Test_Case {
+  /**
+   * Example test.
+   */
+  public function test_example() {
+    $this->fake_request( 'https://example.com/', method: 'GET' )
+      ->with_response_code( 200 )
+      ->with_body( 'test body' );
+
+    $this->fake_request( 'https://example.com/', method: 'POST' )
+      ->with_response_code( 201 )
+      ->with_body( 'test created' );
+
+    // You can now make a remote request and it will return the first fake.
+    $response = wp_remote_get( 'https://example.com/' );
+
+    // You can now make a remote request and it will return the second fake.
+    $response = wp_remote_post( 'https://example.com/' );
+  }
+}
+```
+
 ### Generating Responses
 
-`Mantle\Testing\Mock_Http_Response` class and `mock_http_response()` helper
-exists to help you fluently build a mock remote response. The following methods
-are available to build a response and can be chained together:
+`Mantle\Testing\Mock_Http_Response` class, and the
+`$this->mock_response()`/`mock_http_response()` helpers exists to help you
+fluently build a mock remote response. The following methods are available to
+build a response and can be chained together:
 
 #### `with_status( int $status )` / `with_response_code( int $status )`
 
@@ -290,6 +383,10 @@ Create a response with a file as the response body. The appropriate
 ```php
 use function Mantle\Testing\mock_http_response;
 
+$this->fake_request( 'https://example.com/file' )
+  ->with_file( '/path/to/file' );
+
+// Use the `mock_http_response` helper if you'd like.
 mock_http_response()->with_file( '/path/to/file' );
 ```
 
@@ -300,7 +397,26 @@ Create a response with a specific filename.
 ```php
 use function Mantle\Testing\mock_http_response;
 
+$this->fake_request( 'https://example.com/file' )
+  ->with_filename( 'test.txt' );
+
+// Use the `mock_http_response` helper if you'd like.
 mock_http_response()->with_filename( 'test.txt' );
+```
+
+### `with_image( ?string $filename = null )`
+
+Create a response with an image as the response body. The image will be a JPEG
+image by default.
+
+```php
+use function Mantle\Testing\mock_http_response;
+
+$this->fake_request( 'https://example.com/image' )
+  ->with_image();
+
+// Use the `mock_http_response` helper if you'd like.
+mock_http_response()->with_image();
 ```
 
 ## Asserting Requests
