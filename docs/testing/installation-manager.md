@@ -158,6 +158,22 @@ the `MANTLE_REQUIRE_OBJECT_CACHE` environmental variable to `true`.
 
 :::
 
+### Including Redis Object Cache Drop-In
+
+If your project uses Redis for object caching, you can include the
+[wp-redis object-cache.php](https://github.com/pantheon-systems/wp-redis/blob/HEAD/object-cache.php)
+file instead.
+
+```php
+Mantle\Testing\manager()
+  ->maybe_rsync_wp_content()
+  ->with_object_cache( 'redis' )
+  ->install();
+```
+
+You can also set the `MANTLE_INSTALL_OBJECT_CACHE` environmental variable to
+`redis` and Mantle will automatically include the Redis Object Cache Drop-In for you.
+
 ### Using SQLite for the Database
 
 Mantle can automatically configure WordPress to use SQLite for the database
