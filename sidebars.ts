@@ -104,6 +104,7 @@ const sidebars: SidebarsConfig = {
             'features/support/conditionable',
             'features/support/hookable',
             'features/support/macroable',
+            'features/support/pipeline',
             'features/support/singleton',
           ],
         },
