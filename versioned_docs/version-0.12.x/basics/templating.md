@@ -55,7 +55,7 @@ echo mantle_get_var( 'foo' );
 
 Inside of [Blade Templates](#blade-templates) variables can access the variables
 directly. Blade will automatically escape the contents of a variable when using
-`\{\{ ... \}\}`.
+`{{ ... }}`.
 
 ```php
 Hello {{ $foo }}!
