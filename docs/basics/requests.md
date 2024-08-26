@@ -172,6 +172,32 @@ Route::get('/route-to-protect', function() {
 } )->middleware( 'can:manage_options', Example_Middleware::class );
 ```
 
+#### Removing Middleware
+
+Middleware can be removed from a route by using the `without_middleware` method.
+You can pass a single middleware, an array of middleware to remove, or remove
+all middleware.
+
+```php
+use Mantle\Facade\Route;
+
+Route::get( '/route', function() {
+	// ...
+} )->without_middleware( 'middleware_name' );
+```
+
+Once common use case is to remove the wrap template middleware (which will wrap
+your response in a WordPress header/footer). You can use the
+`without_wrap_template()` method.
+
+```php
+use Mantle\Facade\Route;
+
+Route::get( '/route', function() {
+	// ...
+} )->without_wrap_template();
+```
+
 ### Route Prefix
 
 Routes can be prefixed to make it easier to group routes together.

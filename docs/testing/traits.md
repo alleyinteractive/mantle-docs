@@ -40,3 +40,9 @@ The `Mantle\Testing\Concerns\Prevent_Remote_Requests` trait will prevent remote
 requests from being made during tests. This is useful for testing code that
 makes remote requests, but you don't want to actually make the requests or fake
 them.
+
+## Reset Data Structures
+
+The `Mantle\Testing\Concerns\Reset_Data_Structures` trait will reset data
+structures between tests. This will reset all post types and taxonomies that are
+registered before each test is run.

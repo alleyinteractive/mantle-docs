@@ -102,8 +102,10 @@ const sidebars: SidebarsConfig = {
           items: [
             'features/support/collections',
             'features/support/conditionable',
+            'features/support/classname',
             'features/support/hookable',
             'features/support/macroable',
+            'features/support/pipeline',
             'features/support/singleton',
           ],
         },
