@@ -488,9 +488,56 @@ $collection = collect( [ [ 'John', 30 ], [ 'Jane', 25 ] ] )->map_spread( functio
 Map the collection to a dictionary.
 
 ```php
-$dictionary = collect( [ 'name' => 'John', 'age' => 30 ] )->map_to_dictionary( function( $value, $key ) {
-    return [ $key, $value ];
-} );
+$dictionary = collect( [
+    [
+        'name' => 'John',
+        'department' => 'Sales',
+    ],
+    [
+        'name' => 'Jane',
+        'department' => 'Marketing',
+    ],
+    [
+        'name' => 'Jack',
+        'department' => 'Sales',
+    ],
+] )->map_to_dictionary( function ( $item ) {
+    return [
+        $item['department'] => $item['name'],
+    ];
+} ); // [ 'Marketing' => ['John', 'Jane'], 'Sales' => ['Jack']]
+```
+
+You can also return false/null to skip an item.
+
+```php
+$dictionary = collect( [
+    [
+        'name' => 'John',
+        'department' => 'Sales',
+    ],
+    [
+        'name' => 'Jane',
+        'department' => 'Marketing',
+    ],
+    [
+        'name' => 'Jack',
+        'department' => 'Sales',
+    ],
+    [
+        'name' => 'Adam',
+        'department' => 'Tech',
+    ],
+    ]
+] )->map_to_dictionary( function ( $item ) {
+    if ( $item['department'] === 'Sales' ) {
+        return false;
+    }
+
+    return [
+        $item['department'] => $item['name'],
+    ];
+} ); // ['Marketing' => ['Jane'], 'Tech' => ['Adam']]
 ```
 
 ### map_to_groups
