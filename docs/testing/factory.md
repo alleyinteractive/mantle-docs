@@ -52,6 +52,25 @@ class ExampleTests extends Testkit_Test_Case {
 For more information on how to generate content with factories, see the
 [Model Factory: Generated Content](/docs/models/model-factory#generating-content) documentation.
 
+Factories for custom post types/taxonomies can be instantiated by calling the
+relevant post type/taxonomy name when retrieving the factory:
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class ExampleTests extends Testkit_Test_Case {
+
+  public function test_factory() {
+    static::factory()->custom_post_type->create_and_get(); // WP_Post
+    static::factory()->custom_post_type->create(); // int
+    static::factory()->custom_post_type->create_many( 10 ); // int[]
+
+    static::factory()->custom_taxonomy->create_and_get(); // WP_Term
+    static::factory()->custom_taxonomy->create(); // int
+  }
+}
+```
+
 ## Generating Blocks
 
 Generating blocks is a common use case when testing WordPress sites that depend
