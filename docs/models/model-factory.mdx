@@ -214,10 +214,10 @@ your model.
 
 ### Generating a Factory
 
-You can create a  by creating a factory in the
-`database/factories` folder. The expected factory name is:
+You can create a factory by adding a new file in the
+`database/factory` folder. The expected factory name is:
 
-    `App\Database\Factories\{Model_Name}_Factory`
+`App\Database\Factory\{Model_Name}_Factory`
 
 This can be generated using the `make:factory` command:
 
@@ -775,4 +775,3 @@ class Test_Case extends Testkit_Test_Case {
       }
   }
 }
-```
