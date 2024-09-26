@@ -616,6 +616,39 @@ $client = Factory::base_url( 'https://api.github.com' )
   } );
 ```
 
+## Caching
+
+Requests can be cached using the `cached` method. The method can be used when
+chaining together your HTTP request:
+
+```php
+use Mantle\Http_Client\Factory;
+
+$response = Factory::create()
+  ->cached( 60 ) // Cache for 60 seconds
+  ->get( 'https://example.org' );
+```
+
+The `cached` method accepts a single argument of the number of seconds to
+cache the response for. It also supports a `DateTime` object and defaults to one
+hour:
+
+```php
+use Mantle\Http_Client\Factory;
+
+$response = Factory::create()
+  ->cached( now()->addDay() )
+  ->get( 'https://example.org' );
+```
+
+Purging the cache can be done using the `purge` method:
+
+```php
+use Mantle\Http_Client\Factory;
+
+Factory::create()->url( 'https://example.org' )->purge();
+```
+
 ## Concurrent Requests
 
 Sometimes, you may wish to make multiple HTTP requests concurrently. In other
