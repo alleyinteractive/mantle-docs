@@ -624,9 +624,7 @@ chaining together your HTTP request:
 ```php
 use Mantle\Http_Client\Factory;
 
-$response = Factory::create()
-  ->cached( 60 ) // Cache for 60 seconds
-  ->get( 'https://example.org' );
+$response = Factory::create()->cached()->get( 'https://example.org' );
 ```
 
 The `cached` method accepts a single argument of the number of seconds to
