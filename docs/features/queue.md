@@ -153,6 +153,22 @@ A job can be invoked synchronously and will be run in the current request.
 Example_Job::dispatch_now();
 ```
 
+### Dispatching After the Request is Sent
+
+If you need to dispatch a job after the response has been sent to the user, you
+can use the `dispatch_after_response` method. This is useful for deferring
+actions that should be executed after the response has been sent to the user but
+before the request is completed.
+
+```php
+dispatch( function () {
+		// Perform some task...
+} )->after_response();
+
+// Or with a job class:
+Example_Job::dispatch_after_response();
+```
+
 ### Multiple Queues
 
 To allow for some priority between jobs a job can be sent to a specific queue.

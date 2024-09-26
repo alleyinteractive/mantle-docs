@@ -46,3 +46,10 @@ them.
 The `Mantle\Testing\Concerns\Reset_Data_Structures` trait will reset data
 structures between tests. This will reset all post types and taxonomies that are
 registered before each test is run.
+
+## Reset Server
+
+The `Mantle\Testing\Concerns\Reset_Server` trait will reset the server state
+between tests. This will clear the main `$_SERVER` superglobals before each test
+run, including `$_SERVER['REQUEST_URI']`, `$_SERVER['REQUEST_METHOD']`, and
+`$_SERVER['HTTP_HOST']`.

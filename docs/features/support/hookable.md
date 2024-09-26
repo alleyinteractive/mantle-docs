@@ -46,6 +46,10 @@ class Example_Class {
 }
 ```
 
+Out of the box, the `Hookable` trait will implement a constructor that will
+automatically call the `register_hooks` method. You can override this with your
+own constructor if you need to and call `register_hooks` manually.
+
 You can also use attributes to define the hook name and priority:
 
 ```php
@@ -60,12 +64,6 @@ use Mantle\Support\Traits\Hookable;
  */
 class Example_Class {
   use Hookable;
-
-  public function __construct() {
-    $this->register_hooks();
-
-    // Your constructor code here.
-  }
 
   #[Action( 'example_action', 10 )]
   public function example_action( $args ) {

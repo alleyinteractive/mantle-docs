@@ -135,6 +135,7 @@ const sidebars: SidebarsConfig = {
         'testing/cron',
         'testing/helpers',
         'testing/continuous-integration',
+        'testing/parallel',
         'testing/pest',
       ],
     },
