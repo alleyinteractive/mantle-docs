@@ -116,3 +116,17 @@ use function Mantle\Support\Helpers\str;
 
 str( 'example string' )->title(); // Example String
 ```
+
+## Deferred Functions
+
+The `defer()` helper function can be used to defer the execution of a function
+until the end of the request lifecycle. This can be useful for deferring
+functions that should be executed after the response has been sent to the user.
+
+```php
+use function Mantle\Support\Helpers\defer;
+
+defer( function() {
+  // Your deferred function code here.
+} );
+```
