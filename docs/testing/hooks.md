@@ -1,3 +1,9 @@
+---
+title: "Testing: Hooks"
+sidebar_label: Hooks
+description: Mantle provides an interface for testing WordPress hooks in declarative and assertive formats.
+---
+
 # Testing Hooks
 
 ## Introduction

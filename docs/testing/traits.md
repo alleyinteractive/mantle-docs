@@ -1,3 +1,9 @@
+---
+title: "Testing: Traits"
+sidebar_label: Traits
+description: Traits that can be used to add optional functionality to a test case.
+---
+
 # Traits
 
 ## Introduction

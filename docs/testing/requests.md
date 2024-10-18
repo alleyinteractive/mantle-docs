@@ -1,3 +1,8 @@
+---
+title: "Testing: HTTP Tests"
+sidebar_label: HTTP Tests
+description: Mantle provides a fluent HTTP Request interface to make it easier to write feature/integration tests using PHPUnit and WordPress.
+---
 # HTTP Tests
 
 ## Introduction

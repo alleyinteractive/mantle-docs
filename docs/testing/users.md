@@ -1,5 +1,7 @@
 ---
-title: Authentication
+title: "Testing: Users and Authentication"
+sidebar_label: Users and Authentication
+description: The Mantle Test Framework provides methods and assertions for testing users and authentication.
 ---
 
 # Users

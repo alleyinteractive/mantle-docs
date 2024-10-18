@@ -1,7 +1,3 @@
----
-title: Getting Started
----
-
 # Testing: Getting Started
 
 ## Introduction

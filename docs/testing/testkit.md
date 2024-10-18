@@ -1,5 +1,7 @@
 ---
-title: Testkit
+title: "Testing: Mantle Testkit"
+sidebar_label: Testkit
+description: Mantle Testkit is a standalone package for using the Mantle Testing Framework on non-Mantle based projects.
 ---
 
 # Mantle Testkit

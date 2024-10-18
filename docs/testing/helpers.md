@@ -1,3 +1,9 @@
+---
+title: "Testing: Helpers"
+sidebar_label: Helpers
+description: Helpers to make it easier to write tests for your project.
+---
+
 # Helpers
 
 Mantle provides some testing helpers to make it easier to write tests for your

@@ -1,3 +1,9 @@
+---
+title: "Testing: Installation Manager"
+sidebar_label: Installation Manager
+description: The Installation Manager is a class used to install WordPress for testing.
+---
+
 # Installation Manager
 
 ## Introduction

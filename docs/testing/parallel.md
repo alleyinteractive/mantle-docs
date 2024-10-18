@@ -1,4 +1,10 @@
-# Parallel
+---
+title: "Testing: Parallel Testing"
+sidebar_label: Parallel Testing
+description: Run your WordPress unit tests in parallel to speed up your test suite.
+---
+
+# Parallel Testing
 
 :::note
 Parallel unit testing is currently in beta testing. Please let us know any issues

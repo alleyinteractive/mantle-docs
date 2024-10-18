@@ -1,3 +1,8 @@
+---
+title: "Testing: Pest"
+sidebar_label: Pest
+description: Mantle's Testing Framework supports running unit tests via Pest.
+---
 # Pest
 
 Mantle's Testing Framework supports running unit tests via Pest via the
