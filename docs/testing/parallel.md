@@ -8,7 +8,8 @@ description: Run your WordPress unit tests in parallel to speed up your test sui
 
 :::note
 Parallel unit testing is currently in beta testing. Please let us know any issues
-you may come across.
+you may come across. It is generally a drop-in replacement for PHPUnit but does play
+better with PHPUnit 10+.
 :::
 
 By default, PHPUnit runs tests sequentially. This can be slow, especially if you
