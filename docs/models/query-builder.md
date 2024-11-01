@@ -126,7 +126,7 @@ Example_Post::where( 'slug', 'slug-to-find' )->first();
 Example_Post::whereSlug( 'slug-to-find' )->first();
 ```
 
-You can use the field name or any [field alias](./models.md#field-aliases) to
+You can use the field name or any [field alias](./index.md#field-aliases) to
 query against. Mantle will automatically convert the field name to the correct
 argument for the underlying `WP_Query` or `WP_Tax_Query` class.
 
