@@ -45,7 +45,9 @@ $post = Post::create( [
   'post_content' => 'This is the content of my new post.',
 ] );
 
-$post->update( [
+$post->post_content = 'This is an updated content.';
+
+$post->save( [
   'post_title' => 'My Updated Post',
 ] );
 
