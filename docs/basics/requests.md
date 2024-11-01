@@ -1,4 +1,8 @@
-# Requests
+---
+description: Mantle provides a MVC framework on-top of WordPress. You can add a route fluently and send a response straight back without needing to work with WordPress's `add_rewrite_rule()` at all.
+---
+
+# Requests and Routing
 
 Mantle provides a MVC framework on-top of WordPress. You can add a route
 fluently and send a response straight back without needing to work with

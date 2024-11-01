@@ -19,8 +19,7 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       link: {
         type: 'doc',
-        // todo: switch to a welcome or introduction page.
-        id: 'getting-started/installation',
+        id: 'getting-started/index',
       },
       items: [
         'getting-started/installation',
@@ -66,8 +65,8 @@ const sidebars: SidebarsConfig = {
       },
       items: [
         'models/query-builder',
-        'models/model-relationships',
         'models/model-registration',
+        'models/model-relationships',
         'models/serialization',
         'models/model-factory',
         'models/seeding',

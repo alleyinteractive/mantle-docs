@@ -1,4 +1,8 @@
-# Templating
+---
+description: Mantle provides a delightful templating experience for WordPress using blade templating.
+---
+
+# Templating and Views
 
 Templating in WordPress should be delightful -- Mantle hopes to make it that
 way.

@@ -18,7 +18,7 @@ function HomepageHeader() {
       <Logo className={styles.heroImage} />
       <p className={clsx('hero__subtitle', styles.heroDescription)}>Mantle is a framework for building large, robust websites and applications with WordPress</p>
       <p className={styles.heroActions}>
-        <Link className="button button--lg button--primary" to="/docs/getting-started/installation">
+        <Link className="button button--lg button--primary" to="/docs/getting-started">
           Get Started →
         </Link>
         <Link className={clsx('button button--lg button--secondary margin-left--sm', styles.buttonLower)} href="https://github.com/alleyinteractive/mantle/">
@@ -72,7 +72,7 @@ export default function Home(): JSX.Element {
           </p>
 
           <p className={clsx('text--center', styles.goals)}>
-            <Link to="/docs/getting-started/installation/">Get started here</Link>
+            <Link to="/docs/getting-started">Get started here</Link>
             {' '}
             or visit our
             {' '}

@@ -94,8 +94,7 @@ const config: Config = {
       items: [
         {
           type: 'doc',
-          // href: '/docs/getting-started/installation',
-          docId: 'getting-started/installation',
+          docId: 'getting-started/index',
           position: 'left',
           label: 'Docs',
         },
@@ -104,8 +103,13 @@ const config: Config = {
           position: 'right',
         },
         {
-          href: 'https://github.com/alleyinteractive/mantle-docs',
+          href: 'https://github.com/alleyinteractive/mantle',
           label: 'GitHub',
+          position: 'right',
+        },
+        {
+          href: 'https://github.com/alleyinteractive/mantle-framework',
+          label: 'Framework Monorepo',
           position: 'right',
         },
       ],
