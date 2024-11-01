@@ -34,10 +34,9 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       link: {
         type: 'doc',
-        id: 'architecture/architecture',
+        id: 'architecture/index',
       },
       items: [
-        'architecture/architecture',
         'architecture/bootloader',
         'architecture/service-provider',
         'architecture/configuration',
@@ -63,10 +62,9 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       link: {
         type: 'doc',
-        id: 'models/models',
+        id: 'models/index',
       },
       items: [
-        'models/models',
         'models/query-builder',
         'models/model-relationships',
         'models/model-registration',
@@ -116,10 +114,9 @@ const sidebars: SidebarsConfig = {
       label: 'Testing',
       link: {
         type: 'doc',
-        id: 'testing/testing',
+        id: 'testing/index',
       },
       items: [
-        'testing/testing',
         'testing/testkit',
         'testing/installation-manager',
         'testing/requests',

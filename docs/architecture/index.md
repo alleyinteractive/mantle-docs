@@ -1,3 +1,7 @@
+---
+slug: /architecture
+---
+
 # Architecture
 
 ## Introduction
