@@ -89,6 +89,9 @@ class Example_Class {
 }
 ```
 
+When using attribute actions/filters, the method name does not matter. You can
+name your methods whatever you like.
+
 Hookable will automatically implement the class' constructor for you. If you
 need to implement your own constructor, you can call `register_hooks` manually
 in your own constructor:
