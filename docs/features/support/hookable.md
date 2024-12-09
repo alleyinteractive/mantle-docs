@@ -1,9 +1,12 @@
 # Hookable
 
 Hookable is a trait that will automatically register methods on your class with
-WordPress action/filter hooks.
+WordPress action/filter hooks. This allows you to define your hooks in a more
+fluent way keeping the action/filter registration close to the method that
+implements the hook. Underneath it calls the core `add_action`/`add_filter`
+methods.
 
-## Usage
+## Usage With Method Names
 
 To use the `Hookable` trait, you can use the following pattern:
 
@@ -91,6 +94,8 @@ class Example_Class {
 
 When using attribute actions/filters, the method name does not matter. You can
 name your methods whatever you like.
+
+## Using Your Own Constructor
 
 Hookable will automatically implement the class' constructor for you. If you
 need to implement your own constructor, you can call `register_hooks` manually
