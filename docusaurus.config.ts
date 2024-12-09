@@ -52,6 +52,7 @@ const config: Config = {
           priority: 0.5,
           ignorePatterns: [
             '/tags/**',
+            '/docs/0.12.x/**',
             '/next/**',
           ],
           filename: 'sitemap.xml',
