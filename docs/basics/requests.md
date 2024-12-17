@@ -18,8 +18,8 @@ Route::get( '/hello/{who}', function( $name ) {
 } );
 ```
 
-Routes are defined in the `routes/web.php` file by default and controlled by
-application's `Route_Service_Provider` located in the application
+By default, web routes are defined in the `routes/web.php` file and [REST API routes](/docs/basics/requests#rest-api-routing) are defined in the `routes/rest-api.php` file. Routes are controlled by
+application's `Route_Service_Provider` located in the application.
 
 ## Registering Routes
 
