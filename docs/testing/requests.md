@@ -140,6 +140,48 @@ The request referrer can be passed using the `from` method:
 $this->from( 'https://wordpress.org/' )->get( '/example' );
 ```
 
+### ✨ Experimental ✨: Request Hosts
+
+By default, core and Mantle's testing framework will use the `WP_TESTS_DOMAIN`
+constant as the host for all requests. There is an experimental feature that
+allows you to set the host relative to the value of the `home_url()`
+function/`home` option. This can be useful to make the request match the home
+URL you have setup in your test environment.
+
+To enable this feature, you can set the `MANTLE_EXPERIMENTAL_TESTING_USE_HOME_URL_HOST`
+environment variable to `true` or you can call the `with_experimental_testing_url_host()`
+method on the [installation manager](./installation-manager.md#using-the-experimental-feature-for-home-url-in-testing) in your bootstrap file.
+
+Example of a test that would previously have failed:
+
+```php
+class Example_Test extends TestCase {
+  public function test_example() {
+    update_option( 'home', 'https://alley.com' );
+
+    $this->get( '/about/' );
+
+    // Without this feature flag, the HTTP_HOST would be `example.org'.
+    $this->assertEquals( 'alley.com', $_SERVER['HTTP_HOST'] );
+    $this->assertEquals( 'on', $_SERVER['HTTPS'] );
+  }
+}
+```
+
+### HTTPS Request
+
+Requests will be made "unsecure" by default. The means that the `HTTPS` server
+variable will not be set. You can force the request to be made over HTTPS by
+using the `with_https` method:
+
+```php
+$this->with_https()->get( '/example' );
+```
+
+You can also make all requests use HTTPS by setting the site's home URL to
+include `https://` and opt-in to the experimental feature to use the home URL
+host as the request host when testing.
+
 ## Testing Responses
 
 After making a request, you can make assertions against the response using the
