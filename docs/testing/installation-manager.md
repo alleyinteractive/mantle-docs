@@ -342,24 +342,17 @@ database. The method accepts the option name and value:
   ->install();
 ```
 
-### Changing the Home URL
+### Changing the Site/Home URL
 
-The `with_home_url()` method can be used to set the home URL in the WordPress
-database:
-
-```php
-\Mantle\Testing\manager()
-  ->with_home_url( 'http://example.com' )
-  ->install();
-```
-
-### Changing the Site URL
-
-The `with_site_url()` method can be used to set the site URL in the WordPress
+The `with_url()` method can be used to set the site and home URLs in the
+WordPress. Both are optional.
 
 ```php
 \Mantle\Testing\manager()
-  ->with_site_url( 'http://example.com' )
+  ->with_url(
+    home: 'https://example.com',
+    site: 'https://example.com'
+  )
   ->install();
 ```
 
