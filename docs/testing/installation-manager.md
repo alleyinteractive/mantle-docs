@@ -217,6 +217,34 @@ that will be passed to `rsync` and be excluded from the rsync process.
   ->install();
 ```
 
+### Using the Experimental Feature for Home URL in Testing
+
+Mantle is switching to use the site's home URL for testing as the request host
+rather than the hard-coded value of the `WP_TESTS_DOMAIN` constant. This is a
+more accurate representation of how WordPress is used in production. In the next
+major version of Mantle, this will be the default behavior.
+
+To enable this feature, you can use the `with_experimental_testing_url_host()` method:
+
+```php
+\Mantle\Testing\manager()
+  ->with_experimental_testing_url_host()
+  ->install();
+```
+
+You can customize the [site URL](#changing-the-site-url) and the
+[home URL](#changing-the-home-url) via the Installation Manger.
+
+:::note Heads up!
+This feature will be made the default behavior in the next major version of
+Mantle.
+:::
+
+:::tip Enable via a Environmental Variable
+You can also set the default behavior by setting the
+`MANTLE_EXPERIMENTAL_TESTING_USE_HOME_URL_HOST` environmental variable to `true`.
+:::
+
 ## Modifying the WordPress Installation
 
 The Installation Manager supports fluent methods for modifying the WordPress
@@ -300,6 +328,31 @@ will switch to the active plugins on the `muplugins_loaded` hook:
     'my-plugin/my-plugin.php',
     'my-other-plugin/my-other-plugin.php',
   ] )
+  ->install();
+```
+
+### Changing an Option
+
+The `with_option()` method can be used to set an option in the WordPress
+database. The method accepts the option name and value:
+
+```php
+\Mantle\Testing\manager()
+  ->with_option( 'my_option', 'my_value' )
+  ->install();
+```
+
+### Changing the Site/Home URL
+
+The `with_url()` method can be used to set the site and home URLs in the
+WordPress. Both are optional.
+
+```php
+\Mantle\Testing\manager()
+  ->with_url(
+    home: 'https://example.com',
+    site: 'https://example.com'
+  )
   ->install();
 ```
 
