@@ -16,6 +16,25 @@ Route::get( '/', function () {
 } );
 ```
 
+### PHP Templates
+
+Mantle supports normal PHP template partials. The `view()` helper function will
+automatically from any of the [configured view locations](#view-file-location).
+
+```php title="ExampleController.php"
+class ExampleController {
+  public function example() {
+    return view( 'template-parts/block', [ 'variable' => '123' ] );
+  }
+}
+```
+
+```php title="template-parts/block.php"
+<div>
+  <h1><?php echo esc_html( $variable ); ?></h1>
+</div>
+```
+
 ### Blade Templates
 
 Mantle also supports loading [Laravel's Blade](https://laravel.com/docs/11.x/blade) template
@@ -27,7 +46,11 @@ with Blade templating.
 Hello, {{ $name }}
 ```
 
-### View File Location
+Blade templates can be used interchangeably with PHP templates. Mantle will
+automatically detect the file extension and load the appropriate template engine.
+
+## View File Location
+
 By default WordPress will only load a template part from the active theme and
 parent theme if applicable. Mantle supports loading views from a dynamic set of
 locations. Mantle support automatically register the current theme and parent
@@ -35,17 +58,49 @@ theme as view locations. Additional paths can be registered through
 `View_Loader`.
 
 ```php
+use Mantle\Facade\View_Loader;
+
 View_Loader::add_path( '/path-to-add' );
 
+// Optionally provide an alias for easy referencing.
+View_Loader::add_path( '/another-path', alias: 'vendor-views' );
+
+// Remove a path.
 View_Loader::remove_path( '/path-to-remove' );
 ```
 
-#### Default View Locations
+Adding additional view locations will allow you to use templates that aren't
+located in the theme directory. This can be useful for loading templates from a
+plugin which WordPress doesn't natively support.
+
+### Default View Locations
+
 - Active Theme
-- Parent of Active Theme
+- Parent of Active Theme (if applicable)
 - `{root of mantle site}/views`
 
+## Loading Views
+
+Views can be loaded using the `view()` helper function. This function will
+automatically detect the file extension and load the appropriate template engine.
+
+```php
+echo view( 'template-parts/block', [ 'variable' => '123' ] );
+```
+
+Views will be loaded from the [configured view locations](#view-file-location)
+in the order they were registered. If a view is found in multiple locations the
+first one found will be used.
+
+To load a view from a specific location you can prefix the view name with the
+alias of the location in the format `@{alias}/{path to view}`:
+
+```php
+echo view( '@vendor-views/template-parts/block', [ 'variable' => '123' ] );
+```
+
 ## Passing Variables to Views
+
 Frequently you will need to pass variables down to views from controllers and
 routes. To ensure a global variable isn't overwritten the variables are stored
 in the helper method `mantle_get_var()`.
@@ -67,16 +122,20 @@ Hello {{ $foo }}!
 ```
 
 ### Passing Global Variables
+
 Service Providers and other classes in the application can pass global variables
 to all views loaded. This can be very handy when you want to pass template
 variables to a service provider without doing any additional work in the route.
 
 ```php
+use Mantle\Facade\View;
+
 // Pass 'variable-to-pass' to all views.
 View::share( 'variable-to-pass', 'value or reference to pass' );
 ```
 
 ## Setting the Global Post Object.
+
 Commonly views need to set the global post object in WordPress for a view. This
 will allow WordPress template tags such as `the_ID()` and `the_title()` to work
 properly.

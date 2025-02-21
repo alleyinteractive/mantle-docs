@@ -1,3 +1,8 @@
+---
+title: "Console Commands"
+sidebar_label: Console
+---
+
 # Console Command
 
 ## Introduction
