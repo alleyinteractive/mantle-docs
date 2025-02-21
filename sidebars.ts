@@ -111,6 +111,7 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Testing',
+      collapsed: false,
       link: {
         type: 'doc',
         id: 'testing/index',

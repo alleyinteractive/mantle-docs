@@ -6,7 +6,7 @@ import Layout from '@theme/Layout';
 
 // Components.
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
-import HomepageLowerFeatures from '@site/src/components/HomepageLowerFeatures';
+// import HomepageLowerFeatures from '@site/src/components/HomepageLowerFeatures';
 import HomepageExamples from '../components/HomepageExamples';
 
 import Logo from '../../static/img/logo.svg';
@@ -18,10 +18,10 @@ function HomepageHeader() {
       <Logo className={styles.heroImage} />
       <p className={clsx('hero__subtitle', styles.heroDescription)}>Mantle is a framework for building large, robust websites and applications with WordPress</p>
       <p className={styles.heroActions}>
-        <Link className="button button--lg button--primary" to="/docs/getting-started">
+        <Link className={clsx('button button--lg button--primary', styles.button)} to="/docs/getting-started">
           Get Started →
         </Link>
-        <Link className={clsx('button button--lg button--secondary margin-left--sm', styles.buttonLower)} href="https://github.com/alleyinteractive/mantle/">
+        <Link className={clsx('button button--lg button--secondary margin-left--sm', styles.button, styles.buttonLower)} href="https://github.com/alleyinteractive/mantle/">
           GitHub
         </Link>
       </p>

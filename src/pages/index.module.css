@@ -44,6 +44,10 @@
   justify-content: center;
 }
 
+.button {
+  /* background: transparent; */
+}
+
 .goals {
 	font-size: 1.2rem;
   line-height: 2rem;

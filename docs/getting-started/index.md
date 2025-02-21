@@ -63,7 +63,17 @@ Mantle allows you to use Blade templating in your WordPress project. Blade is a
 powerful templating engine that allows you to write clean, concise templates
 without the clutter of PHP tags.
 
-```php
+```php title="ExampleController.php"
+class ExampleController extends Controller {
+    public function index() {
+        $posts = Post::all();
+
+        return view('posts', ['posts' => $posts]);
+    }
+}
+```
+
+```php title="resources/views/posts.blade.php"
 <div class="posts">
     @foreach ($posts as $post)
         <div class="post">

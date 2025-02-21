@@ -10,14 +10,15 @@ way.
 ## Views
 WordPress template parts can be returned for a route.
 
-```php
+```php title="routes/web.php"
 Route::get( '/', function () {
   return response()->view( 'template-parts/block', [ 'variable' => '123' ] );
 } );
 ```
 
 ### Blade Templates
-Mantle also supports loading [Laravel's Blade](https://laravel.com/docs/8.x/blade) template
+
+Mantle also supports loading [Laravel's Blade](https://laravel.com/docs/11.x/blade) template
 parts. Blade and WordPress template parts can be used interchangeably. Mantle
 uses the `illuminate/view` package directly to provide complete compatibility
 with Blade templating.
@@ -87,6 +88,16 @@ Route::get( '/article/{article}', function ( App\Article $article ) {
 } );
 ```
 
+```blade title="template-parts/block.blade.php"
+<article>
+  <h1>{{ the_title() }}</h1>
+  <div>{{ the_content() }}</div>
+
+  {{-- Use the passed variable. --}}
+  <p>{{ $post->post_title }}</p>
+</article>
+```
+
 ### View Helpers
 
 #### `loop()`
@@ -114,10 +125,14 @@ When inside of a partial, you can prefix your path slug with `_` to load a
 sub-partial, appending everything after the `_` to the current partial's file
 name (with a dash separating them).
 
-```php
-// Inside of template-parts/homepage/slideshow.php.
-view( '_slide', [ 'text' => 'Variable to Pass' ] );
+```php title="template-parts/homepage/slideshow.php"
+<div class="slideshow">
+  @foreach ( $slides as $slide )
+    @include( '_slide', [ 'text' => $slide->text ] )
+  @endforeach
+</div>
+```
 
-// Inside of template-parts/homepage/slideshow-slide.php.
+```php title="template-parts/homepage/slideshow-slide.php"
 echo mantle_get_var( 'text', "Slide data!" );
 ```

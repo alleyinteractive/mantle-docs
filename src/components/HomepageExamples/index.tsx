@@ -8,7 +8,7 @@ const HomepageExamples = () => (
   <div className="container">
     <div className={styles.featureRow}>
       <div className={styles.featureCode}>
-        <CodeBlock language="php">
+        <CodeBlock language="php" title="routes/web.php">
           {`Route::get( '/post/{post}', function ( Post $post ) {
   return view( 'post' )->with( 'post', $post );
 } );
@@ -39,17 +39,21 @@ Route::rest_api( 'namespace/v1', '/route-to-use', function() {
     <div className={clsx(styles.featureRow, styles.featureRowFlipped)}>
       <div className={styles.featureCode}>
         <CodeBlock language="php">
-          {`$post = static::factory()->post->create_and_get();
+          {`class ExampleTest extends TestCase {
+  public function test_upload_file(): void {
+    $post = static::factory()->post->create_and_get();
 
-$this->get( $post )
-  ->assertOk()
-  ->assertSee( $post->post_title );
+    $this->get( $post )
+      ->assertOk()
+      ->assertSee( $post->post_title );
 
-$this->post( '/upload', [
-  'uploaded_file' => [ ... ],
-] )
-  ->assertStatus( 201 )
-  ->assertJsonPath( 'message', 'Image uploaded successfully' );`}
+    $this->post( '/upload', [
+      'uploaded_file' => [ ... ],
+    ] )
+      ->assertStatus( 201 )
+      ->assertJsonPath( 'message', 'Image uploaded successfully' );
+    }
+}`}
         </CodeBlock>
       </div>
       <div className={styles.featureDescription}>
