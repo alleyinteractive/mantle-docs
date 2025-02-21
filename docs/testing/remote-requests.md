@@ -633,3 +633,29 @@ class Example_Test extends Test_Case {
   }
 }
 ```
+
+## Ignoring Stray Requests
+
+There may be cases where you want to ignore stray requests for a specific test
+while still preventing them in other tests. You can use the
+`$this->ignore_stray_requests()` method to ignore any stray requests matching a
+specific URL pattern.
+
+```php
+namespace App\Tests;
+
+use Mantle\Testing\Concerns\Prevent_Remote_Requests;
+use Tests\Test_Case;
+
+class Example_Test extends Test_Case {
+  use Prevent_Remote_Requests;
+
+  public function test_example() {
+    $this->ignore_stray_request( 'https://alley.com/*' );
+
+    $this->fake_request( 'https://alley.com/*' )
+      ->with_response_code( 200 )
+      ->with_body( 'alley!' );
+  }
+}
+```
