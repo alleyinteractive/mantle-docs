@@ -80,6 +80,19 @@ add_filter( 'falsey_filter_to_check', '__return_false' );
 apply_filters( 'falsey_filter_to_check', true );
 ```
 
+## Declaring Hook Added (add_action/add_filter)
+
+You can use `expectAdded()` to declare that a hook was added to WordPress. This
+is useful for asserting that a hook was added with the correct arguments.
+
+```php
+// Check that "action_to_check" has any action added to it.
+$this->expectAdded( 'action_to_check' );
+
+// Check that "action_to_check" has a specific callable added to it.
+$this->expectAdded( 'action_to_check', '__return_true' );
+```
+
 ## Asserting Hook Usage
 
 Hooks can be asserted against after they have already been applied. This can be
