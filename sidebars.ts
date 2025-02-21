@@ -133,6 +133,7 @@ const sidebars: SidebarsConfig = {
         'testing/continuous-integration',
         'testing/parallel',
         'testing/pest',
+        'testing/environmental-variables',
       ],
     },
     // TODO: Enable this again when packages are ready.

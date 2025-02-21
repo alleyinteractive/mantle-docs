@@ -202,6 +202,17 @@ most use-cases but there are some limitations. For example, if you're creating
 database tables or performing complex SQL queries, you may run into issues and
 are better off not using SQLite.
 
+### Disabling Object Cache for Local Development
+
+If you're working on a local development environment and don't want to use an
+object cache when testing, you can use the `without_local_object_cache()` method:
+
+```php
+\Mantle\Testing\manager()
+  ->without_local_object_cache()
+  ->install();
+```
+
 ### Excluding Files from Rsync
 
 If you'd like to exclude files from being rsync'd to the testing installation,
