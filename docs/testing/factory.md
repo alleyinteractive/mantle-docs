@@ -314,3 +314,21 @@ Block_Factory::register_preset(
   ] ),
 );
 ```
+
+The preset callback will forward any arguments passed to the preset method:
+
+```php
+use function Mantle\Testing\block_factory;
+
+Block_Factory::register_preset(
+  'content_with_video',
+  fn ( Block_Factory $factory, string $url ) => $factory->blocks( [
+    $factory->block( 'vendor/block-name', '', [
+      'attribute' => 'value',
+      'url'       => $url, // The passed argument.
+    ] ),
+    $factory->heading(),
+    $factory->paragraph(),
+  ] ),
+);
+```
