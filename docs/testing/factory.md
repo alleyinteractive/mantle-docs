@@ -274,6 +274,8 @@ can be created to generate this set of blocks:
 ```php
 use Mantle\Testing\Block_Factory;
 
+use function Mantle\Testing\block_factory;
+
 Block_Factory::register_preset(
   'article_3_up',
   block_factory()->blocks( [
