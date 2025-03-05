@@ -89,6 +89,7 @@ use function Mantle\Testing\block_factory;
 
 class ExampleTests extends Testkit_Test_Case {
   public function test_post_with_block() {
+    // Create a post with a heading and paragraph block.
     $post = static::factory()->post->create_and_get( [
       'post_content' => block_factory()->blocks( [
         block_factory()->heading( 'Example Heading' ),
@@ -96,9 +97,7 @@ class ExampleTests extends Testkit_Test_Case {
       ] ),
     ] );
 
-    $block = block_factory()->create_block( 'core/paragraph' );
-
-    $this->assertNotEmpty( $block );
+    // ...
   }
 }
 ```
