@@ -107,7 +107,7 @@ to make it possible to generate blocks in tests with ease.
 
 ### Generating Paragraph Blocks
 
-The Block Factory's `paragraph` method can be used to generate a paragraph block
+The Block Factory's `block_factory()->paragraph()` method can be used to generate a paragraph block
 with the specified content or default lorem ipsum content:
 
 ```php
@@ -150,7 +150,7 @@ $block = block_factory()->paragraph( sentences: 5 );
 
 ### Generating Multiple Paragraph Blocks
 
-The Block Factory's `paragraphs` method can be used to generate multiple
+The Block Factory's `block_factory()->paragraphs()` method can be used to generate multiple
 paragraph blocks with the specified content or default lorem ipsum content:
 
 ```php
@@ -161,7 +161,7 @@ $blocks = block_factory()->paragraphs( 3 );
 
 ### Generating Heading Blocks
 
-The Block Factory's `heading` method can be used to generate a heading block
+The Block Factory's `block_factory()->heading()` method can be used to generate a heading block
 with the specified content or default lorem ipsum content:
 
 ```php
@@ -204,7 +204,7 @@ $block = block_factory()->heading( level: 3 );
 
 ### Generating Image Blocks
 
-The Block Factory's `image` method can be used to generate an image block with
+The Block Factory's `block_factory()->image()` method can be used to generate an image block with
 a default image from picsum.photos:
 
 ```php
