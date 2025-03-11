@@ -1,4 +1,4 @@
-# Option / Object Metadata
+# Type-safe Options and Object Metadata
 
 When working with WordPress, you may need to retrieve and manipulate options or
 object meta data. Out of the box, the data will come back as `mixed`. You can
