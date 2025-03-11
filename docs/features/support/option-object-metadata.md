@@ -67,6 +67,7 @@ $meta = post_meta( 1234, 'meta_key' );
 
 if ( $meta->is_empty() ) {
   $meta->set( 'meta_value' );
+  $meta->save();
 }
 
 // Delete post meta data.
@@ -364,18 +365,22 @@ $has = option( 'example_option' )->has( 'key' ); // bool: true
 
 ### Updating Option Value
 
-The `option` helper can also be used to update an option's value:
+The `option` helper can also be used to update an option's or a object's meta
+data value:
 
 ```php
 use function Mantle\Support\Helpers\option;
 
 // Update the value of an option.
-option( 'option_name' )->set( 'new_value' );
+$meta = option( 'option_name' );
+
+$meta->set( 'new_value' );
+$meta->save();
 ```
 
 ### Deleting Option
 
-The `option` helper can also be used to delete an option:
+The `option` helper can also be used to delete an option or a object's meta data:
 
 ```php
 use function Mantle\Support\Helpers\option;
