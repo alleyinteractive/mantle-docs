@@ -1,10 +1,17 @@
-# Option
+# Option / Object Metadata
+
+When working with WordPress, you may need to retrieve and manipulate options or
+object meta data. Out of the box, the data will come back as `mixed`. You can
+and should check the type of the data before using it. This can be cumbersome
+and error-prone.
 
 Mantle includes a `option` helper function that can be used to retrieve an
 option's value in a type-safe manner. It can also update the option's value and
-manipulate it in various ways.
+manipulate it in various ways. Mantle also includes `post_meta`, `term_meta`,
+`user_meta`, and `comment_meta` helper functions that can be used to retrieve
+and manipulate object meta data in a type-safe manner.
 
-## Usage
+## Usage for Options
 
 The `option` function can be used to retrieve an option's value and does not
 require the rest of the framework to do so:
@@ -28,7 +35,48 @@ option( 'option_name' )->boolean();
 option( 'option_name' )->array();
 ```
 
+## Usage for Object Metadata
+
+The `post_meta`, `term_meta`, `user_meta`, and `comment_meta` functions can be
+used to retrieve object meta data and do not require the rest of the framework
+to do so:
+
+```php
+use function Mantle\Support\Helpers\post_meta;
+use function Mantle\Support\Helpers\term_meta;
+use function Mantle\Support\Helpers\user_meta;
+use function Mantle\Support\Helpers\comment_meta;
+
+// Retrieve post meta data.
+post_meta( 1234, 'meta_key' )->string(); // string
+post_meta( 1234, 'meta_key' )->boolean(); // bool
+post_meta( 1234, 'meta_key' )->integer(); // int
+
+// Retrieve term meta data.
+term_meta( 1234, 'meta_key' )->string(); // string
+term_meta( 1234, 'meta_key' )->boolean(); // bool
+```
+
+Meta data can also be updated and deleted:
+
+```php
+use function Mantle\Support\Helpers\post_meta;
+
+// Update post meta data.
+$meta = post_meta( 1234, 'meta_key' );
+
+if ( $meta->is_empty() ) {
+  $meta->set( 'meta_value' );
+}
+
+// Delete post meta data.
+post_meta( 1234, 'meta_key' )->delete();
+```
+
 ## Methods
+
+The following methods are shared between the `option` helper and all the object
+meta data helpers.
 
 ### `array()`
 
@@ -133,6 +181,90 @@ use function Mantle\Support\Helpers\option;
 
 if ( option( 'option_name' )->is_empty() ) {
   // The option is empty.
+}
+```
+
+## `is_not_null()`
+
+Check if the value of the option is not `null`.
+
+```php
+use function Mantle\Support\Helpers\option;
+
+if ( option( 'option_name' )->is_not_null() ) {
+  // The option is not null.
+}
+```
+
+## `is_type( string $type )`
+
+Check if the value of the option is of a specific type.
+
+```php
+use function Mantle\Support\Helpers\option;
+
+if ( option( 'option_name' )->is_type( 'string' ) ) {
+  // The option is a string.
+}
+```
+
+## `is_not_type()`
+
+Check if the value of the option is not of a specific type.
+
+```php
+use function Mantle\Support\Helpers\option;
+
+if ( option( 'option_name' )->is_not_type( 'string' ) ) {
+  // The option is not a string.
+}
+```
+
+## `is_array()`
+
+Check if the value of the option is an array.
+
+```php
+use function Mantle\Support\Helpers\option;
+
+if ( option( 'option_name' )->is_array() ) {
+  // The option is an array.
+}
+```
+
+## `is_not_array()`
+
+Check if the value of the option is not an array.
+
+```php
+use function Mantle\Support\Helpers\option;
+
+if ( option( 'option_name' )->is_not_array() ) {
+  // The option is not an array.
+}
+```
+
+## `is_object()`
+
+Check if the value of the option is an object.
+
+```php
+use function Mantle\Support\Helpers\option;
+
+if ( option( 'option_name' )->is_object() ) {
+  // The option is an object.
+}
+```
+
+## `is_not_object()`
+
+Check if the value of the option is not an object.
+
+```php
+use function Mantle\Support\Helpers\option;
+
+if ( option( 'option_name' )->is_not_object() ) {
+  // The option is not an object.
 }
 ```
 
