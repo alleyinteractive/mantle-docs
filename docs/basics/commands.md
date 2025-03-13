@@ -230,6 +230,42 @@ class Example_Command extends Command {
 }
 ```
 
+### Colors
+
+You can use the `colorize()` method to add color to your output. The method
+accepts a string and a color.
+
+```php
+use Mantle\Console\Command;
+
+class Example_Command extends Command {
+  public function handle() {
+    $this->line( $this->colorize( 'This is a red message.', 'red' ) );
+  }
+}
+```
+
+### Progress Bars
+
+You can use the `with_progress_bar()` method to display a progress bar. The
+method accepts a closure that will be called for each iteration of the progress
+bar. The closure should return the number of items processed.
+
+```php
+use Mantle\Console\Command;
+
+class Example_Command extends Command {
+  public function handle() {
+    $this->with_progress_bar( get_posts( [...], function( \WP_Post $post ) {
+      // Process the post.
+      return 1;
+    } ) );
+  }
+}
+```
+
+## Advanced Output
+
 Underneath the hood, `$this->output` is an instance of `
 Symfony\Component\Console\Style\SymfonyStyle` which provides a number of methods
 for writing to the console. You can use these methods directly if you need more
