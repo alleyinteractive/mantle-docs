@@ -125,3 +125,114 @@ the following format:
 
 The arguments/options can be retrieved from the command's
 `argument( $key )`/`option( $key )` methods.
+
+```php
+namespace App\Console;
+
+use Mantle\Console\Command;
+
+/**
+ * Example Command
+ */
+class Example_Command extends Command {
+  /**
+   * The console command name.
+   *
+   * @var string
+   */
+  protected $signature = 'example:my-command {argument} [--flag]';
+
+  /**
+   * Callback for the command.
+   */
+  public function handle() {
+    $arg  = $this->argument( 'argument' );
+    $flag = $this->flag( 'flag' );
+
+    // ...
+  }
+}
+```
+
+## Command Input
+
+A command can ask questions of the user to gather input.
+
+### `anticipate`
+
+The `anticipate` method allows you to ask the user to type a value from a list
+of options. The method returns the value the user selects.
+
+```php
+$value = $this->anticipate( 'What is your decision?', [ 'Moon', 'Sun' ] );
+```
+
+### `ask`
+
+The `ask` method asks the user for input. The method returns the value the user
+enters.
+
+```php
+$value = $this->ask( 'What is your name?' );
+```
+
+### `choice`
+
+The `choice` method allows you to ask the user to select from a list of options.
+
+```php
+$value = $this->choice( 'What is your decision?', [ 'Moon', 'Sun' ], $default_index );
+```
+
+### `confirm`
+
+The `confirm` method asks the user to confirm an action. The method returns a
+boolean value.
+
+```php
+$confirmed = $this->confirm( 'Do you wish to continue?' );
+```
+
+### `secret`
+
+The `secret` method asks the user for a password or a secret value that won't appear in the console.
+
+```php
+$password = $this->secret( 'What is the password?' );
+```
+
+## Command Output
+
+The `info`, `error`, `alert`, and `warn` methods can be used to write output to the console.
+
+```php
+use Mantle\Console\Command;
+
+class Example_Command extends Command {
+  public function handle() {
+    $this->info( 'This is an informational message.' );
+    $this->error( 'This is an error message.' );
+    $this->alert( 'This is an alert message.' );
+    $this->warn( 'This is a warning message.' );
+  }
+}
+```
+
+A `fail()` method is also available to write an error message and exit the command.
+
+```php
+use Mantle\Console\Command;
+
+class Example_Command extends Command {
+  public function handle() {
+    $this->fail( 'This is an error message.' );
+  }
+}
+```
+
+Underneath the hood, `$this->output` is an instance of `
+Symfony\Component\Console\Style\SymfonyStyle` which provides a number of methods
+for writing to the console. You can use these methods directly if you need more
+control over the output. See [the Symfony
+documentation](https://symfony.com/doc/current/console/style.html) for more
+information.
