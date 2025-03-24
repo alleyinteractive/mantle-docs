@@ -407,7 +407,7 @@ $value = with( 'example', function( $value ) {
 
 ## Testing
 
-### Capture
+### `capture`
 
 The `capture()` helper is a simple wrapper around `ob_start()` and `ob_get_clean()`. It captures the output of a callable and returns it as a string. This can be useful when you want to test the output of a function or method that echoes content. Example:
 
@@ -415,4 +415,22 @@ The `capture()` helper is a simple wrapper around `ob_start()` and `ob_get_clean
 use function Mantle\Support\Helpers\capture;
 
 $output = capture( fn () => the_title() );
+```
+
+### `block_factory`
+
+The `block_factory()` helper creates a new instance of a block factory. This can be useful for testing or creating blocks dynamically.
+
+For more information see [the documentation](../../testing/factory.md#generating-content).
+
+```php
+use function Mantle\Testing\block_factory;
+
+$block = block_factory()->block(
+  name: 'example/block-name',
+  attributes: [ 'example' => 'value' ],
+);
+
+$heading   = block_factory()->heading( 'Example Heading' );
+$paragraph = block_factory()->paragraph( 'Example Paragraph' );
 ```
