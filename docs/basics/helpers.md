@@ -3,6 +3,10 @@
 Mantle includes a variety of global "helper" functions (props to Laravel) to
 make life easier.
 
+The [`mantle-framework/support` package includes a number of
+namespaced-helpers](../features/support/helpers.md) that are available for use
+in your application.
+
 ## Application Helpers
 
 ### `app()`
@@ -98,35 +102,8 @@ abort_unless( $value_to_check, 404 );
 ```
 
 ## Array Helpers
+
 The `Mantle\Support\Arr` class contains all the Laravel array helper
 methods you might be familiar with (some methods have been renamed to match
 WordPress coding standards). You can reference those
 [here](https://laravel.com/docs/10.x/helpers#arrays).
-
-## String Helpers
-
-The `Mantle\Support\Str` class contains all the Laravel string helper
-methods you might be familiar with. You can reference those
-[here](https://laravel.com/docs/10.x/helpers#strings).
-
-This also includes the `str()` helper:
-
-```php
-use function Mantle\Support\Helpers\str;
-
-str( 'example string' )->title(); // Example String
-```
-
-## Deferred Functions
-
-The `defer()` helper function can be used to defer the execution of a function
-until the end of the request lifecycle. This can be useful for deferring
-functions that should be executed after the response has been sent to the user.
-
-```php
-use function Mantle\Support\Helpers\defer;
-
-defer( function() {
-  // Your deferred function code here.
-} );
-```

@@ -12,6 +12,11 @@
   status = 301
   force = true
 [[redirects]]
+  from = "/docs/testing/test-framework.html"
+  to = "/docs/testing"
+  status = 301
+  force = true
+[[redirects]]
   from = "/docs/next/models/querying-models"
   to = "/docs/next/models/query-builder"
   status = 301

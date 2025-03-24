@@ -54,13 +54,3 @@ $demo   = Utils::get_echo( fn ( $subject ) => echo "Hello {$subject}!", 'world' 
 $title  = Utils::get_echo( 'the_title' );
 $method = Utils::get_echo( [ 'My_Class', 'method_that_outputs' ] );
 ```
-
-## Capture
-
-The `capture()` helper is a simple wrapper around `ob_start()` and `ob_get_clean()`. It captures the output of a callable and returns it as a string. This can be useful when you want to test the output of a function or method that echoes content. Example:
-
-```php
-use function Mantle\Support\Helpers\capture;
-
-$output = capture( fn () => the_title() );
-```
