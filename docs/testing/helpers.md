@@ -41,6 +41,8 @@ html_string(
   ->assertElementExistsByTestId( 'test-item' );
 ```
 
+The HTML string helper returns a [HTML](../features/support/html.mdx) object.
+
 ## Getting Output
 
 `\Mantle\Testing\Utils::get_echo()` is a replacement for the core WordPress test suite's [`get_echo()` function](https://github.com/WordPress/wordpress-develop/blob/cf5898957e68d4d9fa63b5e89e2bee272391aa92/tests/phpunit/includes/utils.php#L432-L436). It takes a callable, starts an output buffer, calls the given callable, and returns the contents of the output buffer. Example:
@@ -51,4 +53,14 @@ use Mantle\Testing\Utils;
 $demo   = Utils::get_echo( fn ( $subject ) => echo "Hello {$subject}!", 'world' );
 $title  = Utils::get_echo( 'the_title' );
 $method = Utils::get_echo( [ 'My_Class', 'method_that_outputs' ] );
+```
+
+## Capture
+
+The `capture()` helper is a simple wrapper around `ob_start()` and `ob_get_clean()`. It captures the output of a callable and returns it as a string. This can be useful when you want to test the output of a function or method that echoes content. Example:
+
+```php
+use function Mantle\Support\Helpers\capture;
+
+$output = capture( fn () => the_title() );
 ```
