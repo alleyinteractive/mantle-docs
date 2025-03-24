@@ -960,3 +960,259 @@ Returns the tag name of the first node in the current selection.
 #### `text`
 
 Returns the text content of the first node in the current selection.
+
+### Assertions
+
+The assertions available on the `HTML` class extend the same assertions used on
+the [Element Assertions](../../testing/requests.md#element-assertions) used when
+testing HTTP requests.
+
+#### `assertHasChildren`
+
+Assert that the current node has children.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+class ExampleTest extends TestCase {
+    public function testExample() {
+        $html = <<<'HTML'
+            <div id="test">
+                <p class="example">Hello World</p>
+                <p class="example">Hello Universe</p>
+            </div>
+        HTML;
+
+        html_string( $html )->first_by_id( 'test' )->assertHasChildren();
+        html_string( $html )->first_by_id( 'test' )->assertHasChildren( selector: 'p' );
+        html_string( $html )->first_by_id( 'test' )->assertHasChildren( selector: 'p', count: 2 );
+    }
+}
+```
+
+#### `assertHasNodes`
+
+Assert that the current selection has nodes.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+class ExampleTest extends TestCase {
+    public function testExample() {
+        $html = <<<'HTML'
+            <div id="test">
+                <p class="example">Hello World</p>
+                <p class="example">Hello Universe</p>
+            </div>
+        HTML;
+
+        html_string( $html )->filter( 'p' )->assertHasNodes();
+        html_string( $html )->filter( 'p' )->assertHasNodes( count: 2 );
+    }
+}
+```
+
+#### `assertNodeHasAnyClass`
+
+Assert that the current node has any of the specified classes.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+class ExampleTest extends TestCase {
+    public function testExample() {
+        $html = <<<'HTML'
+            <div id="test" class="example another-class">
+                <p class="example">Hello World</p>
+            </div>
+        HTML;
+
+        html_string( $html )->first_by_id( 'test' )->assertNodeHasAnyClass( 'example', 'another-class' );
+    }
+}
+```
+
+#### `assertNodeHasClass`
+
+Assert that the current node has all of the specified classes.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+class ExampleTest extends TestCase {
+    public function testExample() {
+        $html = <<<'HTML'
+            <div id="test" class="example another-class">
+                <p class="example">Hello World</p>
+            </div>
+        HTML;
+
+        html_string( $html )->first_by_id( 'test' )->assertNodeHasClass( 'example' ); // true
+        html_string( $html )->first_by_id( 'test' )->assertNodeHasClass( 'example', 'another-class' ); // true
+        html_string( $html )->first_by_id( 'test' )->assertNodeHasClass( 'example', 'non-existent-class' ); // false
+    }
+}
+```
+
+#### assertQuerySelectorExists
+
+Assert that a given CSS selector exists in the HTML.
+
+```php
+$html->assertQuerySelectorExists( string $selector );
+```
+
+#### assertQuerySelectorMissing
+
+Assert that a given CSS selector does not exist in the HTML.
+
+```php
+$html->assertQuerySelectorMissing( string $selector );
+```
+
+#### assertElementExists
+
+Assert that a given XPath exists in the HTML.
+
+```php
+$html->assertElementExists( string $expression );
+```
+
+#### assertElementMissing
+
+Assert that a given XPath does not exist in the HTML.
+
+```php
+$html->assertElementMissing( string $expression );
+```
+
+#### assertElementExistsByClass
+
+Assert that a given class exists in the HTML.
+
+```php
+$html->assertElementExistsByClass( string $class );
+```
+
+#### assertElementMissingByClass
+
+Assert that a given class does not exist in the HTML.
+
+```php
+$html->assertElementMissingByClass( string $class );
+```
+
+#### assertElementExistsById
+
+Assert that a given ID exists in the HTML.
+
+```php
+$html->assertElementExistsById( string $id );
+```
+
+#### assertElementMissingById
+
+Assert that a given ID does not exist in the HTML.
+
+```php
+$html->assertElementMissingById( string $id );
+```
+
+#### assertElementExistsByTagName
+
+Assert that a given tag name exists in the HTML.
+
+```php
+$html->assertElementExistsByTagName( string $tag_name );
+```
+
+#### assertElementMissingByTagName
+
+Assert that a given tag name does not exist in the HTML.
+
+```php
+$html->assertElementMissingByTagName( string $tag_name );
+```
+
+#### assertElementCount
+
+Assert that the HTML has the expected number of elements matching the given
+XPath expression.
+
+```php
+$html->assertElementCount( string $expression, int $expected );
+```
+
+#### assertQuerySelectorCount
+
+Assert that the HTML has the expected number of elements matching the given
+CSS selector.
+
+```php
+$html->assertQuerySelectorCount( string $selector, int $expected );
+```
+
+#### assertElementExistsByTestId
+
+Assert that an element with the given `data-testid` attribute exists in the HTML.
+
+```php
+$html->assertElementExistsByTestId( string $test_id );
+```
+
+#### assertElementMissingByTestId
+
+Assert that an element with the given `data-testid` attribute does not exist in the HTML.
+
+```php
+$html->assertElementMissingByTestId( string $test_id );
+```
+
+#### assertElement
+
+Assert that the given element exists in the HTML and passes the given
+assertion. This can be used to make custom assertions against the element that
+cannot be expressed in a simple XPath expression or query selector.
+
+```php
+$html->assertElement( string $expression, callable $assertion, bool $pass_any = false );
+```
+
+If `$pass_any` is `true`, the assertion will pass if any of the elements pass
+the assertion. Otherwise, all elements must pass the assertion. Let's take a
+look at an example:
+
+```php
+use DOMElement;
+
+$html->assertElement(
+  '//div',
+  fn ( DOMElement $element ) => $this->assertEquals( 'Hello World', $element->textContent )
+    && $this->assertNotEmpty( $element->getAttribute( 'class' ) ) );
+  },
+);
+```
+
+#### assertQuerySelector
+
+Assert that the given CSS selector exists in the HTML and passes the given
+assertion. Similar to `assertElement`, this can be used to make custom
+assertions against the element that cannot be expressed in a simple XPath
+expression or query selector.
+
+```php
+$html->assertQuerySelector( string $selector, callable $assertion, bool $pass_any = false );
+```
+
+Let's take a look at an example:
+
+```php
+use DOMElement;
+
+$html->assertQuerySelector(
+  'div > p',
+  fn ( DOMElement $element ) => $this->assertEquals( 'Hello World', $element->textContent )
+    && $this->assertNotEmpty( $element->getAttribute( 'class' ) ) );
+  },
+);
+```
