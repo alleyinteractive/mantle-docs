@@ -3,6 +3,10 @@
 Mantle includes a variety of global "helper" functions (props to Laravel) to
 make life easier.
 
+The [`mantle-framework/support` package includes a number of
+namespaced-helpers](../features/support/helpers.md) that are available for use
+in your application.
+
 ## Application Helpers
 
 ### `app()`
