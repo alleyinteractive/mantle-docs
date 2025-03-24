@@ -421,7 +421,7 @@ $output = capture( fn () => the_title() );
 
 The `block_factory()` helper creates a new instance of a block factory. This can be useful for testing or creating blocks dynamically.
 
-For more information see [the documentation](../../testing/factory.md#generating-content).
+For more information see [the documentation](../../testing/factory.md#generating-blocks).
 
 ```php
 use function Mantle\Testing\block_factory;
