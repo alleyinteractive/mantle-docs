@@ -1,0 +1,1218 @@
+---
+sidebar_label: HTML
+---
+
+import TOCInline from '@theme/TOCInline';
+
+# HTML Parsing, Assertions, and Manipulation
+
+The `HTML` class provides methods to query, manipulate, and assert against HTML
+strings and documents. It is built on top of the [`DomCrawler` component from
+Symfony](https://symfony.com/doc/current/components/dom_crawler.html), which
+provides a powerful and flexible way to work with HTML.
+
+## Usage
+
+The HTML class can be instantiated with the `HTML` class or by using the `html()` helper function.
+
+```php
+use Mantle\Support\HTML;
+
+use function Mantle\Support\Helpers\html_string;
+
+$html = new HTML( '<div id="test">Hello World</div>' );
+
+// Or using the helper function.
+$html = html_string( '<div id="test">Hello World</div>' );
+```
+
+The HTML class supports being passed a HTML string, document, `DOMDocument`,
+`DOMNode`, or `DOMNodeList`. It will parse the HTML using `DOMDocument`.
+
+### Filtering
+
+The HTML class provides methods to filter nodes based on various criteria, such as
+ID, class name, tag name, and custom selectors.
+
+#### Query Selector
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+$elements = html_string( $html )->get_by_selector( '.example' );
+
+foreach ( $elements as $element ) {
+    echo $element->text(); // Outputs: Hello World, Hello Universe
+}
+```
+
+You can also retrieve the first element that matches a specific selector using
+the `first_by_selector` method.
+
+```php
+$element = html_string( $html )->first_by_selector( '.example' );
+echo $element->text(); // Outputs: Hello World
+```
+
+#### XPath
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+// Multiple elements.
+$elements = html_string( $html )->get_by_xpath( '//p[@class="example"]' );
+
+// Single element.
+$element = html_string( $html )->first_by_xpath( '//p[@class="example"]' );
+```
+
+#### ID / Tag / Test ID
+
+You can also retrieve elements by their ID, tag name, or test ID using the
+`first_by_id`, `first_by_tag`, and `first_by_testid` methods respectively.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+// Retrieve by ID.
+$element = html_string( $html )->first_by_id( 'test' );
+
+// Retrieve by tag name.
+$element = html_string( $html )->first_by_tag( 'p' );
+
+// Retrieve by test ID.
+$element = html_string( $html )->first_by_testid( 'test' );
+```
+
+There are also `get_by_*` versions of these methods that return all matching
+elements.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+// Retrieve all elements by tag name.
+$elements = html_string( $html )->get_by_tag( 'p' );
+
+// Retrieve all elements by test ID.
+$elements = html_string( $html )->get_by_testid( 'test' );
+```
+
+### Traversing and Looping
+
+The HTML class is iterable, allowing you to loop through the nodes it contains.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+$elements = html_string( $html )->get_by_selector( '.example' );
+
+foreach ( $elements as $element ) {
+  // $element is a instanceof the `HTML` class.
+  echo $element->text(); // Outputs: Hello World, Hello Universe
+}
+```
+
+Access node by its position on the list:
+
+```php
+$crawler->filter( 'body > p' )->eq( 0 );
+```
+
+Get the first or last node of the current selection:
+
+```php
+$crawler->filter( 'body > p' )->first();
+$crawler->filter( 'body > p' )->last();
+```
+
+Get the nodes of the same level as the current selection:
+
+```php
+$crawler->filter( 'body > p' )->siblings();
+```
+
+Get the same level nodes after or before the current selection:
+
+```php
+$crawler->filter( 'body > p' )->nextAll();
+$crawler->filter( 'body > p' )->previousAll();
+```
+
+Get all the child or ancestor nodes:
+
+```php
+$crawler->filter( 'body' )->children();
+$crawler->filter( 'body > p' )->ancestors();
+```
+
+Get all the direct child nodes matching a CSS selector:
+
+```php
+$crawler->filter( 'body' )->children( 'p.lorem' );
+```
+
+Get the first parent (heading toward the document root) of the element that matches the provided selector:
+
+```php
+$crawler->closest( 'p.lorem' );
+```
+
+### Accessing Node Values
+
+You can access the text content of a node using the `tag_name()`, `text()`, or
+`innerText()` methods.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+$element = html_string( $html )->first_by_selector( '.example' );
+
+// Tag name.
+echo $element->tag_name(); // Outputs: 'p'.
+
+// Text content.
+echo $element->text(); // Outputs: 'Hello World'.
+```
+
+You can also retrieve the attributes of a node using the `get_attribute()` method.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test" class="example">
+    <p class="example" data-example="1234">Hello World</p>
+</div>
+HTML;
+
+$html = html_string( $html );
+
+// Get attribute value.
+$html->first_by_id( 'test' )->get_attribute( 'class' ); // Outputs: 'example'.
+$html->first_by_selector( '.example' )->get_attribute( 'data-example' ); // Outputs: '1234'.
+$html->first_by_selector( '.example' )->get_data( 'example' ); // Outputs: '1234'.
+```
+
+### Modifying Node Values
+
+You can modify the attributes, classes, and content of nodes using the
+`modify()` method of the HTML class as well as other methods to mutate the
+element's contents, attributes, etc.
+
+```php
+use Mantle\Support\HTML;
+
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+$html = html_string( $html );
+
+$html->filter( 'p' )->modify( function ( HTML $node ) {
+  // Add a class to all <p> elements.
+  $node->add_class( 'modified' );
+} );
+
+// You can also replace the entire contents of a node.
+$html->filter( 'p' )->modify(
+  fn ( HTML $node ) => "<span>New content</span>"
+);
+```
+
+## Methods
+
+<TOCInline
+    toc={toc.filter((item) => {
+        const skip = [
+            'Filtering',
+            'Query Selector',
+            'XPath',
+            'ID / Tag / Test ID',
+            'Traversing and Looping',
+            'Accessing Node Values',
+            'Modifying Node Values',
+        ];
+
+        return ! skip.includes(item.value) && item.level >= 3;
+    })}
+    minHeadingLevel={3}
+    maxHeadingLevel={6}
+/>
+
+### Retrieving Nodes
+
+#### `filter/get_by_selector`
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+$elements = html_string( $html )->filter( '.example' );
+$elements = html_string( $html )->get_by_selector( '.example' );
+```
+
+#### `first_by_id`
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+$element = html_string( $html )->first_by_id( 'test' );
+```
+
+#### `first_by_selector`
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+$element = html_string( $html )->first_by_selector( '.example' );
+```
+
+#### `first_by_tag`
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+$element = html_string( $html )->first_by_tag( 'p' );
+```
+
+#### `first_by_testid`
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example" data-testid="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+$element = html_string( $html )->first_by_testid( 'example' );
+```
+
+#### `first_by_xpath`
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+$element = html_string( $html )->first_by_xpath( '//p[@class="example"]' );
+```
+
+#### `get_by_tag`
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+$elements = html_string( $html )->get_by_tag( 'p' );
+```
+
+#### `get_by_testid`
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example" data-testid="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+$elements = html_string( $html )->get_by_testid( 'example' );
+```
+
+#### `get_by_xpath`
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+$elements = html_string( $html )->get_by_xpath( '//p[@class="example"]' );
+```
+
+### Modifying Nodes
+
+#### `add_class`
+
+Adds a class to the element. Supports multiple classes.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+html_string( $html )->first_by_selector( '.example' )->add_class( 'new-class' );
+html_string( $html )->first_by_selector( '.example' )->add_class( 'new-class', 'another-class' );
+```
+
+#### `after`
+
+Inserts content after the element.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+html_string( $html )->first_by_selector( '.example' )->after( '<span>After</span>' );
+
+/*
+Outputs:
+<div id="test">
+    <p class="example">Hello World</p>
+    <span>After</span>
+    <p class="example">Hello Universe</p>
+</div>
+*/
+```
+
+#### `append`
+
+Appends content to the end of the element.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+html_string( $html )->first_by_selector( '.example' )->append( '<span>Appended</span>' );
+
+/*
+Outputs:
+<div id="test">
+    <p class="example">Hello World<span>Appended</span></p>
+    <p class="example">Hello Universe</p>
+</div>
+*/
+```
+
+#### `before`
+
+Inserts content before the element.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+html_string( $html )->first_by_selector( '.example' )->before( '<h2>Before</h2>' );
+
+/*
+Outputs:
+<div id="test">
+  <h2>Before</h2>
+  <p class="example">Hello World</p>
+  <p class="example">Hello Universe</p>
+</div>
+*/
+```
+
+#### `empty`
+
+Empties the content of the element.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+html_string( $html )->first_by_selector( '.example' )->empty();
+
+/*
+Outputs:
+<div id="test">
+    <p class="example"></p>
+    <p class="example">Hello Universe</p>
+</div>
+*/
+```
+
+#### `get_data`
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example" data-example="1234">Hello World</p>
+</div>
+HTML;
+
+html_string( $html )->first_by_selector( '.example' )->get_data( 'example' ); // Outputs: '1234'.
+```
+
+#### `has_any_class`
+
+Checks if the element has any of the specified classes.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+</div>
+HTML;
+
+html_string( $html )->first_by_selector( '.example' )->has_any_class( 'example', 'another-class' ); // Outputs: true
+```
+
+#### `has_class`
+
+Checks if the element has all of the specified classes.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+</div>
+HTML;
+
+html_string( $html )->first_by_selector( '.example' )->has_class( 'example' ); // Outputs: true
+html_string( $html )->first_by_selector( '.example' )->has_class( 'example', 'another-class' ); // Outputs: false
+```
+
+#### `modify`
+
+Modifies the element using a callback function. The callback receives the
+current crawler as an argument. You can modify the element and return null/void
+or you can return a new element to replace the current one.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+$html = html_string( $html );
+
+$html->filter( '.example' )->first()->modify( function ( HTML $node ) {
+  // Add a class to the element.
+  $node->add_class( 'modified' );
+} );
+
+$html->filter( '.example' )->last()->modify( function ( HTML $node ) {
+  // Replace the content of the element.
+  return '<span>New content</span>';
+} );
+```
+
+#### `prepend`
+
+Prepends content to the beginning of the element.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+html_string( $html )->first_by_selector( '.example' )->prepend( '<span>Prepended</span>' );
+
+/*
+Outputs:
+<div id="test">
+    <p class="example"><span>Prepended</span>Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+*/
+```
+
+#### `remove`
+
+Removes the element from the DOM.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+html_string( $html )->first_by_selector( '.example' )->remove();
+
+/*
+Outputs:
+<div id="test">
+    <p class="example">Hello Universe</p>
+</div>
+*/
+```
+
+#### `remove_attribute`
+
+Removes an attribute from the element.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+html_string( $html )->first_by_selector( '.example' )->remove_attribute( 'class' );
+
+/*
+Outputs:
+<div id="test">
+    <p>Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+*/
+```
+
+#### `remove_class`
+
+Removes a class from the element. Supports multiple classes.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+</div>
+HTML;
+
+html_string( $html )->first_by_selector( '.example' )->remove_class( 'example' );
+
+/*
+Outputs:
+<div id="test">
+    <p>Hello World</p>
+</div>
+*/
+```
+
+#### `remove_data`
+
+Removes a data attribute from the element.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example" data-example="1234">Hello World</p>
+</div>
+HTML;
+
+html_string( $html )->first_by_selector( '.example' )->remove_data( 'example' );
+
+/*
+Outputs:
+<div id="test">
+    <p class="example">Hello World</p>
+</div>
+*/
+```
+
+#### `set_attribute`
+
+Sets an attribute on the element.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+</div>
+HTML;
+
+html_string( $html )->first_by_selector( '.example' )->set_attribute( 'data-example', '1234' );
+
+/*
+Outputs:
+<div id="test">
+    <p class="example" data-example="1234">Hello World</p>
+</div>
+*/
+```
+
+#### `set_data`
+
+Sets a data attribute on the element.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+  <p class="example">Hello World</p>
+</div>
+HTML;
+
+html_string( $html )->first_by_selector( '.example' )->set_data( 'example', '1234' );
+
+/*
+Outputs:
+
+<div id="test">
+  <p class="example" data-example="1234">Hello World</p>
+</div>
+*/
+```
+
+#### `wrap`
+
+Wraps the element with the specified HTML or element.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div>
+  <ul id="test">
+      <li class="example">Hello World</li>
+      <li class="example">Hello Universe</li>
+  </ul>
+</div>
+HTML;
+
+html_string( $html )->filter( 'ul' )->wrap( '<div class="wrapper"></div>' );
+
+/*
+Outputs:
+<div>
+  <div class="wrapper">
+    <ul id="test">
+        <li class="example">Hello World</li>
+        <li class="example">Hello Universe</li>
+    </ul>
+  </div>
+</div>
+*/
+```
+
+#### `wrap_all`
+
+Wraps all matched elements with the specified HTML or element.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div>
+  <div id="test">
+      <p class="example">Hello World</p>
+      <p class="example">Hello Universe</p>
+  </div>
+</div>
+HTML;
+
+html_string( $html )->filter( 'p' )->wrap_all( '<div class="wrapper"></div>' );
+
+/*
+Outputs:
+
+<div>
+  <div class="wrapper">
+    <div id="test">
+        <p class="example">Hello World</p>
+        <p class="example">Hello Universe</p>
+    </div>
+  </div>
+</div>
+*/
+```
+
+#### `wrap_inner`
+
+Wraps the inner content of the element with the specified HTML or element.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div>
+  <ul id="test">
+      <li class="example">Hello World</li>
+      <li class="example">Hello Universe</li>
+  </ul>
+</div>
+HTML;
+
+html_string( $html )->filter( 'li' )->wrap_inner( '<span class="wrapper"></span>' );
+
+/*
+Outputs:
+<div>
+  <ul id="test">
+    <li class="example"><span class="wrapper">Hello World</span></li>
+    <li class="example"><span class="wrapper">Hello Universe</span></li>
+  </ul>
+</div>
+*/
+```
+
+### Iteration
+
+#### `next_until`
+
+Returns all nodes after a condition is met. Only includes the last node that
+matched the condition if `$include` is set to `true`.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+    <p class="example">Hello Galaxy</p>
+</div>
+HTML;
+
+// Contains the "Hello Galaxy" node.
+$elements = html_string( $html )->filter( 'p' )->next_until(
+    fn ( HTML $element ) => $element->text() === 'Hello Universe',
+);
+
+// Contains the "Hello Universe" and "Hello Galaxy" nodes.
+$elements = html_string( $html )->filter( 'p' )->next_until(
+    fn ( HTML $element ) => $element->text() === 'Hello Universe',
+    include: true
+);
+```
+
+#### `previous_until`
+
+Returns all nodes before a condition is met. Only includes the last node that
+matched the condition if `$include` is set to `true`.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+    <p class="example">Hello Galaxy</p>
+</div>
+HTML;
+
+// Contains the "Hello World" node.
+$elements = html_string( $html )->filter( 'p' )->previous_until(
+    fn ( HTML $element ) => $element->text() === 'Hello Universe',
+);
+
+// Contains the "Hello World" and "Hello Universe" nodes.
+$elements = html_string( $html )->filter( 'p' )->previous_until(
+    fn ( HTML $element ) => $element->text() === 'Hello Universe',
+    include: true
+);
+```
+
+### Node Information
+
+#### `dd`
+
+Dumps the current nodes and exits the script.
+
+#### `dump`
+
+Dumps the current nodes for debugging purposes and returns static.
+
+#### `has_nodes`
+
+Checks if the current selection has any nodes.
+
+#### `tag_name`
+
+Returns the tag name of the first node in the current selection.
+
+#### `text`
+
+Returns the text content of the first node in the current selection.
+
+### Assertions
+
+The assertions available on the `HTML` class extend the same assertions used on
+the [Element Assertions](../../testing/requests.md#element-assertions) used when
+testing HTTP requests.
+
+#### `assertHasChildren`
+
+Assert that the current node has children.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+class ExampleTest extends TestCase {
+    public function testExample() {
+        $html = <<<'HTML'
+            <div id="test">
+                <p class="example">Hello World</p>
+                <p class="example">Hello Universe</p>
+            </div>
+        HTML;
+
+        html_string( $html )->first_by_id( 'test' )->assertHasChildren();
+        html_string( $html )->first_by_id( 'test' )->assertHasChildren( selector: 'p' );
+        html_string( $html )->first_by_id( 'test' )->assertHasChildren( selector: 'p', count: 2 );
+    }
+}
+```
+
+#### `assertHasNodes`
+
+Assert that the current selection has nodes.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+class ExampleTest extends TestCase {
+    public function testExample() {
+        $html = <<<'HTML'
+            <div id="test">
+                <p class="example">Hello World</p>
+                <p class="example">Hello Universe</p>
+            </div>
+        HTML;
+
+        html_string( $html )->filter( 'p' )->assertHasNodes();
+        html_string( $html )->filter( 'p' )->assertHasNodes( count: 2 );
+    }
+}
+```
+
+#### `assertNodeHasAnyClass`
+
+Assert that the current node has any of the specified classes.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+class ExampleTest extends TestCase {
+    public function testExample() {
+        $html = <<<'HTML'
+            <div id="test" class="example another-class">
+                <p class="example">Hello World</p>
+            </div>
+        HTML;
+
+        html_string( $html )->first_by_id( 'test' )->assertNodeHasAnyClass( 'example', 'another-class' );
+    }
+}
+```
+
+#### `assertNodeHasClass`
+
+Assert that the current node has all of the specified classes.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+class ExampleTest extends TestCase {
+    public function testExample() {
+        $html = <<<'HTML'
+            <div id="test" class="example another-class">
+                <p class="example">Hello World</p>
+            </div>
+        HTML;
+
+        html_string( $html )->first_by_id( 'test' )->assertNodeHasClass( 'example' ); // true
+        html_string( $html )->first_by_id( 'test' )->assertNodeHasClass( 'example', 'another-class' ); // true
+        html_string( $html )->first_by_id( 'test' )->assertNodeHasClass( 'example', 'non-existent-class' ); // false
+    }
+}
+```
+
+#### assertQuerySelectorExists
+
+Assert that a given CSS selector exists in the HTML.
+
+```php
+$html->assertQuerySelectorExists( string $selector );
+```
+
+#### assertQuerySelectorMissing
+
+Assert that a given CSS selector does not exist in the HTML.
+
+```php
+$html->assertQuerySelectorMissing( string $selector );
+```
+
+#### assertElementExists
+
+Assert that a given XPath exists in the HTML.
+
+```php
+$html->assertElementExists( string $expression );
+```
+
+#### assertElementMissing
+
+Assert that a given XPath does not exist in the HTML.
+
+```php
+$html->assertElementMissing( string $expression );
+```
+
+#### assertElementExistsByClass
+
+Assert that a given class exists in the HTML.
+
+```php
+$html->assertElementExistsByClass( string $class );
+```
+
+#### assertElementMissingByClass
+
+Assert that a given class does not exist in the HTML.
+
+```php
+$html->assertElementMissingByClass( string $class );
+```
+
+#### assertElementExistsById
+
+Assert that a given ID exists in the HTML.
+
+```php
+$html->assertElementExistsById( string $id );
+```
+
+#### assertElementMissingById
+
+Assert that a given ID does not exist in the HTML.
+
+```php
+$html->assertElementMissingById( string $id );
+```
+
+#### assertElementExistsByTagName
+
+Assert that a given tag name exists in the HTML.
+
+```php
+$html->assertElementExistsByTagName( string $tag_name );
+```
+
+#### assertElementMissingByTagName
+
+Assert that a given tag name does not exist in the HTML.
+
+```php
+$html->assertElementMissingByTagName( string $tag_name );
+```
+
+#### assertElementCount
+
+Assert that the HTML has the expected number of elements matching the given
+XPath expression.
+
+```php
+$html->assertElementCount( string $expression, int $expected );
+```
+
+#### assertQuerySelectorCount
+
+Assert that the HTML has the expected number of elements matching the given
+CSS selector.
+
+```php
+$html->assertQuerySelectorCount( string $selector, int $expected );
+```
+
+#### assertElementExistsByTestId
+
+Assert that an element with the given `data-testid` attribute exists in the HTML.
+
+```php
+$html->assertElementExistsByTestId( string $test_id );
+```
+
+#### assertElementMissingByTestId
+
+Assert that an element with the given `data-testid` attribute does not exist in the HTML.
+
+```php
+$html->assertElementMissingByTestId( string $test_id );
+```
+
+#### assertElement
+
+Assert that the given element exists in the HTML and passes the given
+assertion. This can be used to make custom assertions against the element that
+cannot be expressed in a simple XPath expression or query selector.
+
+```php
+$html->assertElement( string $expression, callable $assertion, bool $pass_any = false );
+```
+
+If `$pass_any` is `true`, the assertion will pass if any of the elements pass
+the assertion. Otherwise, all elements must pass the assertion. Let's take a
+look at an example:
+
+```php
+use DOMElement;
+
+$html->assertElement(
+  '//div',
+  fn ( DOMElement $element ) => $this->assertEquals( 'Hello World', $element->textContent )
+    && $this->assertNotEmpty( $element->getAttribute( 'class' ) ) );
+  },
+);
+```
+
+#### assertQuerySelector
+
+Assert that the given CSS selector exists in the HTML and passes the given
+assertion. Similar to `assertElement`, this can be used to make custom
+assertions against the element that cannot be expressed in a simple XPath
+expression or query selector.
+
+```php
+$html->assertQuerySelector( string $selector, callable $assertion, bool $pass_any = false );
+```
+
+Let's take a look at an example:
+
+```php
+use DOMElement;
+
+$html->assertQuerySelector(
+  'div > p',
+  fn ( DOMElement $element ) => $this->assertEquals( 'Hello World', $element->textContent )
+    && $this->assertNotEmpty( $element->getAttribute( 'class' ) ) );
+  },
+);
+```

@@ -145,7 +145,7 @@ $this->post( '/upload', [
   ->assertJsonPath( 'message', 'Image uploaded successfully' );
 ```
 
-For more information about testing, see the [documentation](../testing/index.md).
+For more information about testing, see the [documentation](../testing/index.mdx).
 
 ## Who is Mantle For?
 
