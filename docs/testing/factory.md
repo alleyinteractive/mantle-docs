@@ -20,6 +20,8 @@ The factory supports the creation of the following types of content:
 * user
 * blog (if mulitisite)
 * network (if multisite)
+* Co-Authors Plus guest authors (if available)
+* Byline Manager profiles (if available)
 
 :::note
 
@@ -333,4 +335,150 @@ Block_Factory::register_preset(
     $factory->paragraph(),
   ] ),
 );
+```
+
+## Generating Co-Authors Plus Guest Authors
+
+The factory supports the generation of [Co-Authors Plus](https://wordpress.org/plugins/co-authors-plus/)
+Guest Authors if the plugin is available:
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class ExampleTests extends Testkit_Test_Case {
+  public function test_create_guest_author(): void {
+		$author = static::factory()->cap_guest_author->create_and_get();
+
+		$this->assertInstanceOf( stdClass::class, $author );
+		$this->assertNotEmpty( $author->display_name );
+		$this->assertNotEmpty( get_post_meta( $author->ID, 'cap-first_name', true ) );
+		$this->assertNotEmpty( get_post_meta( $author->ID, 'cap-last_name', true ) );
+	}
+}
+```
+
+You can also pass along data to the factory to override the default values:
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class ExampleTests extends Testkit_Test_Case {
+  public function test_create_guest_author(): void {
+    $author = static::factory()->cap_guest_author->create_and_get( [
+      'display_name' => 'John Doe',
+      'first_name'   => 'John',
+      'last_name'    => 'Doe',
+    ] );
+
+    $this->assertInstanceOf( stdClass::class, $author );
+    $this->assertSame( 'John Doe', $author->display_name );
+    $this->assertSame( 'John', get_post_meta( $author->ID, 'cap-first_name', true ) );
+    $this->assertSame( 'Doe', get_post_meta( $author->ID, 'cap-last_name', true ) );
+  }
+}
+```
+
+A guest author can be linked to a WordPress user and inherit data from that user:
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class ExampleTests extends Testkit_Test_Case {
+  public function test_create_guest_author_linked(): void {
+		$user   = static::factory()->user->create_and_get();
+		$author = static::factory()->cap_guest_author->with_linked_user( $user->ID )->create_and_get();
+
+    // ...
+  }
+}
+```
+
+You can create content with a guest author as the author of a post (supports
+passing a guest author or a WordPress user):
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class ExampleTests extends Testkit_Test_Case {
+  public function test_create_post_with_guest_author(): void {
+    $author = static::factory()->cap_guest_author->create_and_get();
+    $post   = static::factory()->post->with_cap_authors( $author )->create_and_get();
+
+    // ...
+  }
+}
+```
+
+## Generating Byline Manager Profiles
+
+The factory supports the generation of [Byline Manager](https://github.com/alleyinteractive/byline-manager)
+profiles posts with bylines:
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class ExampleTests extends Testkit_Test_Case {
+  public function test_create_byline_manager_profile(): void {
+    $profile = static::factory()->byline_manager_profile->create_and_get();
+
+    $this->assertInstanceOf( WP_Post::class, $profile );
+
+    // ...
+  }
+}
+```
+
+You can also pass along data to the factory to override the default values:
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class ExampleTests extends Testkit_Test_Case {
+  public function test_create_byline_manager_profile(): void {
+    $profile = static::factory()->byline_manager_profile->create_and_get( [
+      'display_name' => 'John Doe',
+    ] );
+
+    // ...
+  }
+}
+```
+
+A profile can be linked to a WordPress user and inherit data from that user:
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class ExampleTests extends Testkit_Test_Case {
+  public function test_create_byline_manager_profile_linked(): void {
+    $user    = static::factory()->user->create_and_get();
+    $profile = static::factory()->byline_manager_profile->with_linked_user( $user->ID )->create_and_get();
+
+    // ...
+  }
+}
+```
+
+You can create content with a byline manager profile as the author of a post.
+This method supports a Byline Manager profile, WordPress user, or a string
+byline (with no linked user or profile):
+
+```php
+use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+
+class ExampleTests extends Testkit_Test_Case {
+  public function test_create_post_with_byline_manager_profile(): void {
+    $profile = static::factory()->byline_manager_profile->create_and_get();
+    $post    = static::factory()->post->with_byline( $profile )->create_and_get();
+
+    // ...
+  }
+
+  public function test_create_post_with_byline_manager_profile_and_text_byline(): void {
+    $profile = static::factory()->byline_manager_profile->with_linked_user( $user->ID )->create_and_get();
+    $post    = static::factory()->post->with_byline( $profile, $user, 'Another Person' )->create_and_get();
+
+    // ...
+  }
+}
 ```
