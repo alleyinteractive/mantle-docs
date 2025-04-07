@@ -1,3 +1,10 @@
+---
+title: Mantle Testing Framework
+description: "Learn how to use the Mantle Testing Framework to test your WordPress applications."
+---
+
+import DocCardList from '@theme/DocCardList';
+
 # Testing: Getting Started
 
 ## Introduction
@@ -7,6 +14,21 @@ with WordPress. It is focused on making testing your application faster and
 easier, allowing unit testing to become top of mind when building your site.
 Mantle includes many convenient helpers to allow you to expressively test your
 applications.
+
+```php
+use App\Tests\TestCase;
+
+class ExampleTest extends TestCase {
+	public function test_example(): void {
+			$post = static::factory()->post->create_and_get();
+
+			$this->get( get_permalink( $post ) )
+				->assertOk()
+				->assertQueriedObject( $post )
+				->assertSee( $post->post_title );
+	}
+}
+```
 
 With Mantle, your application's tests live in your `tests` directory. Tests
 should extend from the `App\Tests\Test_Case` test case, which include booting
@@ -25,6 +47,8 @@ objects interact with each other or even a full HTTP request to a JSON endpoint.
 provide the most confidence that your system as a whole is functioning as
 intended.**
 
+### Getting Started
+
 After installing a Mantle application, unit tests can be run directly or via
 Composer:
 
@@ -34,11 +58,17 @@ vendor/bin/phpunit
 composer phpunit
 ```
 
-:::tip Interested in using the testing framework outside of a Mantle application?
+:::info Interested in using the testing framework outside of a Mantle application?
 
 [Mantle Testkit](./testkit.md) is a standalone package that can be used to run
 Mantle's testing framework in any WordPress project. [Learn more about Mantle Testkit](./testkit.md).
 :::
+
+## Supported PHPUnit Versions
+
+Mantle supports PHPUnit 9-11 with 11 being the default version for new projects.
+For usage with PHPUnit 9, see [Migrating to Mantle Testing Framework 1.x and
+PHPUnit 10.x](#migrating-to-mantle-testing-framework-1x-and-phpunit-10x).
 
 ## Creating Tests
 
@@ -157,7 +187,7 @@ For more information, read more about the [Installation Manager](./installation-
 
 ## Migrating to Mantle Testing Framework 1.x and PHPUnit 10.x
 
-Mantle's Test Framework 1.x upgrades the PHPUnit version to 10.x. This is a
+Mantle's Test Framework 1.0 upgrades the PHPUnit version to 10.x. This is a
 major upgrade and may require some changes to your existing tests. The most
 common change is the need for projects to use PSR-4 file/class naming
 conventions. This is a breaking change from PHPUnit 9.x that allowed for classic
@@ -166,3 +196,10 @@ WordPress-style file/class naming conventions in your tests.
 Mantle 1.x does support PHPUnit 9.x if you want to continue using that version
 of PHPUnit and not migrate your codebase. For more information, see the
 [1.x CHANGELOG note about the PHPUnit 10 Migration](https://github.com/alleyinteractive/mantle-framework/blob/1.x/CHANGELOG.md#phpunit-10-migration) for more information.
+
+## More Reading
+
+Continue reading about the Mantle Testing Framework by checking out the
+following sections:
+
+<DocCardList />

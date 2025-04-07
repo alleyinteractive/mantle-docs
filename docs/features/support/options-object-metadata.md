@@ -1,4 +1,4 @@
-# Type-safe Options and Object Metadata
+# Type-safe Options and Object Metadata from Mixed Data
 
 When working with WordPress, you may need to retrieve and manipulate options or
 object meta data. Out of the box, the data will come back as `mixed`. You can
@@ -9,9 +9,13 @@ Mantle includes a `option` helper function that can be used to retrieve an
 option's value in a type-safe manner. It can also update the option's value and
 manipulate it in various ways. Mantle also includes `post_meta`, `term_meta`,
 `user_meta`, and `comment_meta` helper functions that can be used to retrieve
-and manipulate object meta data in a type-safe manner.
+and manipulate object meta data in a type-safe manner. These build off the
+`mixed` helper that can be used to manage and manipulate mixed data from any
+source.
 
-## Usage for Options
+## Usage
+
+### Usage for Options
 
 The `option` function can be used to retrieve an option's value and does not
 require the rest of the framework to do so:
@@ -35,7 +39,7 @@ option( 'option_name' )->boolean();
 option( 'option_name' )->array();
 ```
 
-## Usage for Object Metadata
+### Usage for Object Metadata
 
 The `post_meta`, `term_meta`, `user_meta`, and `comment_meta` functions can be
 used to retrieve object meta data and do not require the rest of the framework
@@ -72,6 +76,22 @@ if ( $meta->is_empty() ) {
 
 // Delete post meta data.
 post_meta( 1234, 'meta_key' )->delete();
+```
+
+### Usage for Mixed Data
+
+The `mixed` helper can be used to manage and manipulate mixed data from any
+source. You can pass any value to the `mixed` helper and it will return a
+`Mantle\Support\Mixed_Data` object that provides a consistent interface for
+retrieving and manipulating the data. This is useful when you need to work
+with data that may come from various sources, such as user input, API
+responses, or database queries.
+
+```php
+use function Mantle\Support\Helpers\mixed;
+
+$value = mixed( 'some_value' )->string(); // string
+$value = mixed( '1234' )->integer(); // int
 ```
 
 ## Methods
