@@ -120,7 +120,7 @@ const config: Config = {
       copyright: `Copyright &copy; ${new Date().getFullYear()} <a href="https://alley.com/">Alley</a>. Built with Docusaurus.`,
     },
     prism: {
-      additionalLanguages: ['php'],
+      additionalLanguages: ['bash', 'json', 'php'],
       theme: lightTheme,
       darkTheme: darkTheme,
     },
