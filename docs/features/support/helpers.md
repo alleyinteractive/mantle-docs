@@ -194,6 +194,34 @@ if ( is_local_env() ) {
 }
 ```
 
+### `is_wp_cli`
+
+The `is_wp_cli` helper checks if the application is running in the WP-CLI
+context. This is useful for determining if the code is being executed
+through the command line interface.
+
+```php
+use function Mantle\Support\Helpers\is_wp_cli;
+
+if ( is_wp_cli() ) {
+  // The application is running in the WP-CLI context
+}
+```
+
+### `is_unit_testing`
+
+The `is_unit_testing` helper checks if the application is running in a unit
+testing environment via the [testing framework](../../testing/index.mdx).
+
+```php
+use function Mantle\Support\Helpers\is_unit_testing;
+
+if ( is_unit_testing() ) {
+  // The application is running in a unit testing environment
+  dump( 'Unit testing is enabled!' );
+}
+```
+
 ## General
 
 ### `backtickit`
