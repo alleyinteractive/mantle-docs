@@ -1,4 +1,6 @@
-# Support Helpers
+# Helpers
+
+General helpers for development.
 
 ## Array
 

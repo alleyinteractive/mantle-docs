@@ -1,3 +1,7 @@
+---
+description: Handle mixed data types in a type-safe manner for options and object metadata.
+---
+
 # Type-safe Options and Object Metadata from Mixed Data
 
 When working with WordPress, you may need to retrieve and manipulate options or

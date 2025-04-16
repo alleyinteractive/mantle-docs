@@ -1,3 +1,7 @@
+---
+description: Execute a series of tasks in a specific order using the pipeline pattern.
+---
+
 # Pipeline
 
 Mantle includes a pipeline class that uses the pipeline pattern to process a

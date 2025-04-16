@@ -1,8 +1,13 @@
+---
+description: A classname helper function for generating CSS class names based on various conditions and inputs.
+---
+
 # Classname
 
-Mantle includes a `classname` helper function that can be used to generate a CSS
-class name based on the provided arguments. The logic mirrors the NPM `classnames`
-package.
+Mantle provides a `classname` helper function designed to simplify the generation of CSS class
+names. This function operates similarly to the popular NPM `classnames` package,
+allowing you to dynamically construct class names based on various conditions
+and inputs.
 
 ## Usage
 
