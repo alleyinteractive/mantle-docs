@@ -24,16 +24,41 @@ Mantle supports two different modes of operation:
     For more information on this mode, see the [Using Mantle in
     Isolation](#using-mantle-in-isolation) section.
 
-## Installing Mantle on a Site
+## Installing Mantle on a Site with Mantle Installer
 
 Mantle sites should live in `wp-content/plugins/{site-slug}/` inside a WordPress
-project.
+project. The Mantle Installer can install Mantle on a new or existing WordPress
+application. The installer can be installed via a PHP PHAR or globally using
+Composer (PHAR is recommended).
 
-### Via Mantle Installer
+### Via PHAR 📦
 
-The Mantle Installer can install Mantle on a new or existing WordPress
-application. Download the Mantle installer using
-[Composer](https://getcomposer.org/).
+Download the latest PHAR release of the Mantle installer from the [latest
+releases
+page](https://github.com/alleyinteractive/mantle-installer/releases/latest). You
+can use the PHAR directly or move to a `$PATH` directory. Here's a quick example
+of how to do all of that:
+
+```bash
+# Download the latest PHAR release.
+gh release download --clobber --pattern= '*.phar' --repo=alleyinteractive/mantle-installer
+
+# Make the PHAR executable.
+chmod +x mantle-installer.phar
+
+# Optionally move it to a directory in your PATH for global usage.
+sudo mv mantle-installer.phar /usr/local/bin/mantle
+```
+
+_This example uses the `gh` CLI from GitHub to download the latest release. You
+can also download the PHAR manually from the [latest release
+page](https://github.com/alleyinteractive/mantle-installer/releases/latest)._
+
+From here, you can run the `mantle` command from anywhere on your system.
+
+### Via Composer 🛠 ️
+
+Download the Mantle installer using [Composer](https://getcomposer.org/).
 
 ```bash
 composer global require alleyinteractive/mantle-installer
@@ -47,7 +72,7 @@ into an existing WordPress installation.
 mantle new my-site
 ```
 
-:::info Looking to contribute to Mantle?
+<!-- :::info Looking to contribute to Mantle?
 
 You can install Mantle and the Mantle Framework linked to each other for easy
 local development. Both will be cloned as Git repositories. Mantle Framework
@@ -57,9 +82,9 @@ will be locally checked out to `plugins/mantle-framework`.
 mantle new my-site --setup-dev
 ```
 
-:::
+::: -->
 
-### Via Composer Create-Project
+### Manual Installation
 
 Alternatively, you can install a Mantle site using Composer, replacing `my-site`
 with your site's slug.
@@ -74,18 +99,14 @@ composer create-project alleyinteractive/mantle my-site \
   --no-interaction
 ```
 
-## Use `create-mantle-app`
+## Starter Template for `wp-content`-based Projects
 
-The [`create-mantle-app`](https://github.com/alleyinteractive/create-mantle-app)
-can be used as a GitHub template for a starter template for your next
-application. It is a `/wp-content/`-rooted application template that already has
-Mantle installed as a plugin.
-
-## Configuration
-
-Mantle should be loaded through a `mu-plugin`, `client-mu-plugin`, or another
-initialization script as a plugin. To ensure that all features work correctly,
-Mantle should be loaded before the `muplugins_loaded` action is fired.
+[Alley's
+`create-wordpress-project`](https://github.com/alleyinteractive/create-wordpress-project)
+starter template can be used as a starting point for using Mantle on a
+`wp-content`-rooted project. `create-wordpress-project` includes a configuration
+script to help you setup your project and install plugins and themes. It also
+supports installing Mantle as a plugin out of the box.
 
 ## Using Mantle in Isolation
 
@@ -102,9 +123,10 @@ bootloader()->boot();
 For more information on the Bootloader, see the [Bootloader documentation](/docs/architecture/bootloader).
 :::
 
-For example, if you want to use Mantle's Queue feature in an existing code base,
-you can do so by booting the framework and then using the `dispatch()` helper
-(see the [queue documentation](/docs/features/queue) for more information).
+For example, if you want to use [Mantle's Queue feature](../features/queue.md)
+in an existing code base, you can do so by booting the framework and then using
+the `dispatch()` helper (see the [queue documentation](/docs/features/queue) for
+more information).
 
 ```php
 // Boot the application.
@@ -115,3 +137,9 @@ dispatch( function () {
   // Do something expensive here.
 } );
 ```
+
+Calling the bootloader is all you need to use Mantle in isolation -- no other
+files or directories need to be created. If you want to enhance your experience,
+you can copy files down from
+[alleyinteractive/mantle](https://github.com/alleyinteractive/mantle) as needed
+to your code base.
