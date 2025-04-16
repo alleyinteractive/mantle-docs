@@ -1,0 +1,1034 @@
+import TOCInlineWrapped from '@site/src/components/TOCInlineWrapped';
+
+# Stringable
+
+The Stringable class exists in the `Mantle\Support` namespace and is used to create a stringable object from a string or a stringable object.
+
+For more information see the [Laravel docs](https://laravel.com/docs/master/strings#method-str).
+
+## Usage
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+$string = stringable( 'String' ); // String
+
+$string->append( 'append' )->lower(); // stringappend
+```
+
+## Available Methods
+
+<TOCInlineWrapped
+    toc={toc.filter((item) => !item.value.includes('Usage'))}
+    minHeadingLevel={3}
+    maxHeadingLevel={6}
+/>
+
+### `after`
+
+Return the remainder of a string after the first occurrence of a given value.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example here' )->after( 'example ' ); // here
+```
+
+### `after_last`
+
+Return the remainder of a string after the last occurrence of a given value.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example again example here' )->after_last( 'example ' ); // here
+```
+
+### `append`
+
+Append a string or an array of strings to the end of the string.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->append( 'append' ); // exampleappend
+stringable( 'example' )->append( [ 'append1', 'append2' ] ); // exampleappend1append2
+```
+
+### `newLine`
+
+Return a string with a new line character.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->newLine(); // example\n
+stringable( 'example' )->newLine( 2 ); // example\n\n
+```
+
+### `ascii`
+
+Transliterate a UTF-8 value to ASCII.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->ascii();
+```
+
+### `basename`
+
+Get the trailing name component of the path.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'Example/Path/To/File.txt' )->basename(); // File.txt
+```
+
+### `char_at`
+
+Get the character at a given index.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->char_at( 0 ); // e
+```
+
+### `class_basename`
+
+Get the class name from a fully qualified class name.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'Example\Namespace\ClassName' )->class_basename(); // ClassName
+```
+
+### `before`
+
+Return the portion of a string before the first occurrence of a given value.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->before( 'ple' ); // ex
+```
+
+### `before_last`
+
+Return the portion of a string before the last occurrence of a given value.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->before_last( 'ple' ); // exam
+```
+
+### `between`
+
+Return the portion of a string between two given values.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'abcdefgh' )->between( 'a', 'g' ); // bcdef
+```
+
+### `camel`
+
+Convert a string to camel case.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'Example Name Here' )->camel(); // exampleNameHere
+```
+
+### `contains`
+
+Check if a string contains a given value.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->contains( 'example' ); // true
+stringable( 'example' )->contains( 'Example' ); // true
+stringable( 'example' )->contains( 'Example', ignore_case: true ); // true
+```
+
+### `contains_all`
+
+Check if a string contains all of the given values.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->contains_all( [ 'example', 'here' ] ); // false
+stringable( 'example here' )->contains_all( [ 'example', 'here' ] ); // true
+```
+
+### `dirname`
+
+Get the directory name of a path.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( '/example/path/to/file.txt' )->dirname(); // /example/path/to
+```
+
+### `ends_with`
+
+Check if a string ends with a given value.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example here' )->ends_with( 'here' ); // true
+```
+
+### `exactly`
+
+Check if a string is exactly equal to a given value.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->exactly( 'example' ); // true
+```
+
+### `excerpt`
+
+Get a string excerpt from a given string.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'This is my example' )->excerpt( 'my', [ 'radius' => 3 ] ); // '...is my ex...'
+```
+
+### `explode`
+
+Explode a string into an array.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example here|example' )->explode( '|' ); // [ 'example here', 'example' ]
+```
+
+### `finish`
+
+Return the string with a given value appended to the end.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->finish( 'example' ); // exampleexample
+```
+
+### `trailingSlash`
+
+Return the string with a trailing slash.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->trailingSlash(); // example/
+```
+
+### `untrailingSlash`
+
+Return the string without a trailing slash.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example/' )->untrailingSlash(); // example
+```
+
+### `untrailing`
+
+Return the string without a given trailing value.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example trim' )->untrailing( ' trim' ); // example
+```
+
+### `is`
+
+Check if a string matches a given pattern. Supports * wildcards.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->is( 'example' ); // true
+stringable( 'example' )->is( 'ex*' ); // true
+stringable( 'example' )->is( 'ex*ample' ); // true
+stringable( 'example' )->is( 'ex*ample*' ); // true
+```
+
+### `is_ascii`
+
+Check if a string is ASCII.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->is_ascii(); // true
+```
+
+### `is_json`
+
+Check if a string is JSON.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->is_json(); // false
+stringable( '{"example": "example"}' )->is_json(); // true
+```
+
+### `is_uuid`
+
+Check if a string is a valid UUID.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->is_uuid(); // false
+stringable( '550e8400-e29b-41d4-a716-446655440000' )->is_uuid(); // true
+```
+
+### `is_empty`
+
+Check if a string is empty.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->is_empty(): bool; // false
+stringable( '' )->is_empty(): bool; // true
+```
+
+### `is_not_empty`
+
+Check if a string is not empty.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->is_not_empty(): bool; // true
+stringable( '' )->is_not_empty(): bool; // false
+```
+
+### `kebab`
+
+Convert a string to kebab case.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->kebab(); // example
+stringable( 'Example Name Here' )->kebab(); // example-name-here
+```
+
+### `length`
+
+Get the length of a string.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->length(): int; // 7
+```
+
+### `limit`
+
+Limit the string to a given number of characters.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->limit( 3 ); // ex...
+stringable( 'example' )->limit( 3, '... continue reading?' ); // ex... continue reading?
+```
+
+### `lower`
+
+Convert a string to lowercase.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'Example' )->lower(); // example
+```
+
+### `markdown`
+
+Convert GitHub flavored Markdown into HTML.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( "# Example\nText here" )->markdown(); // <h1>Example</h1><p>Text here</p>
+```
+
+### `inline_markdown`
+
+Convert inline Markdown into HTML.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( "# Example\nText here" )->inline_markdown(); // <h1>Example</h1><p>Text here</p>
+```
+
+### `mask`
+
+Masks a portion of a string with a repeated character.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example@example.com' )->mask( '*', 3 ); // exa****************
+```
+
+### `match`
+
+Get the string matching the given pattern.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->match( /exam/ ); // exam
+```
+
+### `is_match`
+
+Check if a string matches a given pattern.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->is_match( /exam/ ); // true
+```
+
+### `match_all`
+
+Get the string matching the given pattern.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->match_all( /exam/ ); // [ 'exam' ]
+```
+
+### `test`
+
+Check if a string matches a given pattern.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->test( /exam/ ); // true
+```
+
+### `pad_both`
+
+Pad a string to the left and right to a given length.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->pad_both( '_', 3 ); // ___example___
+```
+
+### `pad_left`
+
+Pad a string to the left to a given length.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->pad_left( '_', 3 ); // ___example
+```
+
+### `pad_right`
+
+Pad a string to the right to a given length.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->pad_right( 3, '_' ); // example___
+```
+
+### `pipe`
+
+Pipe the string to a given callback and return the result as a stringable object.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->pipe( 'md5' ); // md5'd value in Stringable object.
+```
+
+### `plural`
+
+Get the plural form of a string.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->plural(); // examples
+stringable( 'example' )->plural( 2 ); // examples
+stringable( 'example' )->plural( 1 ); // example
+```
+
+### `plural_studly`
+
+Pluralize the last word of an English, studly caps case string.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->plural_studly(); // Examples
+stringable( 'example' )->plural_studly( 2 ); // Examples
+stringable( 'example' )->plural_studly( 1 ); // Example
+```
+
+### `prepend`
+
+Prepend a string or an array of strings to the beginning of the string.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->prepend( 'prepend' ); // prependexample
+```
+
+### `remove`
+
+Remove a string or an array of strings from the string.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->remove( 'exam' ); // ple
+```
+
+### `reverse`
+
+Reverse the string.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->reverse(); // elpmaxe
+```
+
+### `repeat`
+
+Repeat the string a given number of times.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->repeat( 3 ); // exampleexampleexample
+```
+
+### `replace`
+
+Replace all occurrences of a given value in the string with another value.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->replace( 'example', 'replace' ); // replace
+```
+
+### `replace_array`
+
+Replace a given value in the string sequentially with an array.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->replace_array( 'example', [ 'replace1', 'replace2' ] ); // replace1replace2
+```
+
+### `replace_first`
+
+Replace the first occurrence of a given value in the string.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->replace_first( 'example', 'replace' ); // replace
+```
+
+### `replace_last`
+
+Replace the last occurrence of a given value in the string.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->replace_last( 'example', 'replace' ); // replace
+```
+
+### `replace_matches`
+
+Replace all occurrences of a given pattern in the string with a value.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->replace_matches( /([a-z]+)/, 'replace' ); // replace
+```
+
+### `squish`
+
+Remove all whitespace from the beginning and end of a string, and reduce multiple spaces to a single space.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( '  example ' )->squish(); // example
+```
+
+### `start`
+
+Return the string with a given value prepended to the beginning.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->start( 'pre' ); // preexample
+```
+
+### `strip_tags`
+
+Strip HTML tags from a string.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( '<p>example</p>' )->strip_tags(); // example
+```
+
+### `upper`
+
+Convert a string to uppercase.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->upper(); // EXAMPLE
+```
+
+### `title`
+
+Convert a string to title case.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example string here' )->title(); // Example String Here
+```
+
+### `headline`
+
+Convert a string to headline case.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example string here' )->headline(); // Example String Here
+```
+
+### `singular`
+
+Get the singular form of a string.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'examples' )->singular(); // example
+```
+
+### `slug`
+
+Generate a URL friendly "slug" from a given string.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example word here' )->slug(); // example-word-here
+stringable( 'example word here' )->slug( '_' ); // example_word_here
+```
+
+### `snake`
+
+Convert a string to snake case.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example name here' )->snake(); // example_name_here
+```
+
+### `startsWith`
+
+Check if a string starts with a given value.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->startsWith( 'example' ); // true
+```
+
+### `studly`
+
+Convert a string to studly caps case.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example name here' )->studly(); // ExampleNameHere
+```
+
+### `studlyUnderscore`
+
+Convert a string to studly caps case with underscores.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example name here' )->studlyUnderscore(); // Example_Name_Here
+```
+
+### `substr`
+
+Get a substring of a string.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->substr( 2, 3 ); // amp
+```
+
+### `substr_count`
+
+Count the number of occurrences of a substring in a string.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example here' )->substr_count( 'e' ); // 2
+```
+
+### `swap`
+
+Replace all occurrences of a given value in the string with another value.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example words here', [ 'example' => 'some', 'here' => 'there' ] ); // some words there
+```
+
+### `trim`
+
+Trim whitespace from the beginning and end of a string.
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( ' example ' )->trim(); // example
+```
+
+### `ltrim`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->ltrim( string $characters = null );
+```
+
+### `rtrim`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->rtrim( string $characters = null );
+```
+
+### `lcfirst`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->lcfirst();
+```
+
+### `ucfirst`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->ucfirst();
+```
+
+### `ucsplit`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->ucsplit(): Collection;
+```
+
+### `when_contains`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->when_contains( string|iterable<string> $needles, ?callable $callback, ?callable $default = null );
+```
+
+### `when_contains_all`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->when_contains_all( array<string> $needles, ?callable $callback, ?callable $default = null );
+```
+
+### `when_empty`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->when_empty( ?callable $callback, ?callable $default = null );
+```
+
+### `when_not_empty`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->when_not_empty( ?callable $callback, ?callable $default = null );
+```
+
+### `when_ends_with`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->when_ends_with( string|iterable<string> $needles, ?callable $callback, ?callable $default = null );
+```
+
+### `when_exactly`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->when_exactly( string $value, ?callable $callback, ?callable $default = null );
+```
+
+### `when_not_exactly`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->when_not_exactly( string $value, ?callable $callback, ?callable $default = null );
+```
+
+### `when_is`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->when_is( string|iterable<string> $pattern, ?callable $callback, ?callable $default = null );
+```
+
+### `when_is_ascii`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->when_is_ascii( ?callable $callback, ?callable $default = null );
+```
+
+### `when_is_uuid`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->when_is_uuid( ?callable $callback, ?callable $default = null );
+```
+
+### `when_starts_with`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->when_starts_with( string|iterable<string> $needles, ?callable $callback, ?callable $default = null );
+```
+
+### `when_test`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->when_test( string $pattern, ?callable $callback, ?callable $default = null );
+```
+
+### `words`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->words( int $words = 100, string $end = '...' );
+```
+
+### `word_count`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->word_count( string|null $characters = null ): int;
+```
+
+### `wrap`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->wrap( string $before, string|null $after = null );
+```
+
+### `dump`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->dump();
+```
+
+### `dd`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->dd(): never;
+```
+
+### `value`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->value(): string;
+```
+
+### `toString`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->toString(): string;
+```
+
+### `to_integer`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->to_integer(): int;
+```
+
+### `to_float`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->to_float(): float;
+```
+
+### `to_boolean`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->to_boolean(): bool;
+```
+
+### `to_date`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->to_date( string|null $format = null, string|null $tz = null ): ?\Carbon\Carbon;
+```
+
+### `jsonSerialize`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->jsonSerialize(): string;
+```
+
+### `offsetExists`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->offsetExists( mixed $offset ): bool;
+```
+
+### `offsetGet`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->offsetGet( mixed $offset ): string;
+```
+
+### `offsetSet`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->offsetSet( mixed $offset, mixed $value ): void;
+```
+
+### `offsetUnset`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->offsetUnset( mixed $offset ): void;
+```
+
+### `__get`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->__get( string $key );
+```
+
+### `__toString`
+
+```php
+use function Mantle\Support\Helpers\stringable;
+
+stringable( 'example' )->__toString(): string;
+```
