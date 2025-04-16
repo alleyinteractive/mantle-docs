@@ -101,6 +101,15 @@ $value = mixed( 'some_value' )->string(); // string
 $value = mixed( '1234' )->integer(); // int
 ```
 
+You can also use the `Mixed_Data::of()` method to create a new instance of the
+`Mixed_Data` class with a specific value:
+
+```php
+use Mantle\Support\Mixed_Data;
+
+$value = Mixed_Data::of( 'some_value' )->string(); // string
+```
+
 ## Methods
 
 The following methods are shared between the `option` helper and all the object
