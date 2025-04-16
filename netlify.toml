@@ -26,3 +26,8 @@
   to = "/docs/models/query-builder"
   status = 301
   force = true
+[[redirects]]
+  from = "/docs/features/support/options-object-metadata"
+  to = "/docs/features/support/mixed-data"
+  status = 301
+  force = true

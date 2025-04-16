@@ -1,8 +1,11 @@
 ---
+sidebar_label: Mixed Options/Meta Data
 description: Handle mixed data types in a type-safe manner for options and object metadata.
 ---
 
-# Type-safe Options and Object Metadata from Mixed Data
+import TOCInlineWrapped from '@site/src/components/TOCInlineWrapped';
+
+# Type-safe Options, Object Metadata and Mixed Data
 
 When working with WordPress, you may need to retrieve and manipulate options or
 object meta data. Out of the box, the data will come back as `mixed`. You can
@@ -103,6 +106,12 @@ $value = mixed( '1234' )->integer(); // int
 The following methods are shared between the `option` helper and all the object
 meta data helpers.
 
+<TOCInlineWrapped
+    toc={toc.filter((item) => !item.value.includes('Usage'))}
+    minHeadingLevel={3}
+    maxHeadingLevel={6}
+/>
+
 ### `array()`
 
 Get the value of the option as an array.
@@ -113,8 +122,32 @@ use function Mantle\Support\Helpers\option;
 $value = option( 'option_name' )->array(); // array
 ```
 
-For more information about array methods and getting values from arrays, see the
-[array section](#array-retrieval-and-manipulation).
+You can use the `get()` method to retrieve a specific key from the array
+(supports dot notation):
+
+```php
+use function Mantle\Support\Helpers\option;
+
+update_option(
+  'example_option',
+  [
+    'key' => 'value',
+    'nested' => [
+      'key' => 'value',
+    ],
+  ]
+);
+
+$value  = option( 'example_option' )->array(); // array{key: 'value', nested: array{key: 'value'}}
+$nested = option( 'example_option' )->array( 'nested' ); // array{key: 'value'}
+$sub    = option( 'example_option' )->get( 'key' ); // string: value
+
+// Supports dot notation.
+$sub = option( 'example_option' )->get( 'nested.key' ); // string: value
+
+// Check if a key exists.
+$has = option( 'example_option' )->has( 'key' ); // bool: true
+```
 
 ### `boolean()`
 
@@ -126,7 +159,7 @@ use function Mantle\Support\Helpers\option;
 $value = option( 'option_name' )->boolean(); // bool
 ```
 
-### `collect()` and `collection()`
+### `collect()`
 
 Get the value of the option as a [collection](./collections.mdx).
 
@@ -184,7 +217,7 @@ use function Mantle\Support\Helpers\option;
 $value = option( 'option_name' )->float(); // float
 ```
 
-### `int()` and `integer()`
+### `int()`
 
 Get the value of the option as an integer.
 
@@ -209,7 +242,7 @@ if ( option( 'option_name' )->is_empty() ) {
 }
 ```
 
-## `is_not_null()`
+### `is_not_null()`
 
 Check if the value of the option is not `null`.
 
@@ -221,7 +254,7 @@ if ( option( 'option_name' )->is_not_null() ) {
 }
 ```
 
-## `is_type( string $type )`
+### `is_type( string $type )`
 
 Check if the value of the option is of a specific type.
 
@@ -233,7 +266,7 @@ if ( option( 'option_name' )->is_type( 'string' ) ) {
 }
 ```
 
-## `is_not_type()`
+### `is_not_type()`
 
 Check if the value of the option is not of a specific type.
 
@@ -245,7 +278,7 @@ if ( option( 'option_name' )->is_not_type( 'string' ) ) {
 }
 ```
 
-## `is_array()`
+### `is_array()`
 
 Check if the value of the option is an array.
 
@@ -257,7 +290,7 @@ if ( option( 'option_name' )->is_array() ) {
 }
 ```
 
-## `is_not_array()`
+### `is_not_array()`
 
 Check if the value of the option is not an array.
 
@@ -269,7 +302,7 @@ if ( option( 'option_name' )->is_not_array() ) {
 }
 ```
 
-## `is_object()`
+### `is_object()`
 
 Check if the value of the option is an object.
 
@@ -281,7 +314,7 @@ if ( option( 'option_name' )->is_object() ) {
 }
 ```
 
-## `is_not_object()`
+### `is_not_object()`
 
 Check if the value of the option is not an object.
 
@@ -301,6 +334,32 @@ Get the value of the option as an object.
 use function Mantle\Support\Helpers\option;
 
 $value = option( 'option_name' )->object(); // object
+```
+
+You can use the `get()` method to retrieve a specific property from the object:
+
+```php
+use function Mantle\Support\Helpers\option;
+
+update_option(
+  'example_option',
+  (object) [
+    'key' => 'value',
+    'nested' => (object) [
+      'key' => 'value',
+    ],
+  ]
+);
+
+$value  = option( 'example_option' )->object(); // object{key: 'value', nested: object{key: 'value'}}
+$nested = option( 'example_option' )->object( 'nested' ); // object{key: 'value'}
+$sub    = option( 'example_option' )->get( 'key' ); // string: value
+
+// Supports dot notation.
+$sub = option( 'example_option' )->get( 'nested.key' ); // string: value
+
+// Check if a property exists.
+$has = option( 'example_option' )->has( 'key' ); // bool: true
 ```
 
 ### `string()`
@@ -333,6 +392,9 @@ thrown.
 use function Mantle\Support\Helpers\option;
 
 $value = option( 'option_name' )->throw()->string(); // string
+
+// The following will throw an exception:
+$value = option( 'option_name' )->throw()->array();
 ```
 
 ### `throw_if()`
@@ -358,36 +420,11 @@ use function Mantle\Support\Helpers\option;
 $value = option( 'option_name' )->value(); // mixed
 ```
 
-### Array Retrieval and Manipulation
+### Update and Delete Methods
 
-The `array()` method can be used to retrieve an option's value as an array. You
-can also use the following methods to get properties from the option's value
-(which is assumed to be an array):
+These methods can be used on object metadata and options.
 
-```php
-use function Mantle\Support\Helpers\option;
-
-update_option(
-  'example_option',
-  [
-    'key' => 'value',
-    'nested' => [
-      'key' => 'value',
-    ],
-  ]
-);
-
-$value = option( 'example_option' )->array(); // array
-$sub   = option( 'example_option' )->get( 'key' ); // string: value
-
-// Supports dot notation.
-$sub = option( 'example_option' )->get( 'nested.key' ); // string: value
-
-// Check if a key exists.
-$has = option( 'example_option' )->has( 'key' ); // bool: true
-```
-
-### Updating Option Value
+#### `set()`
 
 The `option` helper can also be used to update an option's or a object's meta
 data value:
@@ -402,7 +439,7 @@ $meta->set( 'new_value' );
 $meta->save();
 ```
 
-### Deleting Option
+#### `delete()`
 
 The `option` helper can also be used to delete an option or a object's meta data:
 

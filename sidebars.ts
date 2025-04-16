@@ -104,7 +104,7 @@ const sidebars: SidebarsConfig = {
             'features/support/hookable',
             'features/support/html',
             'features/support/macroable',
-            'features/support/options-object-metadata',
+            'features/support/mixed-data',
             'features/support/pipeline',
             'features/support/singleton',
             'features/support/stringable',
