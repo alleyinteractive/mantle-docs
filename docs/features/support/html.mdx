@@ -2,7 +2,7 @@
 sidebar_label: HTML
 ---
 
-import TOCInline from '@theme/TOCInline';
+import TOCInlineWrapped from '@site/src/components/TOCInlineWrapped';
 
 # HTML Parsing, Assertions, and Manipulation
 
@@ -268,7 +268,7 @@ $html->filter( 'p' )->modify(
 
 ## Methods
 
-<TOCInline
+<TOCInlineWrapped
     toc={toc.filter((item) => {
         const skip = [
             'Filtering',
