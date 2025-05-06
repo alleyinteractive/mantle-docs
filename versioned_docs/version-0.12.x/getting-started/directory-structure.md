@@ -43,7 +43,7 @@ tree is assumed to be placed inside of a `wp-content/plugin/{site}` folder.
 
 ## The App Directory
 
-The `app` diretory contains the core code of your application. This includes
+The `app` directory contains the core code of your application. This includes
 console commands, routes, models, providers, and more. Most of the application
 will live inside of this folder. By default this folder is namespaced `App` and
 autoloaded using a WordPress-style autoloader.
