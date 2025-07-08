@@ -18,11 +18,11 @@ Mantle supports two different modes of operation:
 2. In isolation in an existing code base. The Mantle framework provides all it's
    own default configuration and service providers and doesn't require most of
    the code in `alleyinteractive/mantle` to function. This mode is useful for
-    integrating Mantle into an existing code base and using one of it's features
-    like queue or routing without setting up the rest of the application.
+    integrating Mantle into an existing code base and using one of its features
+    like queueing or routing without setting up the rest of the application.
 
-    For more information on this mode, see the [Using Mantle in
-    Isolation](#using-mantle-in-isolation) section.
+    For more information on this mode, see the [Using Mantle Without a Starter
+    Template](#using-without-a-starter-template) section.
 
 ## Installing Mantle on a Site with Mantle Installer
 
@@ -41,20 +41,42 @@ of how to do all of that:
 
 ```bash
 # Download the latest PHAR release.
-gh release download --clobber --pattern= '*.phar' --repo=alleyinteractive/mantle-installer
-
-# Make the PHAR executable.
+gh release download --clobber -p '*.phar' -R alleyinteractive/mantle-installer
 chmod +x mantle-installer.phar
 
 # Optionally move it to a directory in your PATH for global usage.
 sudo mv mantle-installer.phar /usr/local/bin/mantle
 ```
 
-_This example uses the `gh` CLI from GitHub to download the latest release. You
+:::note
+This example uses the `gh` CLI from GitHub to download the latest release. You
 can also download the PHAR manually from the [latest release
-page](https://github.com/alleyinteractive/mantle-installer/releases/latest)._
+page](https://github.com/alleyinteractive/mantle-installer/releases/latest).
+:::
 
-From here, you can run the `mantle` command from anywhere on your system.
+From here, you can run the `mantle` command from anywhere on your system:
+
+```
+Mantle Installer
+
+Usage:
+  command [options] [arguments]
+
+Options:
+  -h, --help            Display help for the given command. When no command is given display help for the list command
+      --silent          Do not output any message
+  -q, --quiet           Only errors are displayed. All other output is suppressed
+  -V, --version         Display this application version
+      --ansi|--no-ansi  Force (or disable --no-ansi) ANSI output
+  -n, --no-interaction  Do not ask any interactive question
+  -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+Available commands:
+  completion  Dump the shell completion script
+  help        Display help for a command
+  list        List commands
+  new         Create a new Mantle application
+```
 
 ### Via Composer 🛠 ️
 
@@ -108,7 +130,7 @@ starter template can be used as a starting point for using Mantle on a
 script to help you setup your project and install plugins and themes. It also
 supports installing Mantle as a plugin out of the box.
 
-## Using Mantle in Isolation
+## Using Without a Starter Template
 
 Mantle supports the use of the framework and its features in complete isolation,
 without the need of the starter code in `alleyinteractive/mantle`. Using the

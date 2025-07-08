@@ -16,8 +16,8 @@ Mantle supports two different modes of operation:
 2. In isolation in an existing code base. The Mantle framework provides all it's
    own default configuration and service providers and doesn't require most of
    the code in `alleyinteractive/mantle` to function. This mode is useful for
-    integrating Mantle into an existing code base and using one of it's features
-    like queue or routing without setting up the rest of the application.
+    integrating Mantle into an existing code base and using one of its features
+    like queueing or routing without setting up the rest of the application.
 
     For more information on this mode, see the [Using Mantle in
     Isolation](#using-mantle-in-isolation) section.

@@ -31,7 +31,7 @@ Post::factory()->create(); // int
 Factories can also be used statically within a [Mantle Teskit test case](../testing/testkit.md):
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit;
+use Mantle\Testkit\TestCase as Testkit;
 
 class ExampleTest extends Testkit {
   public function test_factory() {
@@ -66,7 +66,7 @@ own arguments with `create()`. Returns the ID of the created model.
   <TabItem value="orange" label="Testkit Use">
     ```php
     use App\Models\Post;
-    use Mantle\Testkit\Test_Case as Testkit;
+    use Mantle\Testkit\TestCase as Testkit;
 
     class ExampleTest extends Testkit {
       public function test_factory() {
@@ -105,7 +105,7 @@ an array of IDs of the created models.
   <TabItem value="orange" label="Testkit Use">
     ```php
     use App\Models\Post;
-    use Mantle\Testkit\Test_Case as Testkit;
+    use Mantle\Testkit\TestCase as Testkit;
 
     class ExampleTest extends Testkit {
       public function test_factory() {
@@ -146,7 +146,7 @@ object or an array of created models if chained with `count()`:
   <TabItem value="orange" label="Testkit Use">
     ```php
     use App\Models\Post;
-    use Mantle\Testkit\Test_Case as Testkit;
+    use Mantle\Testkit\TestCase as Testkit;
 
     class ExampleTest extends Testkit {
       public function test_factory() {
@@ -168,7 +168,7 @@ object or an array of created models if chained with `count()`:
 
     ```php
     use App\Models\Post;
-    use Mantle\Testkit\Test_Case as Testkit;
+    use Mantle\Testkit\TestCase as Testkit;
 
     class ExampleTest extends Testkit {
       public function test_factory() {
@@ -349,9 +349,9 @@ $term_id = Category::factory()->tag
 
 ```php
 use App\Models\Post;
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit;
 
-class Test_Case extends Testkit_Test_Case {
+class ExampleTest extends Testkit {
 
   public function test_factory() {
     $post_id = static::factory()->post
@@ -400,9 +400,9 @@ $term_id = Category::factory()->tag
 
 ```php
 use App\Models\Post;
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit;
 
-class Test_Case extends Testkit_Test_Case {
+class ExampleTest extends Testkit {
 
   public function test_factory() {
     $post_id = static::factory()->post
@@ -466,9 +466,9 @@ $post_id = Post::factory()->with_terms(
   <TabItem value="testing" label="Testkit Factory">
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit;
 
-class Test_Case extends Testkit_Test_Case {
+class ExampleTest extends Testkit {
 
   public function test_factory() {
     $tag_id = static::factory()->tag->create();
@@ -529,9 +529,9 @@ $term_id = Tag::factory()->with_posts(
   <TabItem value="testing" label="Testkit Factory">
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit;
 
-class Test_Case extends Testkit_Test_Case {
+class ExampleTest extends Testkit {
 
   public function test_factory() {
     $post_id = static::factory()->post->create();
@@ -568,9 +568,9 @@ Post::factory()->with_thumbnail()->create_and_get();
   <TabItem value="testing" label="Testkit Factory">
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit;
 
-class Test_Case extends Testkit_Test_Case {
+class ExampleTest extends Testkit {
 
   public function test_factory() {
     $post = static::factory()->post->with_thumbnail()->create_and_get();
@@ -599,9 +599,9 @@ Post::factory()->with_real_thumbnail()->create_and_get();
   <TabItem value="testing" label="Testkit Factory">
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit;
 
-class Test_Case extends Testkit_Test_Case {
+class ExampleTest extends Testkit {
 
   public function test_factory() {
     $post = static::factory()->post->with_real_thumbnail()->create_and_get();
@@ -621,9 +621,9 @@ Posts can be generated with a custom post type by calling the `with_post_type()`
 method on the factory:
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit;
 
-class Test_Case extends Testkit_Test_Case {
+class ExampleTest extends Testkit {
 
   public function test_factory() {
     $post_id = static::factory()->post->with_post_type( 'custom_post_type' )->create();
@@ -649,9 +649,9 @@ $post_ids = Post::factory()->create_ordered_set( 10 );
   <TabItem value="testing" label="Testkit Factory">
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit;
 
-class Test_Case extends Testkit_Test_Case {
+class ExampleTest extends Testkit {
 
   public function test_create_ordered_set() {
     $post_ids = static::factory()->post->create_ordered_set( 10 );
@@ -666,9 +666,9 @@ The start date and the separation can also be adjusted:
 
 ```php
 use Carbon\Carbon;
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit;
 
-class Test_Case extends Testkit_Test_Case {
+class ExampleTest extends Testkit {
 
   public function test_create_ordered_set() {
     $post_ids = static::factory()->post->create_ordered_set(
@@ -711,9 +711,9 @@ Attachment::factory()->with_image(
   <TabItem value="testing" label="Testkit Factory">
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit;
 
-class Test_Case extends Testkit_Test_Case {
+class ExampleTest extends Testkit {
 
   public function test_factory() {
     $attachment_id = static::factory()->attachment->with_image()->create();
@@ -726,9 +726,9 @@ class Test_Case extends Testkit_Test_Case {
 You can also pass a local file to use as the image:
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit;
 
-class Test_Case extends Testkit_Test_Case {
+class ExampleTest extends Testkit {
 
   public function test_factory() {
     $attachment_id = static::factory()->attachment->with_image(
@@ -742,6 +742,37 @@ class Test_Case extends Testkit_Test_Case {
   </TabItem>
 </Tabs>
 
+### Slashing Content
+
+When generating content, you may want to ensure that the content is slashed
+correctly. This can prevent errors saving unicode characters in the content of a
+post.
+
+You can use the `slash()` method on the factory to ensure that the content is
+slashed correctly:
+
+```php
+use Mantle\Testkit\TestCase as Testkit;
+
+class ExampleTest extends Testkit {
+
+  public function test_factory() {
+    $block = get_comment_delimited_block_content( 'namespace/block', [
+      'class' => 'story story--lg story--float',
+    ], null );
+
+    $post_id = static::factory()->post->slash()->create_and_get(
+      [
+        'post_content' => $block,
+      ]
+    );
+
+    // The block will now have the proper class attribute. Without slash(),
+    // the class attribute would be broken.
+  }
+}
+```
+
 ### Factory Middleware
 
 Mantle includes a middleware system that allows you to hook into the factory
@@ -753,9 +784,9 @@ to assign terms to posts after they're saved, set meta, and more.
 Middleware can be added to the factory by calling the `with_middleware()` method:
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit;
 
-class Test_Case extends Testkit_Test_Case {
+class ExampleTest extends Testkit {
 
   protected $custom_factory;
 

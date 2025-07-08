@@ -88,7 +88,7 @@ argument. By default these will be sent using JSON:
     ```php
     use Mantle\Http_Client\Factory;
 
-    ( new Factory() )->post( 'http://example.org/endpoint', [
+    Factory::create()->post( 'http://example.org/endpoint', [
       'name' => 'Mantle',
     ] );
     ```
@@ -115,11 +115,11 @@ Requests can also be made using a form body or a raw body:
     ```php
     use Mantle\Http_Client\Factory;
 
-    ( new Factory() )->as_form()->post( 'http://example.org/endpoint', [
+    Factory::create()->as_form()->post( 'http://example.org/endpoint', [
       'name' => 'Mantle',
     ] );
 
-    ( new Factory() )->with_body( 'raw-body' )->post( 'http://example.org/endpoint' );
+    Factory::create()->with_body( 'raw-body' )->post( 'http://example.org/endpoint' );
     ```
   </TabItem>
 </Tabs>
@@ -145,7 +145,7 @@ directly or pass an array of key / value pairs as the second argument:
     use Mantle\Http_Client\Factory;
 
     // The actual URL will be https://example.org/query?name=mantle
-    ( new Factory() )->get( 'https://example.org/query', [
+    Factory::create()->get( 'https://example.org/query', [
       'name' => 'mantle',
     ] );
     ```
@@ -171,11 +171,11 @@ methods:
     ```php
     use Mantle\Http_Client\Factory;
 
-    ( new Factory() )->with_headers( [
+    Factory::create()->with_headers( [
       'X-Api-Key' => 'password',
     ] )->post( 'https://example.org' );
 
-    ( new Factory() )->with_header( 'X-Special-Header', 'value' )->post( 'https://example.org' );
+    Factory::create()->with_header( 'X-Special-Header', 'value' )->post( 'https://example.org' );
     ```
   </TabItem>
 </Tabs>
@@ -194,8 +194,8 @@ application is expecting in response:
     ```php
     use Mantle\Http_Client\Factory;
 
-    ( new Factory() )->accept( 'text/plain' )->post( 'https://example.org' );
-    ( new Factory() )->accept_json()->post( 'https://example.org' );
+    Factory::create()->accept( 'text/plain' )->post( 'https://example.org' );
+    Factory::create()->accept_json()->post( 'https://example.org' );
     ```
   </TabItem>
 </Tabs>
@@ -218,10 +218,10 @@ helper methods:
     ```php
     use Mantle\Http_Client\Factory;
 
-    ( new Factory() )->with_basic_auth( 'username', 'password' )->post( 'https://example.org' );
+    Factory::create()->with_basic_auth( 'username', 'password' )->post( 'https://example.org' );
 
     // Passed as Authorization: Bearer
-    ( new Factory() )->with_token( '<value>' )->post( 'https://example.org' );
+    Factory::create()->with_token( '<value>' )->post( 'https://example.org' );
     ```
   </TabItem>
 </Tabs>
@@ -241,7 +241,7 @@ for a response. The default is 5 seconds:
     ```php
     use Mantle\Http_Client\Factory;
 
-    ( new Factory() )->timeout( 10 )->post( 'https://example.org' );
+    Factory::create()->timeout( 10 )->post( 'https://example.org' );
     ```
   </TabItem>
 </Tabs>
@@ -263,7 +263,7 @@ milliseconds that Mantle should wait in between attempts:
     ```php
     use Mantle\Http_Client\Factory;
 
-    ( new Factory() )->retry( 3 )->post( 'https://example.org' );
+    Factory::create()->retry( 3 )->post( 'https://example.org' );
     ```
   </TabItem>
 </Tabs>
@@ -291,7 +291,7 @@ Optionally, you can opt for an exception to be thrown if an error occurs:
     use Mantle\Http_Client\Factory;
 
     try {
-      ( new Factory() )->throw_exception()->post( 'https://example.org' );
+      Factory::create()->throw_exception()->post( 'https://example.org' );
     } catch ( \Mantle\Http_Client\Http_Client_Exception $e ) {
       // Handle the exception.
     }
@@ -597,6 +597,24 @@ $response = $client->post( '/example-endpoint', [
 ] );
 ```
 
+To make this standalone in a class you could also do the following:
+
+```php
+use Mantle\Http_Client\Factory;
+use Mantle\Http_Client\Pending_Request;
+
+class HttpBinClient extends Factory {
+  protected function new_pending_request(): Pending_Request {
+    return ( new Pending_Request() )
+      ->base_url( 'https://httpbin.org' )
+      ->with_token( '<token>' );
+}
+```
+
+This is a great pattern to use when creating clients for different APIs. Because
+it extends `Factory`, your IDE will also pick up all the methods available to
+the client.
+
 ## Middleware
 
 Requests can have middleware applied to them to allow the request and the
@@ -680,7 +698,7 @@ allowing you to easily add requests to the request pool for dispatching:
     use Mantle\Http_Client\Pool;
     use Mantle\Http_Client\Factory;
 
-    $responses = ( new Factory() )->pool( fn ( Pool $pool ) => [
+    $responses = Factory::create()->pool( fn ( Pool $pool ) => [
         $pool->method( 'get' )->url( 'http://localhost/first' ),
         $pool->method( 'post' )->url( 'http://localhost/second' )->with_json( [ 'name' => 'Mantle' ] ),
         $pool->method( 'get' )->url( 'http://localhost/third' ),
@@ -719,7 +737,7 @@ which allows you to access the corresponding responses by name:
     use Mantle\Http_Client\Pool;
     use Mantle\Http_Client\Factory;
 
-    $responses = ( new Factory() )->pool( fn ( Pool $pool ) => [
+    $responses = Factory::create()->pool( fn ( Pool $pool ) => [
         $pool->as( 'first' )->url( 'http://localhost/first' ),
         $pool->as( 'second' )->url( 'http://localhost/second' ),
         $pool->as( 'third' )->url( 'http://localhost/third' ),

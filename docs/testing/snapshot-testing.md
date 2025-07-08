@@ -12,7 +12,7 @@ writing actual test cases, comparing the outcome of functions/methods to a
 snapshot of the expected output.
 
 ```php
-use Mantle\Testkit\Test_Case;
+use Mantle\Testkit\TestCase;
 
 class Example_Test extends Test_Case {
   public function test_it_can_do_something() {
@@ -50,7 +50,7 @@ ensure that the login form is present, the page title is correct, and the page
 is not returning an error.
 
 ```php
-use Mantle\Testkit\Test_Case;
+use Mantle\Testkit\TestCase;
 
 class Example_Test extends Test_Case {
   public function test_it_can_do_something() {

@@ -51,6 +51,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'basics/requests',
         'basics/templating',
+        'basics/blade',
         'basics/helpers',
         'basics/commands',
       ],
@@ -131,7 +132,7 @@ const sidebars: SidebarsConfig = {
         'testing/hooks',
         'testing/remote-requests',
         'testing/snapshot-testing',
-        'testing/traits',
+        'testing/traits-attributes',
         'testing/users',
         'testing/cron',
         'testing/helpers',

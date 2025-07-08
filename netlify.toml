@@ -31,3 +31,8 @@
   to = "/docs/features/support/mixed-data"
   status = 301
   force = true
+[[redirects]]
+  from = "/docs/testing/traits"
+  to = "/docs/testing/traits-attributes"
+  status = 301
+  force = true
