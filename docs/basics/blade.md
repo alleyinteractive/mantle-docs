@@ -24,7 +24,7 @@ Blade syntax:
 <h1>Welcome to {{ $site_name }}</h1>
 <p>Today is {{ date('Y-m-d') }}</p>
 
-@if($user_logged_in)
+@if ($user_logged_in)
     <p>Hello, {{ $current_user->display_name }}!</p>
 @else
     <p><a href="{{ wp_login_url() }}">Please log in</a></p>
@@ -467,7 +467,8 @@ $output = Blade::render_string( 'Hello, {{ $name }}!', [ 'name' => 'World' ] );
 // $output: "Hello, World!"
 ```
 
-:::note When rendering templates from strings, ensure that any user-provided content is properly escaped to prevent security issues.
+:::note
+When rendering templates from strings, ensure that any user-provided content is properly escaped to prevent security issues.
 :::
 
 ## File Organization
