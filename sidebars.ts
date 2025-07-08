@@ -131,7 +131,7 @@ const sidebars: SidebarsConfig = {
         'testing/hooks',
         'testing/remote-requests',
         'testing/snapshot-testing',
-        'testing/traits',
+        'testing/traits-attributes',
         'testing/users',
         'testing/cron',
         'testing/helpers',
