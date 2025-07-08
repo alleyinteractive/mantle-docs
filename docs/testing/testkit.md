@@ -36,7 +36,7 @@ Unit Tests should extend themselves from Testkit's `Test_Case` class
 in place of core's `WP_UnitTestCase` class.
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit;
+use Mantle\Testkit\TestCase as Testkit;
 
 class Test_Case extends Testkit {
 

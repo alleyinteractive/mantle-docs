@@ -38,7 +38,7 @@ All factories function in the same manner and be used to generate one or many
 pieces of content:
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit_Test_Case;
 
 class ExampleTests extends Testkit_Test_Case {
 
@@ -63,7 +63,7 @@ Factories for custom post types/taxonomies can be instantiated by calling the
 relevant post type/taxonomy name when retrieving the factory:
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit_Test_Case;
 
 class ExampleTests extends Testkit_Test_Case {
 
@@ -85,7 +85,7 @@ on blocks in different contexts for testing. The `block_factory()` method can be
 used to generate blocks for testing:
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit_Test_Case;
 
 use function Mantle\Testing\block_factory;
 
@@ -343,7 +343,7 @@ The factory supports the generation of [Co-Authors Plus](https://wordpress.org/p
 Guest Authors if the plugin is available:
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit_Test_Case;
 
 class ExampleTests extends Testkit_Test_Case {
   public function test_create_guest_author(): void {
@@ -360,7 +360,7 @@ class ExampleTests extends Testkit_Test_Case {
 You can also pass along data to the factory to override the default values:
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit_Test_Case;
 
 class ExampleTests extends Testkit_Test_Case {
   public function test_create_guest_author(): void {
@@ -381,7 +381,7 @@ class ExampleTests extends Testkit_Test_Case {
 A guest author can be linked to a WordPress user and inherit data from that user:
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit_Test_Case;
 
 class ExampleTests extends Testkit_Test_Case {
   public function test_create_guest_author_linked(): void {
@@ -397,7 +397,7 @@ You can create content with a guest author as the author of a post (supports
 passing a guest author or a WordPress user):
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit_Test_Case;
 
 class ExampleTests extends Testkit_Test_Case {
   public function test_create_post_with_guest_author(): void {
@@ -415,7 +415,7 @@ The factory supports the generation of [Byline Manager](https://github.com/alley
 profiles posts with bylines:
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit_Test_Case;
 
 class ExampleTests extends Testkit_Test_Case {
   public function test_create_byline_manager_profile(): void {
@@ -431,7 +431,7 @@ class ExampleTests extends Testkit_Test_Case {
 You can also pass along data to the factory to override the default values:
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit_Test_Case;
 
 class ExampleTests extends Testkit_Test_Case {
   public function test_create_byline_manager_profile(): void {
@@ -447,7 +447,7 @@ class ExampleTests extends Testkit_Test_Case {
 A profile can be linked to a WordPress user and inherit data from that user:
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit_Test_Case;
 
 class ExampleTests extends Testkit_Test_Case {
   public function test_create_byline_manager_profile_linked(): void {
@@ -464,7 +464,7 @@ This method supports a Byline Manager profile, WordPress user, or a string
 byline (with no linked user or profile):
 
 ```php
-use Mantle\Testkit\Test_Case as Testkit_Test_Case;
+use Mantle\Testkit\TestCase as Testkit_Test_Case;
 
 class ExampleTests extends Testkit_Test_Case {
   public function test_create_post_with_byline_manager_profile(): void {
