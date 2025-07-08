@@ -295,7 +295,7 @@ $this->assertStringHasBlock( $string, $block_name, $attrs );
 Assert that a string does not have a block with the given optional attributes.
 
 ```php
-$this->assertStringNotHasBlock( $string, $block_name, $attrs );
+$this->assertStringNotHasBlock( string $string, array|string $block_name, array $attrs = [] );
 ```
 
 ### assertPostHasBlock
@@ -303,7 +303,17 @@ $this->assertStringNotHasBlock( $string, $block_name, $attrs );
 Assert that a post has a block in its content with the given optional attributes.
 
 ```php
-$this->assertPostHasBlock( $post, $block_name, $attrs );
+use Mantle\Database\Model\Post;
+
+$this->assertPostHasBlock( Post|\WP_Post $post, string|array $block_name, array $attrs = [] );
+
+// Example:
+$this->assertPostHasBlock( $post, 'core/paragraph' );
+$this->assertPostHasBlock( $post, 'core/paragraph', [ 'placeholder' => 'Hello, world!' ] );
+
+// Example with multiple blocks:
+$this->assertPostHasBlock( $post, [ 'core/paragraph', 'core/image' ] );
+$this->assertPostHasBlock( $post, [ 'core/paragraph', 'core/image' ], [ 'placeholder' => 'Hello, world!' ] );
 ```
 
 ### assertPostNotHasBlock
@@ -311,7 +321,17 @@ $this->assertPostHasBlock( $post, $block_name, $attrs );
 Assert that a post does not have a block in its content with the given optional attributes.
 
 ```php
-$this->assertPostNotHasBlock( $post, $block_name, $attrs );
+use Mantle\Database\Model\Post;
+
+$this->assertPostNotHasBlock( Post|\WP_Post $post, string|array $block_name, array $attrs );
+
+// Example:
+$this->assertPostNotHasBlock( $post, 'core/paragraph' );
+$this->assertPostNotHasBlock( $post, 'core/paragraph', [ 'placeholder' => 'Hello, world!' ] );
+
+// Example with multiple blocks (matching any of the blocks will fail):
+$this->assertPostNotHasBlock( $post, [ 'core/paragraph', 'core/image' ] );
+$this->assertPostNotHasBlock( $post, [ 'core/paragraph', 'core/image' ], [ 'placeholder' => 'Hello, world!' ] );
 ```
 
 ## Mail Assertions
