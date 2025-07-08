@@ -7,7 +7,6 @@ import GitHub from '../assets/github.svg';
 
 // Components.
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
-// import HomepageLowerFeatures from '@site/src/components/HomepageLowerFeatures';
 import HomepageExamples from '../components/HomepageExamples';
 
 import Logo from '../../static/img/logo.svg';
@@ -55,15 +54,13 @@ function HomepageTestkitCallout() {
 export default function Home(): JSX.Element {
   const {siteConfig} = useDocusaurusContext();
   return (
-    <Layout description={siteConfig.tagline}>
+    // @ts-ignore
+    <Layout description={`${siteConfig.tagline}`}>
       <HomepageHeader />
       <HomepageTestkitCallout />
       <main>
         <HomepageFeatures />
         <HomepageExamples />
-        {/* Disabled for the time being. */}
-        {/* <HomepageLowerFeatures /> */}
-
         <div className="container">
           <p className={clsx('text--center', styles.goals)}>
             Mantle is a heavily Laravel-inspired framework for improving the WordPress

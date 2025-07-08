@@ -62,3 +62,7 @@ article a {
 pre {
   tab-size: 4;
 }
+
+.lead p {
+  font-size: 18px;
+}

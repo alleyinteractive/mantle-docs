@@ -15,7 +15,7 @@ const FeatureList: FeatureItem[] = [
     title: 'Inspired by Laravel',
     description: (
       <>
-        Enjoy the flexibility of the Laravel Framework inside of WordPress with a baked-in WordPress integration.
+        Enjoy the flexibility of the Laravel Framework inside of WordPress with a baked-in WordPress integration. Underneath the hood, Mantle uses WordPress core functions and APIs.
       </>
     ),
   },

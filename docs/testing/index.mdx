@@ -20,12 +20,12 @@ use App\Tests\TestCase;
 
 class ExampleTest extends TestCase {
 	public function test_example(): void {
-			$post = static::factory()->post->create_and_get();
+		$post = static::factory()->post->create_and_get();
 
-			$this->get( get_permalink( $post ) )
-				->assertOk()
-				->assertQueriedObject( $post )
-				->assertSee( $post->post_title );
+		$this->get( get_permalink( $post ) )
+			->assertOk()
+			->assertQueriedObject( $post )
+			->assertSee( $post->post_title );
 	}
 }
 ```
@@ -53,9 +53,7 @@ After installing a Mantle application, unit tests can be run directly or via
 Composer:
 
 ```bash
-vendor/bin/phpunit
-
-composer phpunit
+./vendor/bin/phpunit
 ```
 
 :::info Interested in using the testing framework outside of a Mantle application?
@@ -66,7 +64,7 @@ Mantle's testing framework in any WordPress project. [Learn more about Mantle Te
 
 ## Supported PHPUnit Versions
 
-Mantle supports PHPUnit 9-11 with 11 being the default version for new projects.
+Mantle supports PHPUnit 9-12 with 12 being the default version for new projects.
 For usage with PHPUnit 9, see [Migrating to Mantle Testing Framework 1.x and
 PHPUnit 10.x](#migrating-to-mantle-testing-framework-1x-and-phpunit-10x).
 
