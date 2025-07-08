@@ -10,7 +10,7 @@ Mantle's Testing Framework supports running unit tests via Pest via the
 plugin](https://github.com/alleyinteractive/pest-plugin-wordpress). Pest tests
 using Mantle can be run with or without the rest of the framework.
 
-![Example Test](https://pestphp.com/assets/img/pestinstall.png)
+<img src="https://pestphp.com/assets/img/pestinstall.png" alt="Pest Logo" width="300" />
 
 For more information, [checkout the plugin's
 GitHub](https://github.com/alleyinteractive/pest-plugin-wordpress#getting-started).

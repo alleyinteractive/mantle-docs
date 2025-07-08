@@ -1,10 +1,12 @@
 # Models
 
+<div className="lead">
 Models provide a fluent way to interface with objects in WordPress. Models can
 be either a post type, a term, or a subset of a post type. They represent a data
 object inside of your application. Models can also allow dynamic registration of
 a post type, REST API fields, and more. To make life easier for developers,
 Mantle models were designed with uniformity and simplicity in mind.
+</div>
 
 :::tip
 The Mantle Framework is not required to use Mantle models or the
