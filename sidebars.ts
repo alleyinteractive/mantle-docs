@@ -51,6 +51,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'basics/requests',
         'basics/templating',
+        'basics/blade',
         'basics/helpers',
         'basics/commands',
       ],

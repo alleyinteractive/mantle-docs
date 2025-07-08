@@ -4,7 +4,7 @@ description: Mantle provides a delightful templating experience for WordPress us
 
 # Templating and Views
 
-Templating in WordPress should be delightful -- Mantle hopes to make it that
+Templating in WordPress should be delightful — Mantle hopes to make it that
 way.
 
 ## Views
@@ -48,6 +48,8 @@ Hello, {{ $name }}
 
 Blade templates can be used interchangeably with PHP templates. Mantle will
 automatically detect the file extension and load the appropriate template engine.
+
+For more information on Blade templating, see [Blade Templating](./blade.md).
 
 ## View File Location
 
