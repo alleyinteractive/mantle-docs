@@ -45,7 +45,8 @@
 }
 
 .button {
-  /* background: transparent; */
+  align-items: center;
+  display: inline-flex;
 }
 
 .goals {
@@ -93,4 +94,10 @@
 .testkitCallout p {
   font-size: 1.2rem;
   margin: 0;
+}
+
+.githubIcon {
+  height: 20px;
+  margin: 0 -10px 0 10px;
+  width: 20px;
 }

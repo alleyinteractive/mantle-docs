@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
+import GitHub from '../assets/github.svg';
 
 // Components.
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
@@ -16,13 +17,14 @@ function HomepageHeader() {
   return (
     <header className={clsx('hero hero--primary', styles.heroBanner)}>
       <Logo className={styles.heroImage} />
-      <p className={clsx('hero__subtitle', styles.heroDescription)}>Mantle is a framework for building large, robust websites and applications with WordPress</p>
+      <p className={clsx('hero__subtitle', styles.heroDescription)}>{useDocusaurusContext().siteConfig.tagline}</p>
       <p className={styles.heroActions}>
         <Link className={clsx('button button--lg button--primary', styles.button)} to="/docs/getting-started">
           Get Started →
         </Link>
         <Link className={clsx('button button--lg button--secondary margin-left--sm', styles.button, styles.buttonLower)} href="https://github.com/alleyinteractive/mantle/">
           GitHub
+          <GitHub className={styles.githubIcon} />
         </Link>
       </p>
     </header>
