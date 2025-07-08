@@ -19,7 +19,7 @@ Route::get( '/', function () {
 ### PHP Templates
 
 Mantle supports normal PHP template partials. The `view()` helper function will
-automatically from any of the [configured view locations](#view-file-location).
+automatically from any of the [configured view locations](#view-file-locations).
 
 ```php title="ExampleController.php"
 class ExampleController {
@@ -51,7 +51,77 @@ automatically detect the file extension and load the appropriate template engine
 
 For more information on Blade templating, see [Blade Templating](./blade.md).
 
-## View File Location
+## Passing Variables to Views
+
+Frequently you will need to pass variables down to views from controllers and
+routes. To ensure a global variable isn't overwritten the variables are stored
+in the helper method `mantle_get_var()`.
+
+```php
+// Call the view with a variable.
+echo view( 'template-parts/view', [ 'foo' => 'bar' ] );
+```
+
+Inside the view:
+
+```php title="template-parts/view.php"
+<div>
+  <?php echo mantle_get_var( 'foo' ); ?>
+</div>
+```
+
+When using [Blade Templates](#blade-templates), variables can access the variables
+directly. Blade will automatically escape the contents of a variable when using
+`{{ ... }}`.
+
+```php
+Hello {{ $foo }}!
+```
+
+You can also use `mantle_get_mixed_var()` to retrieve a variable as a
+[Mixed Data](../features/support/mixed-data.mdx) instance:
+
+```php
+Hello {{ mantle_get_mixed_var( 'foo' )->string() }}!
+```
+
+### Passing Global Variables
+
+Service Providers and other classes in the application can pass global variables
+to all views loaded. This can be very handy when you want to pass template
+variables to a service provider without doing any additional work in the route.
+
+```php
+use Mantle\Facade\View;
+
+// Pass 'variable_to_pass' to all views.
+View::share( 'variable_to_pass', 'value or reference to pass' );
+```
+
+## Setting the Global Post Object
+
+Commonly views need to set the global post object in WordPress for a view. This
+will allow WordPress template tags such as `the_ID()` and `the_title()` to work
+properly.
+
+```php title="routes/web.php"
+Route::get( '/article/{article}', function ( App\Article $article ) {
+  // Supports passing a model, ID, or core WordPress object.
+  return view( 'template-parts/block', [ 'post' => $article ] )->set_post( $article );
+} );
+```
+
+```php title="template-parts/block.blade.php"
+<article>
+  <h1>{{ the_title() }}</h1>
+  <div>{{ the_content() }}</div>
+
+  {{-- Use the passed variable. --}}
+  <p>{{ $post->post_title }}</p>
+</article>
+```
+
+## View File Locations
 
 By default WordPress will only load a template part from the active theme and
 parent theme if applicable. Mantle supports loading views from a dynamic set of
@@ -90,7 +160,7 @@ automatically detect the file extension and load the appropriate template engine
 echo view( 'template-parts/block', [ 'variable' => '123' ] );
 ```
 
-Views will be loaded from the [configured view locations](#view-file-location)
+Views will be loaded from the [configured view locations](#view-file-locations)
 in the order they were registered. If a view is found in multiple locations the
 first one found will be used.
 
@@ -101,87 +171,87 @@ alias of the location in the format `@{alias}/{path to view}`:
 echo view( '@vendor-views/template-parts/block', [ 'variable' => '123' ] );
 ```
 
-## Passing Variables to Views
+This can be useful when you want to load views from a plugin or a specific
+directory that isn't the active theme or parent theme.
 
-Frequently you will need to pass variables down to views from controllers and
-routes. To ensure a global variable isn't overwritten the variables are stored
-in the helper method `mantle_get_var()`.
+## View Methods
 
-```php
-// Call the view with a variable.
-echo view( 'view/to/load', [ 'foo' => 'bar' ] );
+### `view()`
 
-// Inside the view...
-echo mantle_get_var( 'foo' );
-```
-
-Inside of [Blade Templates](#blade-templates) variables can access the variables
-directly. Blade will automatically escape the contents of a variable when using
-`{{ ... }}`.
+Load a view file and return the rendered output. This function will
+automatically detect the file extension and load the appropriate template engine
+(Blade or PHP). The view file will be loaded from the [configured view
+locations](#view-file-locations).
 
 ```php
-Hello {{ $foo }}!
+echo view( 'template-parts/block', [ 'variable' => '123' ] );
 ```
 
-### Passing Global Variables
+### `loop()`
 
-Service Providers and other classes in the application can pass global variables
-to all views loaded. This can be very handy when you want to pass template
-variables to a service provider without doing any additional work in the route.
-
-```php
-use Mantle\Facade\View;
-
-// Pass 'variable-to-pass' to all views.
-View::share( 'variable-to-pass', 'value or reference to pass' );
-```
-
-## Setting the Global Post Object.
-
-Commonly views need to set the global post object in WordPress for a view. This
-will allow WordPress template tags such as `the_ID()` and `the_title()` to work
-properly.
-
-```php
-Route::get( '/article/{article}', function ( App\Article $article ) {
-  // Supports passing a model, ID, or core WordPress object.
-  return View::make( 'template-parts/block', [ 'post' => $article ] )->set_post( $article );
-} );
-```
-
-```blade title="template-parts/block.blade.php"
-<article>
-  <h1>{{ the_title() }}</h1>
-  <div>{{ the_content() }}</div>
-
-  {{-- Use the passed variable. --}}
-  <p>{{ $post->post_title }}</p>
-</article>
-```
-
-### View Helpers
-
-#### `loop()`
 Loop over a collection/array of post objects. Supports a collection or array of
 `WP_Post` objects, Mantle Models, post IDs, or a `WP_Query` object. The post
 object will be automatically setup for each template part. We don't have to
 `while ( have_posts() ) : the_post(); ... endwhile;`, keeping our code nice and
 DRY.
 
-```php
+```php title="template-parts/post-list.php"
 $posts = Post::all();
-echo loop( $posts, 'view-to-load' );
+echo loop( $posts, 'template-parts/post-list-item' );
 ```
 
-#### `iterate()`
+Inside the loop, the global post object will be set to the current post in the
+loop. This allows you to use WordPress template tags such as `the_title()`,
+`the_content()`, and `the_ID()` without needing to call `setup_postdata()`.
+
+```php title="template-parts/post-list-item.php"
+<?php
+/**
+ * @var int $index The index of the current post in the loop.
+ */
+?>
+<article>
+  <h2><?php the_title(); ?></h2>
+  <div><?php the_content(); ?></div>
+</article>
+```
+
+You can use `render_loop()` to echo the output of the loop directly:
+
+```php
+render_loop( $posts, 'template-parts/post-list-item' );
+```
+
+### `iterate()`
+
 Iterate over a collection/array of arbitrary data. Each view is passed `index`
 and `item` as a the current item in the loop.
 
 ```php
-echo iterate( [ 1, 2, 3 ], 'view-to-load' );
+echo iterate( [ 1, 2, 3 ], 'template-parts/number-item' );
 ```
 
-### View Shortcuts
+```php title="template-parts/number-item.php"
+<?php
+/**
+ * @var int $index The index of the current item in the loop.
+ * @var int $item The current item in the loop.
+ */
+?>
+<div>
+  <p>Index: <?php echo esc_html( $index ); ?></p>
+  <p>Item: <?php echo esc_html( $item ); ?></p>
+</div>
+```
+
+You can use `render_iterate()` to echo the output of the iteration directly:
+
+```php
+render_iterate( [ 1, 2, 3 ], 'template-parts/number-item' );
+```
+
+## View Shortcuts
+
 When inside of a partial, you can prefix your path slug with `_` to load a
 sub-partial, appending everything after the `_` to the current partial's file
 name (with a dash separating them).
