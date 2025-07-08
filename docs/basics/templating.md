@@ -267,3 +267,20 @@ name (with a dash separating them).
 ```php title="template-parts/homepage/slideshow-slide.php"
 echo mantle_get_var( 'text', "Slide data!" );
 ```
+
+## View Caching
+
+Views can be cached using the `cache()` method. This will cache the view output
+for a specified duration. The cache will be stored in the WordPress object
+cache, allowing it to be shared across requests.
+
+```php
+echo cache( 'template-parts/view', [ 'foo' => 'bar' ] )->cache(); // Cache for default of 15 minutes.
+echo cache( 'template-parts/view', [ 'foo' => 'bar' ] )->cache( HOUR_IN_SECONDS ); // Cache for a custom TTL.
+
+// You can also specify a cache key:
+echo cache( 'template-parts/view', [ 'foo' => 'bar' ] )->cache(
+  ttl: HOUR_IN_SECONDS,
+  key: 'my-custom-cache-key'
+);
+```
