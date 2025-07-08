@@ -45,7 +45,7 @@ function HomepageTestkitCallout() {
           {' '}
           <Link to="/docs/testing">testing framework</Link>
           {' '}
-          that allows you to fluently tests WordPress in a modern way.
+          that allows you to fluently write tests for WordPress in a modern way.
         </p>
       </div>
     </div>
