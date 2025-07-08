@@ -279,8 +279,8 @@ use Mantle\Testing\Block_Factory;
 use function Mantle\Testing\block_factory;
 
 Block_Factory::register_preset(
-  'article_3_up',
-  block_factory()->blocks( [
+  name: 'article_3_up',
+  preset: block_factory()->blocks( [
     block_factory()->block( 'vendor/block-name', '', [
       'attribute' => 'value',
     ] ),
@@ -308,8 +308,8 @@ callable will be passed an instance of the Block Factory:
 use Mantle\Testing\Block_Factory;
 
 Block_Factory::register_preset(
-  'content_with_video',
-  fn ( Block_Factory $factory ) => $factory->blocks( [
+  name: 'content_with_video',
+  preset: fn ( Block_Factory $factory ) => $factory->blocks( [
     $factory->block( 'vendor/block-name', '', [
       'attribute' => 'value',
     ] ),
@@ -325,8 +325,8 @@ The preset callback will forward any arguments passed to the preset method:
 use function Mantle\Testing\block_factory;
 
 Block_Factory::register_preset(
-  'content_with_video',
-  fn ( Block_Factory $factory, string $url ) => $factory->blocks( [
+  name: 'content_with_video',
+  preset: fn ( Block_Factory $factory, string $url ) => $factory->blocks( [
     $factory->block( 'vendor/block-name', '', [
       'attribute' => 'value',
       'url'       => $url, // The passed argument.
