@@ -83,7 +83,6 @@ const sidebars: SidebarsConfig = {
       items: [
         'features/assets',
         'features/cache',
-        'features/caper',
         'features/file-system',
         'features/hooks',
         'features/http-client',
