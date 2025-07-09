@@ -8,7 +8,7 @@ Mantle provides a MVC framework on-top of WordPress. You can add a route
 fluently and send a response straight back without needing to work with
 WordPress's `add_rewrite_rule()` at all.
 
-```php
+```php title="routes/web.php"
 Route::get( '/example-route', function() {
 	return 'Welcome!';
 } );
@@ -18,8 +18,28 @@ Route::get( '/hello/{who}', function( $name ) {
 } );
 ```
 
-By default, web routes are defined in the `routes/web.php` file and [REST API routes](/docs/basics/requests#rest-api-routing) are defined in the `routes/rest-api.php` file. Routes are controlled by
-application's `Route_Service_Provider` located in the application.
+Web routes are defined in the `routes/web.php` file and
+[REST API routes](/docs/basics/requests#rest-api-routing) are defined in the
+`routes/rest-api.php` file. Routes are loaded via the bootloader's
+`with_routing()` method:
+
+```php title="bootstrap/app.php"
+use Mantle\Framework\Bootloader;
+
+return Bootloader::create()
+	->with_kernels(
+		console: App\Console\Kernel::class,
+		http: App\Http\Kernel::class,
+	)
+	->with_exception_handler( App\Exceptions\Handler::class )
+	// highlight-start
+	->with_routing(
+		web: __DIR__ . '/../routes/web.php',
+		rest_api: __DIR__ . '/../routes/rest-api.php',
+		pass_through: true,
+	);
+	// highlight-end
+```
 
 ## Registering Routes
 
@@ -29,9 +49,10 @@ routing](https://symfony.com/doc/current/routing.html) with a fluent-interface
 on top.
 
 ### Closure Routes
+
 At its most basic level, routes can be a simple anonymous function.
 
-```php
+```php title="routes/web.php"
 Route::get( '/endpoint', function() {
 	return 'Hello!';
 } );
@@ -42,7 +63,7 @@ Route::get( '/endpoint', function() {
 You can use a controller to handle routes as well. In the future, resource and
 automatic controller routing will be added.
 
-```php
+```php title="routes/web.php"
 Route::get( '/controller-endpoint', Controller_Class::class . '@method_to_invoke' );
 Route::get( '/controller-endpoint', [ Controller_Class::class, 'method_to_invoke' ] );
 ```
@@ -86,7 +107,49 @@ Invokable controllers are also generate-able through the CLI.
 wp mantle make:controller --invokable
 ```
 
-### Named Routes
+## Available Router Methods
+
+The router has all HTTP request methods available:
+
+```php
+use Mantle\Facade\Route;
+
+Route::get( $uri, $callback );
+Route::post( $uri, $callback );
+Route::put( $uri, $callback );
+Route::patch( $uri, $callback );
+Route::delete( $uri, $callback );
+Route::options( $uri, $callback );
+```
+
+## Route Parameters
+
+Routes can have parameters that are passed to the callback function from
+variables in the URI. The parameters are defined by wrapping the variable name
+in curly braces.
+
+```php title="routes/web.php"
+Route::get( '/post/{slug}', function( $slug ) {
+	return "Post slug: {$slug}";
+} );
+```
+
+### Required Parameters
+
+Parameters are required by default. If a parameter is not provided, the
+application will return a 404 response.
+
+### Optional Parameters
+
+You can make a parameter optional by adding a `?` after the parameter name.
+
+```php title="routes/web.php"
+Route::get( '/post/{slug?}', function( $slug = null ) {
+	return "Post slug: {$slug}";
+} );
+```
+
+## Named Routes
 
 Naming a route provides an easy-to-reference way of generating URLs for a
 route.
@@ -106,7 +169,7 @@ Route::get( '/posts/{slug}', [
 ] );
 ```
 
-#### Generating URLs to Named Routes
+## Generating URLs to Named Routes
 
 Once a route has a name assigned to it, you may use the route's name when
 generating URLs or redirects via the helper `route` function.
@@ -115,13 +178,13 @@ generating URLs or redirects via the helper `route` function.
 $url = route( 'route-name' );
 ```
 
-### Route Middleware
+## Route Middleware
 
 Middleware can be used to filter incoming requests and the response sent to the
 browser. Think of it like a WordPress filter on top of the request and the end
 response.
 
-#### Example Middleware
+### Example Middleware
 
 ```php
 /**
@@ -163,7 +226,7 @@ class Example_Middleware {
 }
 ```
 
-#### Authentication Middleware
+### Authentication Middleware
 
 Included with Mantle, a route can check a user's capability before allowing them
 to view a page.
@@ -176,7 +239,7 @@ Route::get('/route-to-protect', function() {
 } )->middleware( 'can:manage_options', Example_Middleware::class );
 ```
 
-#### Removing Middleware
+### Removing Middleware
 
 Middleware can be removed from a route by using the `without_middleware` method.
 You can pass a single middleware, an array of middleware to remove, or remove
@@ -202,7 +265,7 @@ Route::get( '/route', function() {
 } )->without_wrap_template();
 ```
 
-### Route Prefix
+## Route Prefix
 
 Routes can be prefixed to make it easier to group routes together.
 
@@ -212,53 +275,13 @@ Route::prefix( 'prefix/to/use' )->group( function() {
 } );
 ```
 
-### Available Router Methods
-
-The router has all HTTP request methods available:
-
-```php
-Route::get( $uri, $callback );
-Route::post( $uri, $callback );
-Route::put( $uri, $callback );
-Route::patch( $uri, $callback );
-Route::delete( $uri, $callback );
-Route::options( $uri, $callback );
-```
-
-### Requests Pass-Through to WordPress Routing
+## Requests Pass-Through to WordPress Routing
 
 By default, requests will pass down to WordPress if there is no match in Mantle.
-That can be changed inside of `Route_Service_Provider`. If the request doesn't
-have a match, the request will 404 and terminate before going through
-WordPress' require rules. REST API requests will always pass through to
+That can be changed inside of the bootloader's `bootstrap/app.php` file. If the
+request doesn't have a match, the request will 404 and terminate before going
+through WordPress' require rules. REST API requests will always pass through to
 WordPress and bypass Mantle routing.
-
-```php
-/**
- * Route_Service_Provider class file.
- *
- * @package Mantle
- */
-
-namespace App\Providers;
-
-use Mantle\Facade\Request;
-use Mantle\Framework\Providers\Route_Service_Provider as Service_Provider;
-
-/**
- * Route Service Provider
- */
-class Route_Service_Provider extends Service_Provider {
-	/**
-	 * Bootstrap any application services.
-	 */
-	public function boot() {
-		parent::boot();
-
-		$this->allow_pass_through_requests();
-	}
-}
-```
 
 ## Model Routing
 
@@ -352,9 +375,11 @@ public function get_route_key_name(): string {
 
 To register an explicit binding, use the router's model method to specify the
 class for a given parameter. You should define your explicit model bindings in
-the boot method of the `Route_Service_Provider` class:
+the boot method of the `App_Service_Provider` class:
 
 ```php
+use Mantle\Facade\Route;
+
 public function boot() {
   parent::boot();
 
@@ -461,7 +486,7 @@ theme as view locations.
 
 For more information about views, read the 'Templating' documentation.
 
-### Redirect to Endpoint and Route
+### Redirects
 
 Redirects can be generated using the `response()` helper.
 
@@ -476,6 +501,7 @@ Route::get( '/old-page', function() {
   return response()->redirect_to( '/home', 301 );
 } );
 
+// Redirects can also be done to a named route.
 Route::get( '/oh-no', function() {
   return response()->redirect_to_route( 'route_name' );
 } );
