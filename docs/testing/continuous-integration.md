@@ -84,15 +84,7 @@ WordPress installation and latest WordPress version for 24 hours.
 The Mantle repository includes GitHub Actions for testing your Mantle
 application against PHPUnit and phpcs:
 
-- [GitHub Action for PHPUnit](https://github.com/alleyinteractive/mantle/blob/HEAD/.github/workflows/tests.yml)
-- [GitHub Action for phpcs](https://github.com/alleyinteractive/mantle/blob/HEAD/.github/workflows/coding-standards.yml)
-
-These actions include best practices included in this guide to test your
-application. If you are working against a `wp-content/`-rooted application, you
-can use the GitHub Actions from `alleyinteractive/create-mantle-app`:
-
-- [GitHub Action for PHPUnit](https://github.com/alleyinteractive/create-mantle-app/blob/HEAD/.github/workflows/tests.yml)
-- [GitHub Action for phpcs](https://github.com/alleyinteractive/create-mantle-app/blob/HEAD/.github/workflows/coding-standards.yml)
+- [GitHub Action Workflow](https://github.com/alleyinteractive/mantle/blob/HEAD/.github/workflows/all-pr-tests.yml)
 
 ### Buddy
 
