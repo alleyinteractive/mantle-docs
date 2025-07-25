@@ -69,7 +69,7 @@ const sidebars: SidebarsConfig = {
         'models/model-registration',
         'models/model-relationships',
         'models/serialization',
-        'models/model-factory',
+        'models/database-factory',
         'models/seeding',
       ],
     },

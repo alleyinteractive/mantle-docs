@@ -36,3 +36,8 @@
   to = "/docs/testing/traits-attributes"
   status = 301
   force = true
+[[redirects]]
+  from = "/docs/models/model-factory"
+  to = "/docs/models/database-factory"
+  status = 301
+  force = true
