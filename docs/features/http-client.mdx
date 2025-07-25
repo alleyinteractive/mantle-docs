@@ -665,7 +665,7 @@ use Mantle\Http_Client\Factory;
 Factory::create()->url( 'https://example.org' )->purge();
 ```
 
-## Concurrent Requests
+## Concurrent Requests (HTTP Pooling)
 
 Sometimes, you may wish to make multiple HTTP requests concurrently. In other
 words, you want several requests to be dispatched at the same time instead of
