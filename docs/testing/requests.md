@@ -432,12 +432,31 @@ Assert that a response has a 201 HTTP status code.
 $response->assertCreated();
 ```
 
+#### assertContent
+
+Assert that a response has a given status code (default to 200) and content.
+
+```php
+$response->assertContent( mixed $value );
+```
+
+Also supports passing a callable to assert the content, which will be
+executed with the response body as the first argument. This is useful for
+making custom assertions against the response body. The callable should
+return `true` if the assertion passes, or `false` if it fails.
+
+```php
+$response->assertContent( function( string $body ) {
+  return str_contains( $body, 'Hello World' );
+} );
+```
+
 #### assertNoContent
 
 Assert that a response has a given status code (default to 204) and no content.
 
 ```php
-$response->assertNoContent( $status = 204 );
+$response->assertNoContent( int $status = 204 );
 ```
 
 #### assertNotFound
