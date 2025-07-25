@@ -193,6 +193,55 @@ the `static::factory()->post` method in unit tests, `create_and_get()` will
 return the underlying "core object" (WP_Post/WP_User/WP_Term/etc.).
 :::
 
+### Retrieving or Creating a Model Instance
+
+You can use the `first_or_create()` method to retrieve an existing model or
+create a new one if it doesn't exist. This is useful when you want to ensure
+that a model exists in the database without having to check for its existence
+first.
+
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use App\Models\Post;
+
+    $post = Post::factory()->first_or_create(
+      [
+        'post_title' => 'My Custom Title',
+      ],
+      // Additional attributes to set on the post if it is created.
+      [
+        'post_content' => 'This is the content of the post.',
+        'post_status'  => 'publish',
+      ]
+    );
+    ```
+  </TabItem>
+  <TabItem value="orange" label="Testkit Use">
+    ```php
+    use App\Models\Post;
+    use Mantle\Testkit\TestCase as Testkit;
+
+    class ExampleTest extends Testkit {
+      public function test_factory() {
+        $post = static::factory()->post->first_or_create(
+          [
+            'post_title' => 'My Custom Title',
+          ],
+          // Additional attributes to set on the post if it is created.
+          [
+            'post_content' => 'This is the content of the post.',
+            'post_status'  => 'publish',
+          ]
+        );
+
+        // ...
+      }
+    }
+    ```
+  </TabItem>
+</Tabs>
+
 ## Defining Custom Factory for a Model
 
 Out of the box, any model that does not have a factory defined will fallback to
