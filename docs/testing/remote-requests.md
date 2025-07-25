@@ -132,12 +132,10 @@ class ExampleRequestTest extends Test_Case {
    * Example test.
    */
   public function test_example() {
-    $this->fake_request(
-      [
-        'https://github.com/*'  => mock_http_response()->with_body( 'github' ),
-        'https://twitter.com/*' => mock_http_response()->with_body( 'twitter' ),
-      ]
-    );
+    $this->fake_request( [
+      'https://github.com/*'  => mock_http_response()->with_body( 'github' ),
+      'https://twitter.com/*' => mock_http_response()->with_body( 'twitter' ),
+    ] );
   }
 }
 ```
@@ -172,6 +170,40 @@ class ExampleRequestTest extends Test_Case {
   }
 }
 ```
+
+The `fake_request()` method also supports typehinting a
+`Mantle\Http_Client\Request` object as the first argument, which allows you to
+use the request object to determine the response:
+
+```php
+namespace App\Tests;
+
+use Mantle\Http_Client\Request;
+use function Mantle\Testing\mock_http_response;
+
+class ExampleRequestTest extends Test_Case {
+  /**
+   * Example test.
+   */
+  public function test_example() {
+    $this->fake_request(
+      function( Request $request ) {
+        if ( 'alley.com' !== $request->host() ) {
+          return;
+        }
+
+        return mock_http_response()
+          ->with_response_code( 123 )
+          ->with_body( 'alley!' );
+      }
+    );
+  }
+}
+```
+
+If the callback returns an empty value (null/false), the request will not be
+faked and the next matching fake will be used, or an actual request will be made
+if no matching fake is found.
 
 ### Faking Response Sequences
 
