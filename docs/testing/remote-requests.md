@@ -348,6 +348,16 @@ use function Mantle\Testing\mock_http_response;
 mock_http_response()->with_json( [ 1, 2, 3 ] );
 ```
 
+You can also pass an array to the `$response` argument of `fake_request()` to
+create a response with a JSON body:
+
+```php
+use function Mantle\Testing\mock_http_response;
+
+// A request to `https://example.com/` will return a JSON response with the body `[1,2,3]`.
+$this->fake_request( 'https://example.com/', [ 1, 2, 3 ] );
+```
+
 #### `with_xml( string $payload )`
 
 Create a response with an XML body and set the `Content-Type` header to
