@@ -1,7 +1,7 @@
 # Documentation Guidelines for Mantle Framework
 
 These are instructions for GitHub Copilot to follow when generating documentation for the Mantle framework (https://github.com/alleyinteractive/mantle-framework).
-The goal is to create clear, helpful, and consistent documentation that aligns with the Mantle project's style and standards.
+The goal is to create clear, helpful, and consistent documentation that aligns with the Mantle project's style and standards. The site uses Docusaurus for documentation, so please follow Docusaurus-specific conventions where applicable.
 
 ## Code Style Guidelines
 

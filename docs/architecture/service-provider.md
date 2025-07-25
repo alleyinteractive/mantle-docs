@@ -33,6 +33,10 @@ all providers the application will initialize on each request.
 ],
 ```
 
+:::tip Automatic Registration
+Mantle will automatically register service providers via [Automatic Registration with WordPress Events](#automatic-registration-with-wordpress-events).
+:::
+
 ## Writing a Service Provider
 
 Service providers extend the `Mantle\Support\Service_Provider` class and
@@ -83,7 +87,7 @@ class Example_Provider extends Service_Provider {
 }
 ```
 
-## Automatic Registration with WordPress Events
+### Automatic Registration with WordPress Events
 
 Service providers are the heart of your application. They can register services
 and add event listeners that are fired when specific events/actions happen in
@@ -106,14 +110,22 @@ class Example_Provider extends Service_Provider {
 }
 ```
 
-The service provider also supports magic methods that automatically register
-provider methods with WordPress actions and filters. The service provider will
+The service provider also supports magic methods via
+[Hookable](../features/support/hookable.md) that automatically register provider
+methods with WordPress actions and filters. The service provider will
 automatically register hooks for the provider by checking for methods that use
 the format of `on_{hook}` and `on_{action}_at_{priority}` as method names. Both
 actions and filters are supported using the same method naming convention.
 
 ```php
+use Mantle\Support\Attributes\Action;
+
 class Example_Provider extends Service_Provider {
+	#[Action('wp_loaded')]
+	public function register_services(): void {
+		// Register any services here on wp_loaded.
+	}
+
 	public function on_wp_loaded() {
 		// Called on wp_loaded at priority 10.
 	}
