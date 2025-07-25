@@ -77,7 +77,7 @@ return [
 ## Creating a Factory
 
 Instead of having to open up `wp-admin` and create data yourself, we can use
-[Mantle's Factories](/docs/models/model-factory) to create data for us. Open
+[Mantle's Factories](../models/model-factory.mdx) to create data for us. Open
 up your terminal and use the `make:factory` command:
 
 ```bash

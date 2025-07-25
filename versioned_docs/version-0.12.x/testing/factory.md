@@ -22,7 +22,7 @@ The testing factory used by the testing framework is the same factory used by
 Mantle's database factory.
 
 For more information on the database factory, see the [Database
-Factory](/docs/models/model-factory) documentation.
+Factory](../models/model-factory.mdx) documentation.
 :::
 
 ## Generating Content
@@ -50,4 +50,4 @@ class Test_Case extends Testkit_Test_Case {
 ```
 
 For more information on how to generate content with factories, see the
-[Model Factory: Generated Content](/docs/models/model-factory#generating-content) documentation.
+[Model Factory: Generated Content](../models/model-factory.mdx#generating-content) documentation.

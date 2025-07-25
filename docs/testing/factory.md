@@ -29,7 +29,7 @@ The testing factory used by the testing framework is the same factory used by
 Mantle's database factory.
 
 For more information on the database factory, see the [Database
-Factory](/docs/models/model-factory) documentation.
+Factory](../models/database-factory.mdx) documentation.
 :::
 
 ## Generating Content
@@ -57,7 +57,7 @@ class ExampleTests extends Testkit_Test_Case {
 ```
 
 For more information on how to generate content with factories, see the
-[Model Factory: Generated Content](/docs/models/model-factory#generating-content) documentation.
+[Model Factory: Generated Content](../models/database-factory.mdx#generating-content) documentation.
 
 Factories for custom post types/taxonomies can be instantiated by calling the
 relevant post type/taxonomy name when retrieving the factory:
@@ -104,7 +104,7 @@ class ExampleTests extends Testkit_Test_Case {
 }
 ```
 
-The Block Factory works with the [Block Faker](../models/model-factory.mdx#generating-blocks-in-factories)
+The Block Factory works with the [Block Faker](../models/database-factory.mdx#generating-blocks-in-factories)
 to make it possible to generate blocks in tests with ease.
 
 ### Generating Paragraph Blocks
