@@ -683,9 +683,9 @@ allowing you to easily add requests to the request pool for dispatching:
     use Mantle\Facade\Http;
 
     $responses = Http::pool( fn ( Pool $pool ) => [
-        $pool->method( 'get' )->url( 'http://localhost/first' ),
-        $pool->method( 'post' )->url( 'http://localhost/second' )->with_json( [ 'name' => 'Mantle' ] ),
-        $pool->method( 'get' )->url( 'http://localhost/third' ),
+        $pool->get( 'http://localhost/first' ),
+        $pool->post( 'http://localhost/second' )->with_json( [ 'name' => 'Mantle' ] ),
+        $pool->get( 'http://localhost/third' ),
     ] );
 
     return $responses[0]->ok() &&
@@ -699,9 +699,9 @@ allowing you to easily add requests to the request pool for dispatching:
     use Mantle\Http_Client\Factory;
 
     $responses = Factory::create()->pool( fn ( Pool $pool ) => [
-        $pool->method( 'get' )->url( 'http://localhost/first' ),
-        $pool->method( 'post' )->url( 'http://localhost/second' )->with_json( [ 'name' => 'Mantle' ] ),
-        $pool->method( 'get' )->url( 'http://localhost/third' ),
+        $pool->get( 'http://localhost/first' ),
+        $pool->post( 'http://localhost/second' )->with_json( [ 'name' => 'Mantle' ] ),
+        $pool->get( 'http://localhost/third' ),
     ] );
 
     return $responses[0]->ok() &&
@@ -722,9 +722,9 @@ which allows you to access the corresponding responses by name:
     use Mantle\Facade\Http;
 
     $responses = Http::pool( fn ( Pool $pool ) => [
-        $pool->as( 'first' )->url( 'http://localhost/first' ),
-        $pool->as( 'second' )->url( 'http://localhost/second' ),
-        $pool->as( 'third' )->url( 'http://localhost/third' ),
+        $pool->as( 'first' )->get( 'http://localhost/first' ),
+        $pool->as( 'second' )->get( 'http://localhost/second' ),
+        $pool->as( 'third' )->get( 'http://localhost/third' ),
     ] );
 
     return $responses['first']->ok() &&
@@ -738,9 +738,9 @@ which allows you to access the corresponding responses by name:
     use Mantle\Http_Client\Factory;
 
     $responses = Factory::create()->pool( fn ( Pool $pool ) => [
-        $pool->as( 'first' )->url( 'http://localhost/first' ),
-        $pool->as( 'second' )->url( 'http://localhost/second' ),
-        $pool->as( 'third' )->url( 'http://localhost/third' ),
+        $pool->as( 'first' )->get( 'http://localhost/first' ),
+        $pool->as( 'second' )->get( 'http://localhost/second' ),
+        $pool->as( 'third' )->get( 'http://localhost/third' ),
     ] );
 
     return $responses['first']->ok() &&
