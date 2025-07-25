@@ -243,8 +243,8 @@ To enable this feature, you can use the `with_experimental_testing_url_host()` m
   ->install();
 ```
 
-You can customize the [site URL](#changing-the-site-url) and the
-[home URL](#changing-the-home-url) via the Installation Manger.
+You can customize the [site and home URLs](#changing-the-sitehome-url) via the
+Installation Manger.
 
 :::note Heads up!
 This feature will be made the default behavior in the next major version of
