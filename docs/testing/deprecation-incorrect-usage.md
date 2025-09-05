@@ -3,7 +3,7 @@ title: "Testing: Deprecation and Incorrect Usage"
 sidebar_label: Deprecation and Incorrect Usage
 description: Deprecation and incorrect usage notices can be captured and asserted against in Mantle's Test Case.
 ---
-# Deprecation and Incorrect Usage
+# Testing: Deprecation and Incorrect Usage
 
 ## Introduction
 

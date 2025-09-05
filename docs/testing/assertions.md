@@ -4,7 +4,7 @@ sidebar_label: Assertions
 description: Assertions available in Mantle's Test Case.
 ---
 
-# Assertions
+# Testing: Assertions
 
 ## Introduction
 
@@ -376,7 +376,7 @@ $this->assertMailNotSent(
 );
 ```
 
-# assertMailSentCount
+## assertMailSentCount
 
 Assert that the given number of emails were sent to the given address or
 any address matching the callback.

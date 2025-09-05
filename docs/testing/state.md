@@ -4,7 +4,7 @@ sidebar_label: WordPress State
 description: During unit tests, the testing framework exposes some helper methods to allow you to modify or inspect the state of WordPress.
 ---
 
-# WordPress State
+# Testing: WordPress State
 
 ## Introduction
 
