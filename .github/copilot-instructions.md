@@ -64,6 +64,7 @@ class PostTest extends TestCase {
 - Use MDX format for interactive components when needed
 - Take advantage of Docusaurus admonitions (:::note, :::tip, :::warning, :::danger)
 - Use proper frontmatter for page metadata
+- You do not need to include a table of contents on the page.
 
 ### Docusaurus-Specific Features
 
