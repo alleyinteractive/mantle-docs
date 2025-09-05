@@ -11,6 +11,7 @@ The goal is to create clear, helpful, and consistent documentation that aligns w
 - **For test files or testing related code**: Use PSR-4 file/class naming conventions but maintain tab indentation
 - Do not include `<?php` or `?>` tags in documentation.
 - Target PHP 8.2 or higher.
+- Always include the `use` statement you would need to import the class or function being demonstrated for each code snippet.
 
 ### Example PHP Code Structure
 ```php
