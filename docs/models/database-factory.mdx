@@ -84,8 +84,9 @@ own arguments with `create()`. Returns the ID of the created model.
 ### Create Multiple Instances
 
 Create multiple models from the factory definition and optionally override it
-with your own arguments using the `count()` or `create_many()` methods. It will return
-an array of IDs of the created models.
+with your own arguments using the `count()`, `create_many()`, or
+`create_many_and_get()` methods. It will return an array of IDs of the created
+models.
 
 <Tabs groupId="use-preference">
   <TabItem value="framework" label="Framework Use" default>
@@ -112,9 +113,14 @@ an array of IDs of the created models.
         $post_ids = static::factory()->post->create_many( 3 ); // int[]
         $term_ids = static::factory()->tag->create_many( 3 ); // int[]
 
+        // create_many_and_get() can also be used to retrieve multiple objects.
+        $posts = static::factory()->post->create_many_and_get( 3 ); // WP_Post[]
+        $terms = static::factory()->tag->create_many_and_get( 3 ); // WP_Term[]
+
         // You may use the fluent count() method to create multiple models, too.
         $post_ids = static::factory()->post->count( 3 )->create(); // int[]
         $term_ids = static::factory()->tag->count( 3 )->create(); // int[]
+
 
         // ...
       }

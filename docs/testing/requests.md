@@ -182,6 +182,34 @@ You can also make all requests use HTTPS by setting the site's home URL to
 include `https://` and opt-in to the experimental feature to use the home URL
 host as the request host when testing.
 
+### Fetching Posts
+
+You can also use the `fetch_post()` method which combines post creation and HTTP
+request in one step. This method creates a post with the given attributes and
+then makes a GET request to its permalink:
+
+```php
+$this->fetch_post( [
+	'post_title' => 'Hello World',
+	'post_content' => 'This is the content.',
+] )
+	->assertOk()
+	->assertSee( 'Hello World' );
+```
+
+This is equivalent to:
+
+```php
+$post = static::factory()->post->create_and_get( [
+	'post_title' => 'Hello World',
+	'post_content' => 'This is the content.',
+] );
+
+$this->get( $post->permalink() )
+	->assertOk()
+	->assertSee( 'Hello World' );
+```
+
 ## Testing Responses
 
 After making a request, you can make assertions against the response using the

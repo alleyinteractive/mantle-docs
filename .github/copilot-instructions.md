@@ -11,6 +11,7 @@ The goal is to create clear, helpful, and consistent documentation that aligns w
 - **For test files or testing related code**: Use PSR-4 file/class naming conventions but maintain tab indentation
 - Do not include `<?php` or `?>` tags in documentation.
 - Target PHP 8.2 or higher.
+- Always include the `use` statement you would need to import the class or function being demonstrated for each code snippet.
 
 ### Example PHP Code Structure
 ```php
@@ -64,6 +65,7 @@ class PostTest extends TestCase {
 - Use MDX format for interactive components when needed
 - Take advantage of Docusaurus admonitions (:::note, :::tip, :::warning, :::danger)
 - Use proper frontmatter for page metadata
+- You do not need to include a table of contents on the page.
 
 ### Docusaurus-Specific Features
 

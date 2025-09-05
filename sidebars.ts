@@ -108,6 +108,7 @@ const sidebars: SidebarsConfig = {
             'features/support/pipeline',
             'features/support/singleton',
             'features/support/stringable',
+            'features/support/uri',
           ],
         },
       ],

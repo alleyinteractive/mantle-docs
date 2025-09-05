@@ -310,6 +310,68 @@ class ExampleRequestTest extends Test_Case {
 }
 ```
 
+### Snapshot Testing Remote Requests
+
+Mantle provides the ability to use [snapshot
+testing](/docs/testing/snapshot-testing) with HTTP request mocking. This allows
+you to record the response of a real remote request and use it for mocking a
+request instead of having to manually create the response.
+
+This is especially useful when working with external APIs where you want to test
+against real responses without making actual HTTP requests during your test
+suite runs. The snapshot is placed in the `__http_snapshots__` directory
+relative to the test file.
+
+```php
+namespace App\Tests;
+
+use Tests\Test_Case;
+
+class Example_Test extends Test_Case {
+  public function test_snapshot_testing() {
+    // This will create a snapshot of the response from 'https://alley.com/wp-json/*'
+    // The first time the test runs, it will record the response.
+    // On subsequent runs, it will use the recorded snapshot.
+    $this->fake_request( 'https://alley.com/wp-json/*' )->with_snapshot();
+
+    // Make the request that will use the snapshot
+    $response = wp_remote_get( 'https://alley.com/wp-json/wp/v2/posts' );
+  }
+}
+```
+
+#### Customizing Snapshot IDs
+
+By default, Mantle generates a unique snapshot ID based on the test name, HTTP
+method, URL, and a hash of the request headers and body. You can customize the
+snapshot ID if needed:
+
+```php
+namespace App\Tests;
+
+use Tests\Test_Case;
+
+class Example_Test extends Test_Case {
+  public function test_custom_snapshot_id() {
+    $this->fake_request( 'https://api.example.com/posts' )
+        ->with_snapshot( 'custom-snapshot-name' );
+
+    $response = wp_remote_get( 'https://api.example.com/posts' );
+  }
+}
+```
+
+#### Updating Snapshots
+
+When an API response changes and you want to update your snapshots, you can run
+your tests with the `--update-snapshots` flag:
+
+```bash
+./vendor/bin/phpunit -d --update-snapshots
+```
+
+This will update all the snapshots used in your tests to match the current responses
+
 ### Generating Responses
 
 `Mantle\Testing\Mock_Http_Response` class, and the

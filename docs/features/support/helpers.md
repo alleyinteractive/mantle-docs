@@ -435,6 +435,47 @@ $value = with( 'example', function( $value ) {
 } ); // returns 'EXAMPLE'
 ```
 
+### `memo`
+
+The `memo` helper memoizes the result of a callback function, caching it to
+avoid repeated execution. It works similar to Spatie's `once` helper but with
+the added ability to specify dependencies that determine when the cached value
+should be invalidated (think React's `useMemo`).
+
+```php
+use function Mantle\Support\Helpers\memo;
+
+// Basic usage - function will only run once, subsequent calls return the cached value.
+$result = memo( function() {
+	// Expensive operation that will only execute once
+	return expensive_calculation();
+} );
+
+// With dependencies - function result is cached based on the dependency values.
+$post_content = memo(
+	function() use ( $post ) {
+		// This will be recalculated only when $post->ID changes
+		return apply_filters( 'the_content', $post->post_content );
+	},
+	[ $post->ID ] // Dependencies array
+);
+
+// Multiple dependencies can be specified
+$user_posts = memo(
+	function() use ( $user_id, $post_status ) {
+		return get_posts([
+			'author' => $user_id,
+			'post_status' => $post_status,
+		]);
+	},
+	[ $user_id, $post_status ]
+);
+```
+
+:::tip
+Use `memo()` for expensive operations that are called multiple times but don't need to be recalculated unless dependencies change. This can significantly improve performance in your application.
+:::
+
 ## Testing
 
 ### `capture`
