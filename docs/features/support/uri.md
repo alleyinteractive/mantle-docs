@@ -22,7 +22,7 @@ The simplest way to create a URI instance is using the `uri()` helper function:
 use function Mantle\Support\Helpers\uri;
 
 // Create a URI from a string
-$uri = uri('https://example.com/path?query=value');
+$uri = uri( 'https://example.com/path?query=value' );
 
 // Get the current request URI
 $current = uri();
@@ -36,10 +36,10 @@ You can also use the `Uri` class directly to create instances:
 use Mantle\Support\Uri;
 
 // Create a URI from a string
-$uri = new Uri('https://example.com/path?query=value');
+$uri = new Uri( 'https://example.com/path?query=value' );
 
 // Alternative static constructor
-$uri = Uri::of('https://example.com/path?query=value');
+$uri = Uri::of( 'https://example.com/path?query=value' );
 
 // Get the current request URI
 $current = Uri::current();
@@ -50,11 +50,11 @@ $current = Uri::current();
 Once you have a URI instance, you can access its individual components:
 
 ```php
-$uri = uri('https://user:pass@example.com:8080/path/to/page?query=value#fragment');
+$uri = uri( 'https://user:pass@example.com:8080/path/to/page?query=value#fragment' );
 
 $scheme = $uri->scheme();          // 'https'
 $user = $uri->user();              // 'user'
-$userWithPass = $uri->user(true);  // 'user:pass'
+$userWithPass = $uri->user( true );  // 'user:pass'
 $password = $uri->password();      // 'pass'
 $host = $uri->host();              // 'example.com'
 $port = $uri->port();              // 8080
@@ -76,25 +76,25 @@ The `Uri` class provides a fluent interface for modifying components. Each modif
 ```php
 use Mantle\Support\Uri;
 
-$uri = uri('https://example.com/path');
+$uri = uri( 'https://example.com/path' );
 
 // Change the scheme
-$secureUri = $uri->with_scheme('https');
+$secureUri = $uri->with_scheme( 'https' );
 
 // Change the host
-$newHost = $uri->with_host('mantle-framework.com');
+$newHost = $uri->with_host( 'mantle-framework.com' );
 
 // Change the path
-$newPath = $uri->with_path('/new/path');
+$newPath = $uri->with_path( '/new/path' );
 
 // Add a port
-$withPort = $uri->with_port(8080);
+$withPort = $uri->with_port( 8080 );
 
 // Add user credentials
-$withAuth = $uri->with_user('username', 'password');
+$withAuth = $uri->with_user( 'username', 'password' );
 
 // Add a fragment
-$withFragment = $uri->with_fragment('section-1');
+$withFragment = $uri->with_fragment( 'section-1' );
 ```
 
 ### Working with Query Parameters
@@ -104,22 +104,22 @@ The `Uri` class provides several methods to work with query parameters:
 ```php
 use function Mantle\Support\Helpers\uri;
 
-$uri = uri('https://example.com/search?term=php');
+$uri = uri( 'https://example.com/search?term=php' );
 
 // Add or merge query parameters
-$withFilters = $uri->with_query(['category' => 'framework', 'sort' => 'desc']);
+$withFilters = $uri->with_query( ['category' => 'framework', 'sort' => 'desc'] );
 // https://example.com/search?term=php&category=framework&sort=desc
 
 // Replace all query parameters
-$newQuery = $uri->replace_query(['page' => 1, 'limit' => 20]);
+$newQuery = $uri->replace_query( ['page' => 1, 'limit' => 20] );
 // https://example.com/search?page=1&limit=20
 
 // Add query parameters only if they don't exist
-$withDefaults = $uri->with_query_if_missing(['term' => 'default', 'page' => 1]);
+$withDefaults = $uri->with_query_if_missing( ['term' => 'default', 'page' => 1] );
 // https://example.com/search?term=php&page=1
 
 // Remove specific query parameters
-$withoutTerm = $uri->without_query('term');
+$withoutTerm = $uri->without_query( 'term' );
 // https://example.com/search
 
 // Remove all query parameters
@@ -127,8 +127,8 @@ $withoutQuery = $uri->without_query();
 // https://example.com/search
 
 // Push a value onto a list parameter
-$uri = uri('https://example.com/search?tags[]=php');
-$withMoreTags = $uri->push_onto_query('tags', ['framework', 'web']);
+$uri = uri( 'https://example.com/search?tags[]=php' );
+$withMoreTags = $uri->push_onto_query( 'tags', ['framework', 'web'] );
 // https://example.com/search?tags[]=php&tags[]=framework&tags[]=web
 ```
 
@@ -142,10 +142,10 @@ The `Uri` class can generate redirect HTTP responses:
 use function Mantle\Support\Helpers\uri;
 
 // Create a redirect response with default 302 status
-$response = uri('https://example.com/destination')->redirect();
+$response = uri( 'https://example.com/destination' )->redirect();
 
 // Create a redirect with a specific status code and headers
-$response = uri('https://example.com/destination')->redirect(
+$response = uri( 'https://example.com/destination' )->redirect(
 	301,
 	['X-Redirect-Source' => 'application']
 );
@@ -158,7 +158,7 @@ URIs can be converted to strings in several ways:
 ```php
 use function Mantle\Support\Helpers\uri;
 
-$uri = uri('https://example.com/path?query=value#fragment');
+$uri = uri( 'https://example.com/path?query=value#fragment' );
 
 // Using the value() method
 $string = $uri->value();
@@ -186,13 +186,13 @@ The `Uri` class includes the `Conditionable` trait, which allows for conditional
 ```php
 use function Mantle\Support\Helpers\uri;
 
-$uri = uri('https://example.com/path');
+$uri = uri( 'https://example.com/path' );
 
-$result = $uri->when($condition, function ($uri) {
-	return $uri->with_path('/conditional/path');
-}, function ($uri) {
-	return $uri->with_path('/default/path');
-});
+$result = $uri->when( $condition, function ( $uri ) {
+	return $uri->with_path( '/conditional/path' );
+}, function ( $uri ) {
+	return $uri->with_path( '/default/path' );
+} );
 ```
 
 ## Practical Examples
@@ -209,9 +209,6 @@ $apiUrl = uri('https://api.example.com')
 		'sort' => 'price',
 		'order' => 'asc',
 	]);
-
-// Make an API request using the built URL
-$response = http()->get($apiUrl);
 ```
 
 ### Generating Pagination URLs
@@ -243,18 +240,56 @@ $updatedUri = $current->with_query([
 ```php
 use function Mantle\Support\Helpers\uri;
 
-$apiUrl = uri('https://api.example.com')
-	->with_path('/v1/products')
-	->with_query([
+## Practical Examples
+
+### Building an API URL
+
+```php
+use function Mantle\Support\Helpers\uri;
+
+$apiUrl = uri( 'https://api.example.com' )
+	->with_path( '/v1/products' )
+	->with_query( [
 		'category' => 'electronics',
 		'limit' => 20,
 		'page' => 1,
 		'sort' => 'price',
 		'order' => 'asc',
-	]);
+	] );
 
 // Make an API request using the built URL
-$response = http()->get($apiUrl);
+$response = http()->get( $apiUrl );
+```
+
+### Generating Pagination URLs
+
+```php
+use function Mantle\Support\Helpers\uri;
+
+$baseUrl = uri()->without_query( 'page' );
+
+$pagination = [
+	'current' => $current_page,
+	'next' => $baseUrl->with_query( ['page' => $current_page + 1] )->value(),
+	'prev' => $current_page > 1
+		? $baseUrl->with_query( ['page' => $current_page - 1] )->value()
+		: null,
+];
+```
+
+### Preserving Selected Filters
+
+```php
+use function Mantle\Support\Helpers\uri;
+
+$current = uri();
+$availableFilters = ['category', 'price', 'color', 'size'];
+
+// Keep existing filters and update only the ones that changed
+$updatedUri = $current->with_query( [
+	'category' => $new_category,
+	'page' => 1, // Reset to page 1 when filters change
+] );
 ```
 
 ### Generating Pagination URLs
