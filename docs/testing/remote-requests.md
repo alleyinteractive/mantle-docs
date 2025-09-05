@@ -370,7 +370,7 @@ your tests with the `--update-snapshots` flag:
 ./vendor/bin/phpunit -d --update-snapshots
 ```
 
-This will update all the snapshots used in your tests to match the current responses.
+This will update all the snapshots used in your tests to match the current responses
 
 ### Generating Responses
 
