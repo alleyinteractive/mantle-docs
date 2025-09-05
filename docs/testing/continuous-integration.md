@@ -3,7 +3,7 @@ title: "Testing: Continuous Integration"
 sidebar_label: Continuous Integration
 description: Using Continuous Integration (CI) in your development can help ease your mind when adding new features to a site. This guide will help you setup your Mantle application or project that is using Mantle's testing framework for CI via GitHub Actions or Buddy.
 ---
-# Continuous Integration
+# Testing: Continuous Integration
 
 ## Introduction
 
@@ -57,10 +57,10 @@ Actions](#github-actions) can be found below):
 
 
 ```bash
-# Install Composer
+# Testing: Install Composer
 composer install
 
-# Run PHPUnit/phpcs
+# Testing: Run PHPUnit/phpcs
 composer test
 ```
 

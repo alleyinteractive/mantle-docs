@@ -4,7 +4,7 @@ sidebar_label: Users and Authentication
 description: The Mantle Test Framework provides methods and assertions for testing users and authentication.
 ---
 
-# Users
+# Testing: Users and Authentication
 
 The Mantle Test Framework provides a method `$this->acting_as( $user )` to
 execute a test as a given user or a user in the given role.

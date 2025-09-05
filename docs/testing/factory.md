@@ -3,7 +3,7 @@ title: Testing Factory
 sidebar_label: Factory
 description: Mantle supports a WordPress-core backwards compatible factory that can be used in tests to quickly generate posts, terms, sites, and more.
 ---
-# Testing Factory
+# Testing: Factory
 
 Mantle supports a WordPress-core backwards compatible factory that can be used
 in tests to quickly generate posts, terms, sites, and more.

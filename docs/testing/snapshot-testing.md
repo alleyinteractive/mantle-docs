@@ -3,7 +3,7 @@ title: "Testing: Snapshot Testing"
 sidebar_label: Snapshot Testing
 description: Snapshot testing in Mantle's testing framework.
 ---
-# Snapshot Testing
+# Testing: Snapshot Testing
 
 Mantle's testing framework includes [Spatie's PHPUnit Snapshot Testing
 package](https://github.com/spatie/phpunit-snapshot-assertions) for easy

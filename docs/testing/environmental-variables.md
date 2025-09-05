@@ -1,4 +1,9 @@
-# Environmental Variables
+---
+sidebar_label: Environmental Variables
+description: Environmental variables used within the testing framework.
+---
+
+# Testing: Environmental Variables
 
 This document describes the environmental variables that are used within the
 testing framework and their purpose. Most variables are used during installation

@@ -4,7 +4,7 @@ sidebar_label: Traits and Attributes
 description: Traits and attributes that can be used to add optional functionality to a test case.
 ---
 
-# Traits and Attributes
+# Testing: Traits and Attributes
 
 ## Introduction
 

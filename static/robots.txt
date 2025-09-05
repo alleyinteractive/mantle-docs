@@ -1,3 +1,4 @@
 User-agent: *
 Disallow: /docs/0.12.x
 Disallow: /docs/next
+Sitemap: https://mantle.alley.com/sitemap.xml

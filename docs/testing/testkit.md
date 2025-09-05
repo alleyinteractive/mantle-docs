@@ -4,7 +4,7 @@ sidebar_label: Testkit
 description: Mantle Testkit is a standalone package for using the Mantle Testing Framework on non-Mantle based projects.
 ---
 
-# Mantle Testkit
+# Testing: Mantle Testkit
 
 Mantle Testkit is a standalone package for using the
 [Mantle Testing Framework](./index.mdx) on non-Mantle based projects.
