@@ -3,7 +3,7 @@ import { darkTheme, lightTheme } from './src/theme';
 
 const config: Config = {
   title: 'Mantle by Alley',
-  tagline: 'Mantle is a Larvel-inspired framework for building large, robust websites and applications with WordPress',
+  tagline: 'Mantle is a Laravel-inspired framework for building large, robust websites and applications with WordPress',
   url: 'https://mantle.alley.com',
   baseUrl: '/',
   trailingSlash: false,
