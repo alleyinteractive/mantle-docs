@@ -476,6 +476,62 @@ $user_posts = memo(
 Use `memo()` for expensive operations that are called multiple times but don't need to be recalculated unless dependencies change. This can significantly improve performance in your application.
 :::
 
+## Meta
+
+Helpers for registering meta fields on objects in WordPress.
+
+
+### `register_meta_helper`
+
+Register meta for a specific object type with some common defaults. By default, the meta will have the following settings:
+
+- `show_in_rest` is set to `true`
+- `single` is set to `true`
+- `type` is set to `string`
+
+Example:
+
+```php
+use function Mantle\Support\Helpers\register_meta_helper;
+
+register_meta_helper( 'post', 'example_meta_key', [
+	'type'         => 'string',
+	'single'       => true,
+	'show_in_rest' => true,
+	'default'      => '',
+] );
+```
+
+### `register_meta_from_file`
+
+Register meta fields from a JSON file. The JSON file should contain an array of
+meta field definitions. Let's say you have a JSON file with meta definitions
+like this:
+
+```php title="post-meta.json"
+{
+  "example_meta_key": {
+    "post_types": "article",
+    "type": "string"
+  },
+	"another_meta_key": {
+		"post_types": [ "article", "page" ],
+		"type": "number",
+		"single": false,
+		"default": 0
+	}
+}
+```
+
+You can register the meta fields defined in this file using the
+`register_meta_from_file` helper:
+
+```php
+use function Mantle\Support\Helpers\register_meta_from_file;
+
+register_meta_from_file( __DIR__ . '/post-meta.json', 'post' );
+```
+
 ## Testing
 
 ### `capture`
