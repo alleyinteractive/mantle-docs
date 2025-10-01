@@ -9,6 +9,7 @@ features on a project. It provides a consistent way to register and manage
 features that promotes modularity and reusability.
 
 Lets look at an example of a feature:
+
 ```php
 use Alley\WP\Types\Feature;
 
