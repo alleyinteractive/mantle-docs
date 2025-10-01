@@ -471,6 +471,22 @@ Assert that the expected value and type exists at the given path in the response
 $response->assertJsonPath( string $path, $expect );
 ```
 
+#### assertJsonPathMatches
+
+Assert that the value at the given path matches the given regular expression.
+
+```php
+$response->assertJsonPathMatches( string $path, string $pattern );
+```
+
+### assertJsonPathNotMatches
+
+Assert that the value at the given path does not match the given regular expression.
+
+```php
+$response->assertJsonPathNotMatches( string $path, string $pattern );
+```
+
 #### assertJsonPathExists
 
 Assert that a specific JSON path exists.
@@ -485,6 +501,38 @@ Assert that a specific JSON path is missing.
 
 ```php
 $response->assertJsonPathMissing( string $path );
+```
+
+#### assertJsonPathEmpty
+
+Assert that a specific JSON path is empty.
+
+```php
+$response->assertJsonPathEmpty( string $path );
+```
+
+#### assertJsonPathNotEmpty
+
+Assert that a specific JSON path is not empty.
+
+```php
+$response->assertJsonPathNotEmpty( string $path );
+```
+
+#### assertJsonPathContains
+
+Assert that the value at the given path contains the given value.
+
+```php
+$response->assertJsonPathContains( string $path, $value );
+```
+
+#### assertJsonPathNotContains
+
+Assert that the value at the given path does not contain the given value.
+
+```php
+$response->assertJsonPathNotContains( string $path, $value );
 ```
 
 #### assertExactJson
@@ -533,6 +581,14 @@ Assert that the response has a given JSON structure.
 
 ```php
 $response->assertJsonStructure( array $structure = null);
+```
+
+#### assertJsonPathCallback
+
+Assert that the given callback returns true for the value at the given path.
+
+```php
+$response->assertJsonPathCallback( string $path, callable $callback );
 ```
 
 #### assertIsJson
