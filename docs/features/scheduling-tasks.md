@@ -4,7 +4,9 @@
 
 To help provide a singular interface for scheduling jobs in WordPress (and to
 not interact with WordPress cron) Mantle provides a fluent interface for
-defining scheduleable tasks.
+defining schedule-able tasks. Underneath Mantle uses a every minute WP cron
+job to trigger the scheduled tasks. This allows you to define your scheduled
+tasks in a more expressive way.
 
 ## Defining Schedules
 
