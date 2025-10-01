@@ -87,7 +87,6 @@ Let's look at an example custom validator attribute:
 ```php
 use Alley\WP\Types\Feature;
 
-
 #[\Attribute]
 class Example_Validator implements \Mantle\Types\Validator {
   public function validate(): bool {
