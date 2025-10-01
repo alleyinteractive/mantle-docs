@@ -149,3 +149,43 @@ class Example_Class {
   }
 }
 ```
+
+## Conditional Validation
+
+If you want to conditionally register hooks based on some logic, you can do so
+by adding a validator attribute to your method. An attribute that implements
+[`Mantle\Types\Validator](../types.md) can be used to determine if the hook
+should be registered or not.
+
+```php
+namespace App;
+
+use Mantle\Support\Attributes\Action;
+use Mantle\Support\Attributes\Filter;
+use Mantle\Support\Traits\Hookable;
+use Mantle\Types\Validator;
+
+#[\Attribute]
+class Example_Validator implements Validator {
+  public function validate( mixed $value ): bool {
+    // Your validation logic here.
+    return true; // or false
+  }
+}
+
+/**
+ * Example Class
+ */
+class Example_Class {
+  use Hookable;
+
+  #[Action( 'example_action' )]
+  #[Example_Validator]
+  public function example_action( $args ) {
+    // Your action code here is only added to the 'example_action' hook if the validator returns true.
+  }
+}
+```
+
+You can also use any of the [available validators](../types#available-validators)
+included with the types package.

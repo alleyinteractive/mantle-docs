@@ -4,43 +4,26 @@
 
 To help provide a singular interface for scheduling jobs in WordPress (and to
 not interact with WordPress cron) Mantle provides a fluent interface for
-defining scheduleable tasks.
+defining schedule-able tasks. Underneath Mantle uses a every minute WP cron
+job to trigger the scheduled tasks. This allows you to define your scheduled
+tasks in a more expressive way.
 
 ## Defining Schedules
 
-Jobs and Console Commands can be scheduled in the
-`app/providers/class-app-service-provider.php` file in your application.
+Jobs, console commands, or closures may be scheduled in your `routes/console.php` file.
 
-```php
-namespace App\Providers;
+```php title="routes/console.php"
+use Mantle\Facade\Schedule;
 
-use Mantle\Framework\Providers\App_Service_Provider as Service_Provider;
+// Schedule a job class.
+Schedule::job( \App\Jobs\Example_Job::class )->daily();
 
-/**
- * Application Service Provider
- */
-class App_Service_Provider extends Service_Provider {
-  // ...
+// Schedule a console command.
+Schedule::command( \App\Console\Example_Command::class )->hourly();
 
-  /**
-   * Schedule any commands for the Application
-   *
-   * @param \Mantle\Scheduling\Schedule $schedule Scheduler instance.
-   */
-  protected function schedule( $schedule ) {
-    // Schedule a job class.
-    $schedule->job( \App\Jobs\Example_Job::class )->daily();
-
-    // Schedule a console command.
-    $schedule->command( \App\Console\Example_Command::class )->hourly();
-
-    $schedule->call(
-      function() {
-        // Do something!
-      }
-    )->weekly();
-  }
-}
+Schedule::call( function() {
+  // Do something great!
+} )->weekly();
 ```
 
 ### Schedule Frequency Options
@@ -184,5 +167,6 @@ $schedule->command( Example_Command::class )
 ```
 
 ## Future Plans
+
 In the future we plan on adding in additional protection for task overlapping
 and task concurrency.

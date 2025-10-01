@@ -62,6 +62,41 @@ between tests. This will clear the main `$_SERVER` superglobals before each test
 run, including `$_SERVER['REQUEST_URI']`, `$_SERVER['REQUEST_METHOD']`, and
 `$_SERVER['HTTP_HOST']`.
 
+### Multisite / Single Site Test
+
+The `Multisite_Test` / `Single_Site_Test` traits can be used to skip a test if
+the current site is not a multisite or single site, respectively.
+
+Multisite test example:
+
+```php
+use App\Tests\TestCase;
+use Mantle\Testing\Concerns\Multisite_Test;
+
+class ExampleTest extends TestCase {
+    use Multisite_Test;
+
+    public function test_example(): void {
+        // This test will be skipped if the current test is not running multisite.
+    }
+}
+```
+
+Single site test example:
+
+```php
+use App\Tests\TestCase;
+use Mantle\Testing\Concerns\Single_Site_Test;
+
+class ExampleTest extends TestCase {
+    use Single_Site_Test;
+
+    public function test_example(): void {
+        // This test will be skipped if the current test is running multisite.
+    }
+}
+```
+
 ## Attributes
 
 The following are [PHP

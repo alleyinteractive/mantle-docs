@@ -111,6 +111,7 @@ const sidebars: SidebarsConfig = {
             'features/support/uri',
           ],
         },
+        'features/types',
       ],
     },
     {
