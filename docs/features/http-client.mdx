@@ -665,6 +665,55 @@ use Mantle\Http_Client\Factory;
 Factory::create()->url( 'https://example.org' )->purge();
 ```
 
+### Flexible Caching (SWR)
+
+By default, when a cached response expires the HTTP Client will make a new
+request and return the new response. If you would like to return the stale
+cached response while a new request is made in the background, you can use
+flexible caching (a pattern known as SWR - Stale While Revalidate).
+
+Stale While Revalidate will reuse the stale cached response while a new request
+is made in the background. This can be useful when you want to ensure that your
+application is always responsive, even if the external service is slow or
+unavailable. The new request will be made after the page has been sent to the
+browser, so it won't impact the user experience.
+
+To use SWR caching, use the `cache_flexible()` method:
+
+```php
+use Mantle\Http_Client\Factory;
+
+use function Mantle\Support\Helpers\now;
+
+$response = Factory::create(
+  ->cache_flexible(
+    stale: now()->addMinutes( 30 ),
+    expire: now()->addHours( 3 ),
+  )
+  ->get( 'https://example.org' );
+```
+
+The `cache_flexible` method accepts two arguments:
+
+- `stale`: The amount of time to keep the cached response stale. Accepts a
+  number of seconds or a `DateTime` instance.
+- `expire`: The amount of time to keep the cached response before it is
+  considered expired. Accepts a number of seconds or a `DateTime` instance.
+
+Here is an example of passing a number of seconds to the `cache_flexible`
+method:
+
+```php
+use Mantle\Http_Client\Factory;
+
+$response = Factory::create()
+  ->cache_flexible(
+    stale: HOUR_IN_SECONDS, // 1 hour
+    expire: DAY_IN_SECONDS, // 24 hours
+  )
+  ->get( 'https://example.org' );
+```
+
 ## Concurrent Requests (HTTP Pooling)
 
 Sometimes, you may wish to make multiple HTTP requests concurrently. In other
@@ -750,7 +799,9 @@ which allows you to access the corresponding responses by name:
   </TabItem>
 </Tabs>
 
-
+Pooled requests can use any of the methods available on the HTTP Client, such as
+`with_headers()`, `with_token()`, `timeout()`, as well as `cache()` and
+`cache_flexible()` for caching responses.
 
 ## Testing Http Client
 
