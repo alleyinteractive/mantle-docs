@@ -12,6 +12,8 @@ those built with Mantle. You can instantiate the bootloader and then use the
 queue without any additional setup.
 
 ```php
+use function Mantle\Queue\dispatch;
+
 // Instantiate the bootloader.
 bootloader()->boot();
 
