@@ -187,3 +187,36 @@ class ExampleTest extends TestCase {
     }
 }
 ```
+
+### Adding Your Own Attributes
+
+You can create side effects for your own attributes using the
+`register_attribute()` method of the test case. Internally, this is how Mantle
+registers attributes such as `Acting_As` on test classes and methods.
+
+```php
+namespace App\Tests\Concerns;
+
+use Mantle\Testing\Concerns\Interacts_With_Attributes;
+
+trait My_Example_Trait {
+	use Interacts_With_Attributes;
+
+	/**
+	 * Backed up global user ID.
+	 */
+	protected int $backup_user;
+
+	/**
+	 * Backup the current global user.
+	 */
+	public function my_example_trait_set_up(): void {
+		$this->backup_user = get_current_user_id();
+
+		$this->register_attribute(
+			Acting_As::class,
+			fn ( ReflectionAttribute $attribute ) => $this->acting_as( $attribute->newInstance()->user ),
+		);
+	}
+}
+```

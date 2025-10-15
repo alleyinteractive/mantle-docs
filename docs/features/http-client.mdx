@@ -313,11 +313,13 @@ $response->cookies(): array
 $response->dd()
 $response->dump()
 $response->failed(): bool
+$response->feed(): \SimplePie
 $response->forbidden(): bool
 $response->header( string $header )
 $response->headers(): array
-$response->is_blob();
-$response->is_file();
+$response->is_blob(): bool
+$response->is_feed(): bool
+$response->is_file(): bool
 $response->is_json(): bool
 $response->is_wp_error(): bool
 $response->is_xml(): bool
