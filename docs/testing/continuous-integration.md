@@ -1,7 +1,7 @@
 ---
 title: "Testing: Continuous Integration"
 sidebar_label: Continuous Integration
-description: Using Continuous Integration (CI) in your development can help ease your mind when adding new features to a site. This guide will help you setup your Mantle application or project that is using Mantle's testing framework for CI via GitHub Actions or Buddy.
+description: Using Continuous Integration (CI) in your development can help ease your mind when adding new features to a site. This guide will help you setup your Mantle application or project that is using Mantle's testing framework for CI via GitHub Actions.
 ---
 # Testing: Continuous Integration
 
@@ -10,7 +10,7 @@ description: Using Continuous Integration (CI) in your development can help ease
 Using Continuous Integration (CI) in your development can help ease your mind
 when adding new features to a site. This guide will help you setup your Mantle
 application or project that is using Mantle's testing framework for CI via
-GitHub Actions or Buddy.
+GitHub Actions.
 
 :::tip Are you transitioning an existing site to Mantle's Test Framework?
 
@@ -52,8 +52,7 @@ For more environmental variables, see the
 :::
 
 To manually install WordPress, run the following commands inside your
-integration test (specific examples for [Buddy](#buddy) and [GitHub
-Actions](#github-actions) can be found below):
+integration test (specific examples for [GitHub Actions](#github-actions) can be found below):
 
 
 ```bash
@@ -85,194 +84,3 @@ The Mantle repository includes GitHub Actions for testing your Mantle
 application against PHPUnit and phpcs:
 
 - [GitHub Action Workflow](https://github.com/alleyinteractive/mantle/blob/HEAD/.github/workflows/all-pr-tests.yml)
-
-### Buddy
-
-[Buddy](https://buddy.works/) is a fast and performance CI platform that
-is in use at Alley. For internal projects, we test projects using Buddy using
-the Mantle framework.
-
-To get started, create a new project and connect your repository to Buddy. You
-can use the following YAML file as a starting point Buddy. It supports
-[importing this
-file](https://buddy.works/docs/yaml/yaml-gui#how-to-switch-the-config-mode-to-gui)
-so you can work in the GUI.
-
-With the below configuration, Mantle can run Unit Tests and Coding Standards
-tests on every Pull Request in under 30 seconds. This configuration is for
-testing a single plugin/theme/project.
-
-```yaml
-- pipeline: "Test Pull Requests"
-  trigger_mode: "ON_EVERY_PUSH"
-  ref_name: "refs/pull/*"
-  ref_type: "WILDCARD"
-  priority: "NORMAL"
-  fail_on_prepare_env_warning: true
-  clone_depth: 1
-  trigger_condition: "ALWAYS"
-  actions:
-  - action: "Setup Composer"
-    type: "BUILD"
-    working_directory: "/buddy/mantle"
-    docker_image_name: "alleyops/ci-resources"
-    docker_image_tag: "latest"
-    execute_commands:
-    - "# Install Dependencies"
-    - "composer install"
-    cached_dirs:
-    - "/root/.composer/cache"
-    volume_mappings:
-    - "/:/buddy/mantle"
-    trigger_condition: "ALWAYS"
-    shell: "BASH"
-  - action: "Setup WordPress and Run Unit Tests"
-    type: "BUILD"
-    working_directory: "/buddy/mantle"
-    docker_image_name: "alleyops/ci-resources"
-    docker_image_tag: "latest"
-    execute_commands:
-    - "# Run Unit Tests"
-    - "composer run phpunit"
-    services:
-    - type: "MYSQL"
-      version: "5.7"
-      connection:
-        host: "mysql"
-        port: 3306
-        user: "root"
-        password: "root"
-    cached_dirs:
-    - "/tmp/test-cache"
-    - "/tmp/wordpress"
-    volume_mappings:
-    - "/:/buddy/mantle"
-    trigger_condition: "ALWAYS"
-    shell: "BASH"
-    run_next_parallel: true
-  - action: "Run PHPCS"
-    type: "BUILD"
-    working_directory: "/buddy/mantle"
-    docker_image_name: "alleyops/ci-resources"
-    docker_image_tag: "latest"
-    execute_commands:
-    - "composer run phpcs"
-    volume_mappings:
-    - "/:/buddy/mantle"
-    trigger_condition: "ALWAYS"
-    shell: "BASH"
-  variables:
-  - key: "CACHEDIR"
-    value: "/tmp/test-cache"
-    description: "Cache folder for remote requests."
-  - key: "SKIP_DISCOVERY"
-    value: "true"
-  - key: "WP_CORE_DIR"
-    value: "/tmp/wordpress"
-    type: "VAR"
-    description: "WordPress checkout folder."
-  - key: "WP_VERSION"
-    value: "latest"
-    type: "VAR"
-  - key: "WP_DB_PASSWORD"
-    value: "root"
-    type: "VAR"
-  - key: "WP_DB_HOST"
-    value: "mysql"
-    type: "VAR"
-  - key: "WP_SKIP_DB_CREATE"
-    value: "true"
-    type: "VAR"
-```
-
-#### Buddy for a `/wp-content/`-rooted Project
-
-If you are looking for a `/wp-content/`-rooted Buddy YAML, you can use
-this configuration (this one manually installs WordPress):
-
-```yaml
-- pipeline: "Test Pull Requests"
-  trigger_mode: "ON_EVERY_PUSH"
-  ref_name: "refs/pull/*"
-  ref_type: "WILDCARD"
-  priority: "NORMAL"
-  fail_on_prepare_env_warning: true
-  clone_depth: 1
-  trigger_condition: "ALWAYS"
-  actions:
-  - action: "Setup Composer"
-    type: "BUILD"
-    working_directory: "/buddy/mantle"
-    docker_image_name: "alleyops/ci-resources"
-    docker_image_tag: "7.4-fpm-wp"
-    execute_commands:
-    - "# Install Dependencies"
-    - "composer install"
-    cached_dirs:
-    - "/root/.composer/cache"
-    volume_mappings:
-    - "/:/buddy/mantle"
-    trigger_condition: "ALWAYS"
-    shell: "BASH"
-  - action: "Setup WordPress and Run Unit Tests"
-    type: "BUILD"
-    working_directory: "/buddy/mantle"
-    docker_image_name: "alleyops/ci-resources"
-    docker_image_tag: "7.4-fpm-wp"
-    execute_commands:
-    - "# Install Composer"
-    - "composer install"
-    - ""
-    - "# Run tests"
-    - "composer run phpunit"
-    services:
-    - type: "MYSQL"
-      version: "5.7"
-      connection:
-        host: "mysql"
-        port: 3306
-        user: "root"
-        password: "root"
-    cached_dirs:
-    - "/tmp/test-cache"
-    - "/tmp/wordpress"
-    volume_mappings:
-    - "/:/buddy/mantle"
-    trigger_condition: "ALWAYS"
-    shell: "BASH"
-    run_next_parallel: true
-  - action: "Run PHPCS"
-    type: "BUILD"
-    working_directory: "/buddy/mantle"
-    docker_image_name: "alleyops/ci-resources"
-    docker_image_tag: "7.4-fpm-wp"
-    execute_commands:
-    - "composer run phpcs"
-    volume_mappings:
-    - "/:/buddy/mantle"
-    trigger_condition: "ALWAYS"
-    shell: "BASH"
-  variables:
-  - key: "CACHEDIR"
-    value: "/tmp/test-cache"
-    description: "Cache folder for remote requests."
-  - key: "SKIP_DISCOVERY"
-    value: "true"
-  - key: "WP_CORE_DIR"
-    value: "/tmp/wordpress"
-    type: "VAR"
-    description: "WordPress checkout folder."
-  - key: "WP_VERSION"
-    value: "latest"
-    type: "VAR"
-  - key: "WP_DB_PASSWORD"
-    value: "root"
-    type: "VAR"
-  - key: "WP_DB_HOST"
-    value: "mysql"
-    type: "VAR"
-  - key: "WP_SKIP_DB_CREATE"
-    value: "true"
-    type: "VAR"
-
-```
