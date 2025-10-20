@@ -301,7 +301,7 @@ Optionally, you can opt for an exception to be thrown if an error occurs:
   </TabItem>
 </Tabs>
 
-### Available Methods
+### Available Request Methods
 
 The HTTP Client provides a comprehensive set of methods for configuring and
 making HTTP requests. Here's a complete reference with examples for each method:
@@ -1065,7 +1065,8 @@ $response->is_file(): bool
 $response->is_json(): bool
 $response->is_wp_error(): bool
 $response->is_xml(): bool
-$response->json( $key = null, $default = null )
+$response->json( ?string $key = null, $default = null )
+$response->mixed_json( ?string $key = null, $default = null )
 $response->object()
 $response->ok(): bool
 $response->redirect(): bool
@@ -1278,6 +1279,37 @@ Parse JSON responses and access specific data using `json()` and `object()`:
 
     // Parse as object using object()
     $object = $response->object(); // Returns stdClass object
+    ```
+  </TabItem>
+</Tabs>
+
+##### Mixed JSON Parsing
+
+Access specific JSON paths with type casting using `mixed_json()` which will
+return the value at the specified JSON path as a
+[`Mixed_Data`](./support/mixed-data.mdx) instance:
+
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
+
+    // Parse JSON responses using mixed_json()
+    $response = Http::get( 'https://httpbin.org/json' );
+    $mixed = $response->mixed_json( 'slideshow.slides.0.title' ); // Returns Mixed_Data
+    $title = $mixed->string(); // Cast to string
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
+
+    $http = new Factory();
+
+    // Parse JSON responses using mixed_json()
+    $response = $http->get( 'https://httpbin.org/json' );
+    $mixed = $response->mixed_json( 'slideshow.slides.0.title' ); // Returns Mixed_Data
+    $title = $mixed->string(); // Cast to string
     ```
   </TabItem>
 </Tabs>
