@@ -1,3 +1,5 @@
+import TOCInline from '@theme/TOCInline';
+import TOCInlineWrapped from '@site/src/components/TOCInlineWrapped';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import CodeBlock from '@theme/CodeBlock';
@@ -301,78 +303,500 @@ Optionally, you can opt for an exception to be thrown if an error occurs:
 
 ### Available Methods
 
-The following methods are available on the HTTP Client:
+The HTTP Client provides a comprehensive set of methods for configuring and
+making HTTP requests. Here's a complete reference with examples for each method:
 
-#### URL and Method Methods
-public function get_base_url(): ?string
-public function set_base_url(?string $url): static
-public function get_url(): ?string
-public function set_url(string $url): static
-public function get_method(): Http_Method
-public function set_method(Http_Method|string $method): static
+<TOCInlineWrapped
+  toc={toc.filter((item) => {
+    // Filter to only include items between "Error Handling" and "Responses"
+    const allItems = toc.map((tocItem) => tocItem.value);
+    const indexBefore = allItems.findIndex((value) => value.includes('Error Handling'));
+    const indexAfter = allItems.findIndex((value) => value.includes('Responses'));
+    const currentIndex = allItems.indexOf(item.value);
+
+    // Bail if either index is not found
+    if (indexBefore === -1 || indexAfter === -1) {
+      return false;
+    }
+
+    // Include items that come after "Error Handling" but before "Responses"
+    return currentIndex > indexBefore && currentIndex < indexAfter;
+  })}
+  minHeadingLevel={4}
+  maxHeadingLevel={5}
+/>
+
+#### URL and Method Configuration
+
+##### Base URL Management
+
+Set a base URL that will be prepended to all subsequent requests using `set_base_url()` and retrieve it with `get_base_url()`:
+
+```php
+use Mantle\Http_Client\Factory;
+
+$http = new Factory();
+
+// Set a base URL for multiple requests
+$client = $http->set_base_url( 'https://api.example.com/v1' );
+
+// Now all requests will use this base URL
+$response = $client->get( '/users' ); // Requests https://api.example.com/v1/users
+
+// Get the current base URL
+$base_url = $client->get_base_url(); // Returns: https://api.example.com/v1
+```
+
+##### URL Management
+
+Configure the full URL for a request using `set_url()` and retrieve it with `get_url()`:
+
+```php
+use Mantle\Http_Client\Factory;
+
+$http = new Factory();
+
+// Set the complete URL
+$client = $http->set_url( 'https://httpbin.org/get' );
+
+// Get the configured URL
+$url = $client->get_url(); // Returns: https://httpbin.org/get
+```
+
+##### HTTP Method Configuration
+
+Set the HTTP method for the request using `set_method()` and retrieve it with `get_method()`:
+
+```php
+use Mantle\Http_Client\Factory;
+use Mantle\Http_Client\Http_Method;
+
+$http = new Factory();
+
+// Set method using enum
+$client = $http->set_method( Http_Method::POST );
+
+// Set method using string
+$client = $http->set_method( 'PATCH' );
+
+// Get the current method
+$method = $client->get_method(); // Returns Http_Method enum
+```
 
 #### Content Type and Headers
-public function as_form(): static
-public function as_json(): static
-public function content_type(string $content_type): static
-public function accept_json(): static
-public function accept($content_type): static
-public function with_headers(array $headers): static
-public function with_header(string $key, $value, bool $replace = false): static
-public function headers(): array
-public function clear_headers(): static
-public function header(string $key): mixed
-public function with_user_agent(string $user_agent): static
+
+##### Content Type Configuration
+
+Configure how request data should be sent using `as_form()`, `as_json()`, and `content_type()` methods:
+
+```php
+use Mantle\Http_Client\Factory;
+
+$http = new Factory();
+
+// Send data as form-encoded (application/x-www-form-urlencoded)
+$http->as_form()->post( 'https://example.org', [
+	'name' => 'John Doe',
+	'email' => 'john@example.com',
+] );
+
+// Send data as JSON (application/json) - this is the default
+$http->as_json()->post( 'https://example.org', [
+	'user' => [
+		'name' => 'John Doe',
+		'email' => 'john@example.com',
+	],
+] );
+
+// Set a custom content type
+$http->content_type( 'application/xml' )->post( 'https://example.org' );
+```
+
+##### Accept Headers
+
+Specify what content type you expect in the response using `accept_json()` and `accept()` methods:
+
+```php
+use Mantle\Http_Client\Factory;
+
+$http = new Factory();
+
+// Accept JSON responses
+$http->accept_json()->get( 'https://api.example.com/data' );
+
+// Accept specific content type
+$http->accept( 'text/xml' )->get( 'https://api.example.com/xml-data' );
+
+// Accept multiple content types
+$http->accept( 'application/json, text/plain' )->get( 'https://api.example.com/data' );
+```
+
+##### Header Management
+
+Add and manage HTTP headers using `with_headers()`, `with_header()`, `headers()`, `header()`, `clear_headers()`, and `with_user_agent()` methods:
+
+```php
+use Mantle\Http_Client\Factory;
+
+$http = new Factory();
+
+// Add multiple headers at once
+$http->with_headers( [
+	'X-API-Key' => 'your-api-key',
+	'X-Client-Version' => '1.0.0',
+	'Accept-Language' => 'en-US',
+] )->get( 'https://api.example.com/data' );
+
+// Add a single header
+$http->with_header( 'X-Custom-Header', 'custom-value' )->get( 'https://example.org' );
+
+// Replace an existing header (default behavior)
+$http->with_header( 'User-Agent', 'My Custom Agent', true )->get( 'https://example.org' );
+
+// Get all current headers
+$headers = $http->with_header( 'X-Test', 'value' )->headers();
+// Returns: ['X-Test' => 'value', ...]
+
+// Get a specific header value
+$value = $http->with_header( 'X-Test', 'value' )->header( 'X-Test' );
+// Returns: 'value'
+
+// Clear all headers
+$http->with_header( 'X-Test', 'value' )->clear_headers()->get( 'https://example.org' );
+
+// Set a custom user agent
+$http->with_user_agent( 'MyApp/1.0 (https://myapp.com)' )->get( 'https://example.org' );
+```
 
 #### Authentication
-public function with_basic_auth(string $username, string $password): static
-public function with_token(string $token, string $type = 'Bearer'): static
 
-#### Cookies
-public function clear_cookies(): static
-public function with_cookies(array $cookies): static
-public function with_cookie(\WP_Http_Cookie $cookie): static
+##### Basic Authentication
 
-#### Body Methods
-public function with_body(string $content, string $content_type): static
-public function with_json(array $data): static
-public function body(): mixed
-public function body_format(string $format): static
+Use HTTP Basic Authentication with username and password using the `with_basic_auth()` method:
 
-#### Options
-public function with_options(array $options, bool $merge = true): static
-public function without_verifying(): static
-public function timeout(int $seconds): static
+```php
+use Mantle\Http_Client\Factory;
+
+$http = new Factory();
+
+// Basic auth with username and password
+$http->with_basic_auth( 'username', 'password' )->get( 'https://api.example.com/protected' );
+
+// Example with a real API
+$http->with_basic_auth( 'api_user', 'secret123' )
+	->get( 'https://api.github.com/user/repos' );
+```
+
+##### Bearer Token Authentication
+
+Use Bearer token authentication using the `with_token()` method:
+
+```php
+use Mantle\Http_Client\Factory;
+
+$http = new Factory();
+
+// Bearer token (default type)
+$http->with_token( 'your-access-token' )->get( 'https://api.example.com/user' );
+
+// Custom token type
+$http->with_token( 'your-api-key', 'API-Key' )->get( 'https://api.example.com/data' );
+// Sends: Authorization: API-Key your-api-key
+
+// Example with GitHub API
+$http->with_token( 'ghp_xxxxxxxxxxxx' )
+	->get( 'https://api.github.com/user' );
+```
+
+#### Cookie Management
+
+Handle cookies for stateful requests using `clear_cookies()`, `with_cookies()`, and `with_cookie()` methods:
+
+```php
+use Mantle\Http_Client\Factory;
+
+$http = new Factory();
+
+// Set multiple cookies at once
+$http->with_cookies( [
+	'session_id' => 'abc123',
+	'preference' => 'dark_mode',
+	'language' => 'en',
+] )->get( 'https://example.org' );
+
+// Add a single cookie using WP_Http_Cookie
+$cookie = new \WP_Http_Cookie( [
+	'name' => 'user_session',
+	'value' => 'xyz789',
+	'domain' => '.example.com',
+	'path' => '/',
+] );
+
+$http->with_cookie( $cookie )->get( 'https://api.example.com/user' );
+
+// Clear all cookies before making a request
+$http->with_cookies( [
+	'old_session' => 'previous_value',
+	'temp_data' => 'some_data',
+] )
+	->clear_cookies()
+	->get( 'https://example.org' ); // Request made without any cookies
+```
+
+#### Request Body Methods
+
+Configure the request body content using `with_body()`, `with_json()`, `body()`, and `body_format()` methods:
+
+```php
+use Mantle\Http_Client\Factory;
+
+$http = new Factory();
+
+// Send raw body with content type
+$http->with_body(
+	'{"custom": "json", "data": true}',
+	'application/json'
+)->post( 'https://api.example.com/webhook' );
+
+// Send XML data
+$http->with_body(
+	'<user><name>John</name></user>',
+	'application/xml'
+)->post( 'https://api.example.com/users' );
+
+// Send JSON data (alternative to as_json)
+$http->with_json( [
+	'user' => [
+		'name' => 'John Doe',
+		'email' => 'john@example.com',
+	],
+] )->post( 'https://api.example.com/users' );
+
+// Get the current body content
+$body = $http->with_json( ['test' => 'data'] )->body();
+
+// Set body format
+$http->body_format( 'form' )->post( 'https://example.org', [
+	'name' => 'John',
+] );
+```
+
+#### Request Options
+
+Configure low-level request options using `with_options()`, `without_verifying()`, and `timeout()` methods:
+
+```php
+use Mantle\Http_Client\Factory;
+
+$http = new Factory();
+
+// Add custom options (merged with existing)
+$http->with_options( [
+	'sslverify' => false,
+	'timeout' => 30,
+	'user-agent' => 'Custom Agent',
+], true )->get( 'https://example.org' );
+
+// Replace all options
+$http->with_options( [
+	'timeout' => 60,
+], false )->get( 'https://example.org' );
+
+// Disable SSL verification (useful for development)
+$http->without_verifying()->get( 'https://self-signed.badssl.com/' );
+
+// Set request timeout
+$http->timeout( 30 )->get( 'https://slow-api.example.com/data' );
+```
 
 #### Redirect Handling
-public function without_redirecting(): static
-public function with_redirecting(int $times = 5): static
+
+Control how redirects are handled using `without_redirecting()` and `with_redirecting()` methods:
+
+```php
+use Mantle\Http_Client\Factory;
+
+$http = new Factory();
+
+// Disable automatic redirect following
+$http->without_redirecting()->get( 'https://httpbin.org/redirect/1' );
+// Will return the 3xx response instead of following the redirect
+
+// Enable redirects with custom limit
+$http->with_redirecting( 10 )->get( 'https://httpbin.org/redirect/5' );
+// Will follow up to 10 redirects
+
+// Default redirect behavior (5 redirects)
+$http->with_redirecting()->get( 'https://httpbin.org/redirect/3' );
+```
 
 #### Middleware Management
-public function middleware(callable $middleware): static
-public function prepend_middleware(callable $middleware): static
-public function get_middleware(): array
-public function without_middleware(?string $middleware = null): static
-public function filter_middleware(callable|string $callback): static
+
+Add custom middleware to modify requests and responses using `middleware()`, `prepend_middleware()`, `get_middleware()`, `without_middleware()`, and `filter_middleware()` methods:
+
+```php
+use Mantle\Http_Client\Factory;
+use Mantle\Http_Client\Http_Client;
+use Closure;
+
+$http = new Factory();
+
+// Add middleware to log requests
+$http->middleware( function ( Http_Client $client, Closure $next ) {
+	error_log( 'Making request to: ' . $client->get_url() );
+
+	$response = $next( $client );
+
+	error_log( 'Response status: ' . $response->status() );
+
+	return $response;
+} )->get( 'https://httpbin.org/get' );
+
+// Add middleware to the beginning of the stack
+$http->prepend_middleware( function ( Http_Client $client, Closure $next ) {
+	// This runs before other middleware
+	$client->with_header( 'X-Request-ID', uniqid() );
+
+	return $next( $client );
+} )->get( 'https://api.example.com/data' );
+
+// Get all registered middleware
+$middleware = $http->middleware( $some_middleware )->get_middleware();
+
+// Remove specific middleware
+$http->middleware( $middleware1 )
+	->middleware( $middleware2 )
+	->without_middleware( 'middleware_name' )
+	->get( 'https://example.org' );
+
+// Filter middleware based on a callback
+$http->middleware( $middleware1 )
+	->middleware( $middleware2 )
+	->filter_middleware( function ( $middleware ) {
+		return $middleware !== $unwanted_middleware;
+	} )
+	->get( 'https://example.org' );
+```
 
 #### Streaming Methods
-public function stream(?string $file = null): static
-public function dont_stream(): static
+
+Handle file downloads and streaming responses using `stream()` and `dont_stream()` methods:
+
+```php
+use Mantle\Http_Client\Factory;
+
+$http = new Factory();
+
+// Stream response to a file
+$http->stream( '/path/to/download/file.zip' )
+	->get( 'https://example.com/large-file.zip' );
+
+// Stream response without saving to file (for processing)
+$http->stream()->get( 'https://api.example.com/large-dataset.json' );
+
+// Disable streaming (default behavior)
+$http->stream( '/tmp/file.zip' )
+	->dont_stream()
+	->get( 'https://example.com/file.zip' );
+```
 
 #### Retry Configuration
-public function retry(int $retry, int $delay = 0): static
+
+Configure automatic request retries using the `retry()` method:
+
+```php
+use Mantle\Http_Client\Factory;
+
+$http = new Factory();
+
+// Retry up to 3 times with no delay
+$http->retry( 3 )->get( 'https://unreliable-api.example.com/data' );
+
+// Retry up to 5 times with 1000ms delay between attempts
+$http->retry( 5, 1000 )->post( 'https://api.example.com/webhook', [
+	'event' => 'user_signup',
+] );
+
+// Retry with exponential backoff (delay gets longer each time)
+$http->retry( 3, 500 )->get( 'https://rate-limited-api.example.com/data' );
+```
 
 #### Exception Handling
-public function throw_exception(): static
-public function dont_throw_exception(): static
+
+Control whether exceptions are thrown on errors using `throw_exception()` and `dont_throw_exception()` methods:
+
+```php
+use Mantle\Http_Client\Factory;
+use Mantle\Http_Client\Http_Client_Exception;
+
+$http = new Factory();
+
+// Throw exceptions on HTTP errors
+try {
+	$http->throw_exception()->get( 'https://httpbin.org/status/500' );
+} catch ( Http_Client_Exception $e ) {
+	echo 'Request failed: ' . $e->getMessage();
+	echo 'Status code: ' . $e->getResponse()->status();
+}
+
+// Default behavior - return Response object instead of throwing
+$response = $http->dont_throw_exception()->get( 'https://httpbin.org/status/404' );
+
+if ( $response->failed() ) {
+	echo 'Request failed with status: ' . $response->status();
+}
+```
 
 #### HTTP Request Methods
-public function get(string $url, array|string|null $query = null): mixed
-public function head(string $url, array|string|null $query = null): mixed
-public function post(string $url, ?array $data = null): mixed
-public function patch(string $url, ?array $data = null): mixed
-public function put(string $url, ?array $data = null): mixed
-public function delete(string $url, ?array $data = null): mixed
+
+Make requests using different HTTP verbs with `get()`, `head()`, `post()`, `put()`, `patch()`, and `delete()` methods:
+
+```php
+use Mantle\Http_Client\Factory;
+
+$http = new Factory();
+
+// GET request with query parameters
+$response = $http->get( 'https://httpbin.org/get', [
+	'search' => 'mantle framework',
+	'limit' => 10,
+] );
+
+// GET request with query string in URL
+$response = $http->get( 'https://httpbin.org/get?foo=bar' );
+
+// HEAD request (same parameters as GET)
+$response = $http->head( 'https://httpbin.org/get', [
+	'check' => 'headers',
+] );
+
+// POST request with data
+$response = $http->post( 'https://httpbin.org/post', [
+	'name' => 'John Doe',
+	'email' => 'john@example.com',
+	'age' => 30,
+] );
+
+// PUT request for updates
+$response = $http->put( 'https://api.example.com/users/123', [
+	'name' => 'Jane Doe',
+	'email' => 'jane@example.com',
+] );
+
+// PATCH request for partial updates
+$response = $http->patch( 'https://api.example.com/users/123', [
+	'email' => 'newemail@example.com',
+] );
+
+// DELETE request
+$response = $http->delete( 'https://api.example.com/users/123' );
+
+// DELETE request with data
+$response = $http->delete( 'https://api.example.com/posts/456', [
+	'reason' => 'spam',
+	'notify_author' => true,
+] );
+```
 
 ## Responses
 
@@ -414,7 +838,11 @@ The `Mantle\Http_Client\Response` object also implements the `ArrayAccess`,
 allowing you to access JSON/XML response properties directly on the response.
 
 ```php
-return Http::get( 'https://httpbin.org/json' )['slideshow'];
+use Mantle\Http_Client\Factory;
+
+$http = new Factory();
+
+return $http->get( 'https://httpbin.org/json' )['slideshow'];
 ```
 
 ### Inspecting Responses
