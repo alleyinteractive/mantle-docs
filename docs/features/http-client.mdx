@@ -583,23 +583,8 @@ $response = Http::get( 'https://httpbin.org/xml' )->xml( '/slideshow/slide' );
 
 The HTTP Client can be used as a basis for a API Client for an external service.
 For example, if you are making requests to `https://httpbin.org` and want to
-include built-in authentication, you could create a reusable API client by
-returning `Mantle\Http_Client\Http_Client`:
-
-```php
-use Mantle\Http_Client\Factory;
-
-$client = Factory::create()
-  ->base_url( 'https://httpbin.org' )
-  ->with_token( '<token>' );
-
-// Requests can now be made without specifying the base URL:
-$response = $client->post( '/example-endpoint', [
-  'name' => 'Mantle Http Client',
-] );
-```
-
-To make this standalone in a class you could also do the following:
+include built-in authentication, you could extend `Mantle\Http_Client\Factory`
+and implement a `new_pending_request` method:
 
 ```php
 use Mantle\Http_Client\Factory;
@@ -615,7 +600,14 @@ class HttpBinClient extends Factory {
 
 This is a great pattern to use when creating clients for different APIs. Because
 it extends `Factory`, your IDE will also pick up all the methods available to
-the client.
+the client. Let's see an example of using the `HttpBinClient` class:
+
+```php
+// Make a POST request to https://httpbin.org/example-endpoint
+$request = HttpBinClient::create()->post( '/example-endpoint', [
+  'name' => 'Mantle Http Client',
+] );
+```
 
 ## Middleware
 
