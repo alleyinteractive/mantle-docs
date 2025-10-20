@@ -11,7 +11,7 @@ description: Assertions available in Mantle's Test Case.
 Mantle's Test Case provides some assertions above and beyond PHPUnit's, largely
 influenced by `WP_UnitTestCase`. Here's a run-through:
 
-## WP_Error
+## `assertWPError` and `assertNotWPError`
 
 Assert the given item is/is not a `WP_Error`:
 
@@ -389,5 +389,5 @@ $this->assertMailSentCount( 3, fn ( Mail_Message $message ) => $message->to === 
 
 ## HTTP Test Assertions
 
-See [HTTP Testing](./requests.md#available-assertions) for a full list of HTTP
+See [HTTP Testing](./requests.mdx#available-assertions) for a full list of HTTP
 test assertions.

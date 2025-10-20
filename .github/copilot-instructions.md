@@ -12,6 +12,7 @@ The goal is to create clear, helpful, and consistent documentation that aligns w
 - Do not include `<?php` or `?>` tags in documentation.
 - Target PHP 8.2 or higher.
 - Always include the `use` statement you would need to import the class or function being demonstrated for each code snippet.
+- Examples should include the method names in the description where possible to improve searchability.
 
 ### Example PHP Code Structure
 ```php

@@ -85,6 +85,17 @@ if ( $meta->is_empty() ) {
 post_meta( 1234, 'meta_key' )->delete();
 ```
 
+### Usage for Query Variables
+
+The `mixed_query_var` helper can be used to retrieve query variables in a type-safe manner:
+
+```php
+use function Mantle\Support\Helpers\mixed_query_var;
+
+// Get the value of a query variable as a string.
+mixed_query_var( 'query_var_name' )->string();
+```
+
 ### Usage for Mixed Data
 
 The `mixed` helper can be used to manage and manipulate mixed data from any

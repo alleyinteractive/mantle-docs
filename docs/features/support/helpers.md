@@ -562,3 +562,41 @@ $block = block_factory()->block(
 $heading   = block_factory()->heading( 'Example Heading' );
 $paragraph = block_factory()->paragraph( 'Example Paragraph' );
 ```
+
+## Requests
+
+### `terminate_request`
+
+The `terminate_request()` helper function is used to terminate the current HTTP
+request and send a response to the client. This is useful in scenarios where you
+want to stop further processing and immediately return a response. This helper
+also supports unit testing by not exiting the script when running a unit test.
+It will allow the response to be properly captured and asserted against.
+
+```php
+use function Mantle\Support\Helpers\terminate_request;
+
+if ( some_condition() ) {
+	echo 'Terminating request early.';
+	terminate_request( exit_status: 0, response_code: 200 );
+}
+```
+
+### `send_json_response`
+
+The `send_json_response()` helper function is used to send a JSON response to
+the client and terminate the current HTTP request. This is useful for API endpoints
+or AJAX requests where you want to return data in JSON format. This helper also
+supports unit testing by not exiting the script when running a unit test. It will
+allow the response to be properly captured and asserted against.
+
+```php
+use function Mantle\Support\Helpers\send_json_response;
+
+$data = [
+	'success' => true,
+	'message' => 'Data processed successfully.',
+];
+
+send_json_response( data: $data, status_code: 200 );
+```
