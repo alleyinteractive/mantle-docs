@@ -395,6 +395,47 @@ $this->get( rest_url( '/mantle/v1/example' ) )
   ] );
 ```
 
+## Testing Custom Dispatch Paths
+
+_AKA testing pages that call `exit` or `die` directly._
+
+Sometimes you may have a page that calls `exit` or `die` directly, for example
+in a custom dispatch path that renders and exists before WordPress even calls
+`parse_request`. Testing these pages can be difficult because PHP will exit the
+script when `exit` or `die` is called and PHPUnit will not be able to continue
+running the test. To work around this, Mantle includes a `terminate_request()`
+helper that can be used to either trigger an exception if we are unit testing or
+exit the script if we are not.
+
+Here's an example of how to use the `terminate_request()` helper in a custom
+dispatch path:
+
+```php
+use function Mantle\Support\Helpers\terminate_request;
+
+if ( '/example-path/' === $_SERVER['REQUEST_URI'] ) {
+  // Render the page.
+  echo '<h1>Example Page</h1>';
+
+  // Terminate the request.
+  terminate_request();
+}
+```
+
+You can then test this page using the `get()` method as usual:
+
+```php
+$this->get( '/example-path/' )
+  ->assertOk()
+  ->assertSee( 'Example Page' );
+```
+
+The `terminate_request()` helper will check if we are unit testing. If we are,
+it will simulate an `exit` by throwing a
+`Mantle\Testing\Exceptions\Exit_Simulation_Exception` exception. This allows
+PHPUnit to catch the exception and continue running the test. If we are not unit
+testing, it will call `exit` as normal.
+
 ## Before/After Callbacks
 
 You may use `before_request()` and `after_request()` to register callbacks to be
