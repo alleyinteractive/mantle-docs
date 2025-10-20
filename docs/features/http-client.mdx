@@ -803,6 +803,10 @@ $response = $http->delete( 'https://api.example.com/posts/456', [
 The HTTP client will return an instance of `Mantle\Http_Client\Response`, which
 provides a flexible wrapper on top of the raw WordPress HTTP API response.
 
+### Available Response Methods
+
+The Response object provides a comprehensive set of methods for inspecting and working with HTTP responses:
+
 ```php
 $response->body(): mixed
 $response->client_error(): bool
@@ -834,253 +838,317 @@ $response->unauthorized(): bool
 $response->xml( string $xpath = null, $default = null )
 ```
 
-The `Mantle\Http_Client\Response` object also implements the `ArrayAccess`,
-allowing you to access JSON/XML response properties directly on the response.
+<TOCInlineWrapped
+  toc={toc.filter((item) => {
+    // Filter to only include items between "Responses" and "Array Access Support"
+    const allItems = toc.map((tocItem) => tocItem.value);
+    const indexBefore = allItems.findIndex((value) => value.includes('Responses'));
+    const indexAfter = allItems.findIndex((value) => value.includes('Array Access Support'));
+    const currentIndex = allItems.indexOf(item.value);
+
+    // Bail if either index is not found
+    if (indexBefore === -1 || indexAfter === -1) {
+      return false;
+    }
+
+    return currentIndex > indexBefore && currentIndex < indexAfter;
+  })}
+  minHeadingLevel={4}
+  maxHeadingLevel={5}
+/>
+
+#### Status Code Methods
+
+##### Success Status Checks
+
+Check for successful HTTP responses using `ok()` and `successful()`:
 
 ```php
 use Mantle\Http_Client\Factory;
 
 $http = new Factory();
 
-return $http->get( 'https://httpbin.org/json' )['slideshow'];
+// Check for successful responses (2xx status codes) using ok() and successful()
+$response = $http->get( 'https://httpbin.org/status/200' );
+$response->ok(); // true for 200 status
+$response->successful(); // true for 200-299 status codes
 ```
 
-### Inspecting Responses
+##### Error Status Checks
 
-#### Client Error Status Code
-
-The `client_error()` method will return `true` if the response status code is
-between `400` and `499`:
+Check for HTTP errors using `failed()`, `client_error()`, and `server_error()`:
 
 ```php
-use Mantle\Facade\Http;
+use Mantle\Http_Client\Factory;
 
-Http::get( 'https://httpbin.org/status/404' )->client_error();
+$http = new Factory();
+
+// Check for error responses using failed(), client_error(), and server_error()
+$response = $http->get( 'https://httpbin.org/status/404' );
+$response->failed(); // true for 400-599 status codes
+$response->client_error(); // true for 400-499 status codes
+$response->server_error(); // true for 500-599 status codes
 ```
 
-#### Failed Status Code
+##### Specific Status Checks
 
-The `failed()` method will return `true` if the response status code is between
-`400` and `599`:
+Check for specific HTTP status codes using `unauthorized()`, `forbidden()`, and `redirect()`:
 
 ```php
-use Mantle\Facade\Http;
+use Mantle\Http_Client\Factory;
 
-Http::get( 'https://httpbin.org/status/500' )->failed();
+$http = new Factory();
+
+// Check for specific status codes using unauthorized(), forbidden(), and redirect()
+$response = $http->get( 'https://httpbin.org/status/401' );
+$response->unauthorized(); // true for 401 status
+$response->forbidden(); // true for 403 status
+$response->redirect(); // true for 300-399 status codes
 ```
 
-#### Forbidden Status Code
+##### Status Code Retrieval
 
-The `forbidden()` method will return `true` if the response status code is
-`403`:
+Get the exact HTTP status code using `status()`:
 
 ```php
-use Mantle\Facade\Http;
+use Mantle\Http_Client\Factory;
 
-Http::get( 'https://httpbin.org/status/403' )->forbidden();
+$http = new Factory();
+
+// Get the exact status code using status()
+$response = $http->get( 'https://httpbin.org/status/200' );
+$status = $response->status(); // Returns integer status code
 ```
 
-#### OK Status Code
+#### Response Body Methods
 
-The `ok()` method will return `true` if the response status code is `200`:
+##### Raw Body Access
+
+Get the raw response body content using `body()`:
 
 ```php
-use Mantle\Facade\Http;
+use Mantle\Http_Client\Factory;
 
-Http::get( 'https://httpbin.org/status/200' )->ok();
+$http = new Factory();
+
+// Get raw response body using body()
+$response = $http->get( 'https://httpbin.org/json' );
+$body = $response->body(); // Returns string
 ```
 
-#### Server Error Status Code
+##### JSON Parsing
 
-The `server_error()` method will return `true` if the response status code is
-between `500` and `599`:
+Parse JSON responses and access specific data using `json()` and `object()`:
 
 ```php
-use Mantle\Facade\Http;
+use Mantle\Http_Client\Factory;
 
-Http::get( 'https://httpbin.org/status/500' )->server_error();
+$http = new Factory();
+
+// Parse JSON responses using json()
+$response = $http->get( 'https://httpbin.org/json' );
+$json = $response->json(); // Returns array
+$value = $response->json( 'slideshow.author' ); // Get specific JSON path
+$default = $response->json( 'nonexistent.key', 'default' ); // With default value
+
+// Parse as object using object()
+$object = $response->object(); // Returns stdClass object
 ```
 
-#### Successful Status Code
+##### XML Parsing
 
-The `successful()` method will return `true` if the response status code is
-between `200` and `299`:
+Parse XML responses with optional XPath queries using `xml()`:
 
 ```php
-use Mantle\Facade\Http;
+use Mantle\Http_Client\Factory;
 
-$response = Http::get( 'https://httpbin.org/status/200' )->successful();
+$http = new Factory();
+
+// Parse XML responses using xml()
+$response = $http->get( 'https://httpbin.org/xml' );
+$xml = $response->xml(); // Returns array
+$nodes = $response->xml( '/slideshow/slide' ); // With XPath query
 ```
 
-#### Unauthorized Status Code
+##### Collection Access
 
-The `unauthorized()` method will return `true` if the response status code is
-`401`:
+Access response data as a Mantle Collection using `collect()`:
 
 ```php
-use Mantle\Facade\Http;
+use Mantle\Http_Client\Factory;
 
-Http::get( 'https://httpbin.org/status/401' )->unauthorized();
+$http = new Factory();
+
+// Get as Collection using collect()
+$response = $http->get( 'https://httpbin.org/json' );
+$collection = $response->collect(); // Returns Mantle\Support\Collection
+$specific = $response->collect( 'data' ); // Collect specific key
 ```
 
+##### Feed Parsing
 
-#### Response Redirect
-
-The `redirect()` method will return `true` if the response status code is
-between `300` and `399`:
+Parse RSS/Atom feeds and get a SimplePie object using `feed()`:
 
 ```php
-use Mantle\Facade\Http;
+use Mantle\Http_Client\Factory;
 
-$response = Http::get( 'https://httpbin.org/redirect/1' )->redirect();
+$http = new Factory();
+
+// Parse RSS/Atom feeds using feed()
+$response = $http->get( 'https://example.org/feed/' );
+$feed = $response->feed(); // Returns SimplePie object
+
+// Access feed data through SimplePie methods
+$title = $feed->get_title();
+$description = $feed->get_description();
+$items = $feed->get_items();
 ```
 
-#### Response Status Code
+#### Header Methods
 
-The `status()` method will return the response status code:
+Access response headers and metadata using `header()` and `headers()`:
 
 ```php
-use Mantle\Facade\Http;
+use Mantle\Http_Client\Factory;
 
-$status = Http::get( 'https://httpbin.org/status/200' )->status();
+$http = new Factory();
+$response = $http->get( 'https://httpbin.org/headers' );
+
+// Get specific header using header()
+$contentType = $response->header( 'Content-Type' );
+$customHeader = $response->header( 'X-Custom-Header' );
+
+// Get all headers using headers()
+$headers = $response->headers(); // Returns array of all headers
 ```
 
-#### Response Header
+#### Cookie Methods
 
-The `header()` method will return the value of a single response header:
+Work with response cookies using `cookie()` and `cookies()`:
 
 ```php
-use Mantle\Facade\Http;
+use Mantle\Http_Client\Factory;
 
-$response = Http::get( 'https://httpbin.org/headers' )->header( 'Content-Type' );
+$http = new Factory();
+$response = $http->get( 'https://httpbin.org/cookies/set/session/abc123' );
+
+// Get specific cookie using cookie()
+$cookie = $response->cookie( 'session' ); // Returns WP_HTTP_Cookie or null
+
+// Get all cookies using cookies()
+$cookies = $response->cookies(); // Returns array of WP_HTTP_Cookie objects
 ```
 
-#### Response Headers
+#### Content Type Detection Methods
 
-The `headers()` method will return an array of all response headers:
+##### Text Content Detection
+
+Detect JSON and XML content types using `is_json()` and `is_xml()`:
 
 ```php
-use Mantle\Facade\Http;
+use Mantle\Http_Client\Factory;
 
-$headers = Http::get( 'https://httpbin.org/headers' )->headers();
+$http = new Factory();
+
+// Check content types using is_json() and is_xml()
+$response = $http->get( 'https://httpbin.org/json' );
+$response->is_json(); // true for JSON responses
+
+$response = $http->get( 'https://httpbin.org/xml' );
+$response->is_xml(); // true for XML responses
 ```
 
-#### Response response(): array
+##### Binary Content Detection
 
-#### Response Body
-
-The `body()` method will return the response body as a string. If the response
-is JSON or XML, the `json()` and `xml()` methods can be used to parse the body
-into a PHP array or object:
+Detect file and binary content using `is_file()` and `is_blob()`:
 
 ```php
-use Mantle\Facade\Http;
+use Mantle\Http_Client\Factory;
 
-$response = Http::get( 'https://httpbin.org/json' )->body();
+$http = new Factory();
+
+// Check for file content using is_file() and is_blob()
+$response = $http->get( 'https://httpbin.org/image/png' );
+$response->is_file(); // true for file downloads
+$response->is_blob(); // true for binary/file content
 ```
 
-#### Response Cookie
+##### Feed Detection
 
-The `cookie()` method will return a single cookie from the response:
+Detect and parse RSS/Atom feeds using `is_feed()` and `feed()`:
 
 ```php
-use Mantle\Facade\Http;
+use Mantle\Http_Client\Factory;
 
-$cookie = Http::get( 'https://httpbin.org/cookies' )->cookie( 'foo' );
+$http = new Factory();
+
+// Check for RSS/Atom feeds using is_feed() and feed()
+$response = $http->get( 'https://example.org/feed/' );
+$response->is_feed(); // true for RSS/Atom feeds
+$feed = $response->feed(); // Returns SimplePie object
 ```
 
-#### Response Cookies
+##### Error Detection
 
-The `cookies()` method will return an array of all cookies from the response:
+Check for WordPress errors using `is_wp_error()`:
 
 ```php
-use Mantle\Facade\Http;
+use Mantle\Http_Client\Factory;
 
-$cookies = Http::get( 'https://httpbin.org/cookies' )->cookies();
+$http = new Factory();
+
+// Check for WordPress errors using is_wp_error()
+$response = $http->get( 'https://httpbin.org/status/404' );
+$response->is_wp_error(); // true if response is a WP_Error
 ```
 
-#### Response is JSON
+#### Raw Response Methods
 
-The `is_json()` method will return `true` if the Response is JSON:
+Access underlying WordPress HTTP API response using `response()`:
 
 ```php
-use Mantle\Facade\Http;
+use Mantle\Http_Client\Factory;
 
-$response = Http::get( 'https://httpbin.org/json' )->is_json();
+$http = new Factory();
+$response = $http->get( 'https://httpbin.org/get' );
+
+// Get the raw WordPress HTTP response array using response()
+$raw = $response->response(); // Returns array from wp_remote_get()
 ```
 
-#### Response is WP Error
+#### Debugging Methods
 
-The `is_wp_error()` method will return `true` if the Response is a WordPress
-error that was converted to a `WP_Error` object:
+Debug and inspect responses during development using `dump()` and `dd()`:
 
 ```php
-use Mantle\Facade\Http;
+use Mantle\Http_Client\Factory;
 
-$response = Http::get( 'https://httpbin.org/status/404' )->is_wp_error();
+$http = new Factory();
+$response = $http->get( 'https://httpbin.org/json' );
+
+// Dump response for debugging using dump()
+$response->dump(); // Outputs response details and continues
+
+// Dump and die (stops execution) using dd()
+$response->dd(); // Outputs response details and stops
 ```
 
-#### Response is File
+### Array Access Support
 
-The `is_file()` method will return `true` if the Response is a file:
+The `Mantle\Http_Client\Response` object implements `ArrayAccess`, allowing you to access JSON/XML response properties directly:
 
 ```php
-use Mantle\Facade\Http;
+use Mantle\Http_Client\Factory;
 
-$response = Http::get( 'https://httpbin.org/image/png' )->is_file();
+$http = new Factory();
+
+// Access JSON properties like an array
+$response = $http->get( 'https://httpbin.org/json' );
+$slideshow = $response['slideshow']; // Equivalent to $response->json('slideshow')
+$author = $response['slideshow']['author']; // Nested access
 ```
 
-#### Response is Blob
 
-The `is_blob()` method will return `true` if the Response is a blob (binary or file):
-
-```php
-use Mantle\Facade\Http;
-
-$response = Http::get( 'https://httpbin.org/image/png' )->is_blob();
-```
-
-#### Response is XML
-
-The `is_xml()` method will return `true` if the Response is XML:
-
-```php
-use Mantle\Facade\Http;
-
-$response = Http::get( 'https://httpbin.org/xml' )->is_xml();
-```
-
-#### Response JSON
-
-The `json()` method will return the response body as a PHP array. Optionally
-supports retrieving a specific JSON path.
-
-```php
-use Mantle\Facade\Http;
-
-$response = Http::get( 'https://httpbin.org/json' )->json( 'slideshow.author' );
-```
-
-#### Response JSON Object
-
-The `object()` method will return the response body as a PHP object.
-
-```php
-use Mantle\Facade\Http;
-
-$response = Http::get( 'https://httpbin.org/json' )->object();
-```
-
-#### Response XML
-
-The `xml()` method will return the response body as a PHP array. Optionally
-supports retrieving a specific XPath.
-
-```php
-use Mantle\Facade\Http;
-
-$response = Http::get( 'https://httpbin.org/xml' )->xml( '/slideshow/slide' );
-```
 
 ## Base API Client
 
