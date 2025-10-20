@@ -299,6 +299,81 @@ Optionally, you can opt for an exception to be thrown if an error occurs:
   </TabItem>
 </Tabs>
 
+### Available Methods
+
+The following methods are available on the HTTP Client:
+
+#### URL and Method Methods
+public function get_base_url(): ?string
+public function set_base_url(?string $url): static
+public function get_url(): ?string
+public function set_url(string $url): static
+public function get_method(): Http_Method
+public function set_method(Http_Method|string $method): static
+
+#### Content Type and Headers
+public function as_form(): static
+public function as_json(): static
+public function content_type(string $content_type): static
+public function accept_json(): static
+public function accept($content_type): static
+public function with_headers(array $headers): static
+public function with_header(string $key, $value, bool $replace = false): static
+public function headers(): array
+public function clear_headers(): static
+public function header(string $key): mixed
+public function with_user_agent(string $user_agent): static
+
+#### Authentication
+public function with_basic_auth(string $username, string $password): static
+public function with_token(string $token, string $type = 'Bearer'): static
+
+#### Cookies
+public function clear_cookies(): static
+public function with_cookies(array $cookies): static
+public function with_cookie(\WP_Http_Cookie $cookie): static
+
+#### Body Methods
+public function with_body(string $content, string $content_type): static
+public function with_json(array $data): static
+public function body(): mixed
+public function body_format(string $format): static
+
+#### Options
+public function with_options(array $options, bool $merge = true): static
+public function without_verifying(): static
+public function timeout(int $seconds): static
+
+#### Redirect Handling
+public function without_redirecting(): static
+public function with_redirecting(int $times = 5): static
+
+#### Middleware Management
+public function middleware(callable $middleware): static
+public function prepend_middleware(callable $middleware): static
+public function get_middleware(): array
+public function without_middleware(?string $middleware = null): static
+public function filter_middleware(callable|string $callback): static
+
+#### Streaming Methods
+public function stream(?string $file = null): static
+public function dont_stream(): static
+
+#### Retry Configuration
+public function retry(int $retry, int $delay = 0): static
+
+#### Exception Handling
+public function throw_exception(): static
+public function dont_throw_exception(): static
+
+#### HTTP Request Methods
+public function get(string $url, array|string|null $query = null): mixed
+public function head(string $url, array|string|null $query = null): mixed
+public function post(string $url, ?array $data = null): mixed
+public function patch(string $url, ?array $data = null): mixed
+public function put(string $url, ?array $data = null): mixed
+public function delete(string $url, ?array $data = null): mixed
+
 ## Responses
 
 The HTTP client will return an instance of `Mantle\Http_Client\Response`, which
