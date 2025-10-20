@@ -332,56 +332,108 @@ making HTTP requests. Here's a complete reference with examples for each method:
 
 Set a base URL that will be prepended to all subsequent requests using `set_base_url()` and retrieve it with `get_base_url()`:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Set a base URL for multiple requests
+    $client = Http::set_base_url( 'https://api.example.com/v1' );
 
-// Set a base URL for multiple requests
-$client = $http->set_base_url( 'https://api.example.com/v1' );
+    // Now all requests will use this base URL
+    $response = $client->get( '/users' ); // Requests https://api.example.com/v1/users
 
-// Now all requests will use this base URL
-$response = $client->get( '/users' ); // Requests https://api.example.com/v1/users
+    // Get the current base URL
+    $base_url = $client->get_base_url(); // Returns: https://api.example.com/v1
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Get the current base URL
-$base_url = $client->get_base_url(); // Returns: https://api.example.com/v1
-```
+    $http = new Factory();
+
+    // Set a base URL for multiple requests
+    $client = $http->set_base_url( 'https://api.example.com/v1' );
+
+    // Now all requests will use this base URL
+    $response = $client->get( '/users' ); // Requests https://api.example.com/v1/users
+
+    // Get the current base URL
+    $base_url = $client->get_base_url(); // Returns: https://api.example.com/v1
+    ```
+  </TabItem>
+</Tabs>
 
 ##### URL Management
 
 Configure the full URL for a request using `set_url()` and retrieve it with `get_url()`:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Set the complete URL
+    $client = Http::set_url( 'https://httpbin.org/get' );
 
-// Set the complete URL
-$client = $http->set_url( 'https://httpbin.org/get' );
+    // Get the configured URL
+    $url = $client->get_url(); // Returns: https://httpbin.org/get
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Get the configured URL
-$url = $client->get_url(); // Returns: https://httpbin.org/get
-```
+    $http = new Factory();
+
+    // Set the complete URL
+    $client = $http->set_url( 'https://httpbin.org/get' );
+
+    // Get the configured URL
+    $url = $client->get_url(); // Returns: https://httpbin.org/get
+    ```
+  </TabItem>
+</Tabs>
 
 ##### HTTP Method Configuration
 
 Set the HTTP method for the request using `set_method()` and retrieve it with `get_method()`:
 
-```php
-use Mantle\Http_Client\Factory;
-use Mantle\Http_Client\Http_Method;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
+    use Mantle\Http_Client\Http_Method;
 
-$http = new Factory();
+    // Set method using enum
+    $client = Http::set_method( Http_Method::POST );
 
-// Set method using enum
-$client = $http->set_method( Http_Method::POST );
+    // Set method using string
+    $client = Http::set_method( 'PATCH' );
 
-// Set method using string
-$client = $http->set_method( 'PATCH' );
+    // Get the current method
+    $method = $client->get_method(); // Returns Http_Method enum
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
+    use Mantle\Http_Client\Http_Method;
 
-// Get the current method
-$method = $client->get_method(); // Returns Http_Method enum
-```
+    $http = new Factory();
+
+    // Set method using enum
+    $client = $http->set_method( Http_Method::POST );
+
+    // Set method using string
+    $client = $http->set_method( 'PATCH' );
+
+    // Get the current method
+    $method = $client->get_method(); // Returns Http_Method enum
+    ```
+  </TabItem>
+</Tabs>
 
 #### Content Type and Headers
 
@@ -389,84 +441,164 @@ $method = $client->get_method(); // Returns Http_Method enum
 
 Configure how request data should be sent using `as_form()`, `as_json()`, and `content_type()` methods:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Send data as form-encoded (application/x-www-form-urlencoded)
+    Http::as_form()->post( 'https://example.org', [
+    	'name' => 'John Doe',
+    	'email' => 'john@example.com',
+    ] );
 
-// Send data as form-encoded (application/x-www-form-urlencoded)
-$http->as_form()->post( 'https://example.org', [
-	'name' => 'John Doe',
-	'email' => 'john@example.com',
-] );
+    // Send data as JSON (application/json) - this is the default
+    Http::as_json()->post( 'https://example.org', [
+    	'user' => [
+    		'name' => 'John Doe',
+    		'email' => 'john@example.com',
+    	],
+    ] );
 
-// Send data as JSON (application/json) - this is the default
-$http->as_json()->post( 'https://example.org', [
-	'user' => [
-		'name' => 'John Doe',
-		'email' => 'john@example.com',
-	],
-] );
+    // Set a custom content type
+    Http::content_type( 'application/xml' )->post( 'https://example.org' );
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Set a custom content type
-$http->content_type( 'application/xml' )->post( 'https://example.org' );
-```
+    $http = new Factory();
+
+    // Send data as form-encoded (application/x-www-form-urlencoded)
+    $http->as_form()->post( 'https://example.org', [
+    	'name' => 'John Doe',
+    	'email' => 'john@example.com',
+    ] );
+
+    // Send data as JSON (application/json) - this is the default
+    $http->as_json()->post( 'https://example.org', [
+    	'user' => [
+    		'name' => 'John Doe',
+    		'email' => 'john@example.com',
+    	],
+    ] );
+
+    // Set a custom content type
+    $http->content_type( 'application/xml' )->post( 'https://example.org' );
+    ```
+  </TabItem>
+</Tabs>
 
 ##### Accept Headers
 
 Specify what content type you expect in the response using `accept_json()` and `accept()` methods:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Accept JSON responses
+    Http::accept_json()->get( 'https://api.example.com/data' );
 
-// Accept JSON responses
-$http->accept_json()->get( 'https://api.example.com/data' );
+    // Accept specific content type
+    Http::accept( 'text/xml' )->get( 'https://api.example.com/xml-data' );
 
-// Accept specific content type
-$http->accept( 'text/xml' )->get( 'https://api.example.com/xml-data' );
+    // Accept multiple content types
+    Http::accept( 'application/json, text/plain' )->get( 'https://api.example.com/data' );
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Accept multiple content types
-$http->accept( 'application/json, text/plain' )->get( 'https://api.example.com/data' );
-```
+    $http = new Factory();
+
+    // Accept JSON responses
+    $http->accept_json()->get( 'https://api.example.com/data' );
+
+    // Accept specific content type
+    $http->accept( 'text/xml' )->get( 'https://api.example.com/xml-data' );
+
+    // Accept multiple content types
+    $http->accept( 'application/json, text/plain' )->get( 'https://api.example.com/data' );
+    ```
+  </TabItem>
+</Tabs>
 
 ##### Header Management
 
 Add and manage HTTP headers using `with_headers()`, `with_header()`, `headers()`, `header()`, `clear_headers()`, and `with_user_agent()` methods:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Add multiple headers at once
+    Http::with_headers( [
+    	'X-API-Key' => 'your-api-key',
+    	'X-Client-Version' => '1.0.0',
+    	'Accept-Language' => 'en-US',
+    ] )->get( 'https://api.example.com/data' );
 
-// Add multiple headers at once
-$http->with_headers( [
-	'X-API-Key' => 'your-api-key',
-	'X-Client-Version' => '1.0.0',
-	'Accept-Language' => 'en-US',
-] )->get( 'https://api.example.com/data' );
+    // Add a single header
+    Http::with_header( 'X-Custom-Header', 'custom-value' )->get( 'https://example.org' );
 
-// Add a single header
-$http->with_header( 'X-Custom-Header', 'custom-value' )->get( 'https://example.org' );
+    // Replace an existing header (default behavior)
+    Http::with_header( 'User-Agent', 'My Custom Agent', true )->get( 'https://example.org' );
 
-// Replace an existing header (default behavior)
-$http->with_header( 'User-Agent', 'My Custom Agent', true )->get( 'https://example.org' );
+    // Get all current headers
+    $headers = Http::with_header( 'X-Test', 'value' )->headers();
+    // Returns: ['X-Test' => 'value', ...]
 
-// Get all current headers
-$headers = $http->with_header( 'X-Test', 'value' )->headers();
-// Returns: ['X-Test' => 'value', ...]
+    // Get a specific header value
+    $value = Http::with_header( 'X-Test', 'value' )->header( 'X-Test' );
+    // Returns: 'value'
 
-// Get a specific header value
-$value = $http->with_header( 'X-Test', 'value' )->header( 'X-Test' );
-// Returns: 'value'
+    // Clear all headers
+    Http::with_header( 'X-Test', 'value' )->clear_headers()->get( 'https://example.org' );
 
-// Clear all headers
-$http->with_header( 'X-Test', 'value' )->clear_headers()->get( 'https://example.org' );
+    // Set a custom user agent
+    Http::with_user_agent( 'MyApp/1.0 (https://myapp.com)' )->get( 'https://example.org' );
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Set a custom user agent
-$http->with_user_agent( 'MyApp/1.0 (https://myapp.com)' )->get( 'https://example.org' );
-```
+    $http = new Factory();
+
+    // Add multiple headers at once
+    $http->with_headers( [
+    	'X-API-Key' => 'your-api-key',
+    	'X-Client-Version' => '1.0.0',
+    	'Accept-Language' => 'en-US',
+    ] )->get( 'https://api.example.com/data' );
+
+    // Add a single header
+    $http->with_header( 'X-Custom-Header', 'custom-value' )->get( 'https://example.org' );
+
+    // Replace an existing header (default behavior)
+    $http->with_header( 'User-Agent', 'My Custom Agent', true )->get( 'https://example.org' );
+
+    // Get all current headers
+    $headers = $http->with_header( 'X-Test', 'value' )->headers();
+    // Returns: ['X-Test' => 'value', ...]
+
+    // Get a specific header value
+    $value = $http->with_header( 'X-Test', 'value' )->header( 'X-Test' );
+    // Returns: 'value'
+
+    // Clear all headers
+    $http->with_header( 'X-Test', 'value' )->clear_headers()->get( 'https://example.org' );
+
+    // Set a custom user agent
+    $http->with_user_agent( 'MyApp/1.0 (https://myapp.com)' )->get( 'https://example.org' );
+    ```
+  </TabItem>
+</Tabs>
 
 #### Authentication
 
@@ -474,112 +606,219 @@ $http->with_user_agent( 'MyApp/1.0 (https://myapp.com)' )->get( 'https://example
 
 Use HTTP Basic Authentication with username and password using the `with_basic_auth()` method:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Basic auth with username and password
+    Http::with_basic_auth( 'username', 'password' )->get( 'https://api.example.com/protected' );
 
-// Basic auth with username and password
-$http->with_basic_auth( 'username', 'password' )->get( 'https://api.example.com/protected' );
+    // Example with a real API
+    Http::with_basic_auth( 'api_user', 'secret123' )
+    	->get( 'https://api.github.com/user/repos' );
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Example with a real API
-$http->with_basic_auth( 'api_user', 'secret123' )
-	->get( 'https://api.github.com/user/repos' );
-```
+    $http = new Factory();
+
+    // Basic auth with username and password
+    $http->with_basic_auth( 'username', 'password' )->get( 'https://api.example.com/protected' );
+
+    // Example with a real API
+    $http->with_basic_auth( 'api_user', 'secret123' )
+    	->get( 'https://api.github.com/user/repos' );
+    ```
+  </TabItem>
+</Tabs>
 
 ##### Bearer Token Authentication
 
 Use Bearer token authentication using the `with_token()` method:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Bearer token (default type)
+    Http::with_token( 'your-access-token' )->get( 'https://api.example.com/user' );
 
-// Bearer token (default type)
-$http->with_token( 'your-access-token' )->get( 'https://api.example.com/user' );
+    // Custom token type
+    Http::with_token( 'your-api-key', 'API-Key' )->get( 'https://api.example.com/data' );
+    // Sends: Authorization: API-Key your-api-key
 
-// Custom token type
-$http->with_token( 'your-api-key', 'API-Key' )->get( 'https://api.example.com/data' );
-// Sends: Authorization: API-Key your-api-key
+    // Example with GitHub API
+    Http::with_token( 'ghp_xxxxxxxxxxxx' )
+    	->get( 'https://api.github.com/user' );
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Example with GitHub API
-$http->with_token( 'ghp_xxxxxxxxxxxx' )
-	->get( 'https://api.github.com/user' );
-```
+    $http = new Factory();
+
+    // Bearer token (default type)
+    $http->with_token( 'your-access-token' )->get( 'https://api.example.com/user' );
+
+    // Custom token type
+    $http->with_token( 'your-api-key', 'API-Key' )->get( 'https://api.example.com/data' );
+    // Sends: Authorization: API-Key your-api-key
+
+    // Example with GitHub API
+    $http->with_token( 'ghp_xxxxxxxxxxxx' )
+    	->get( 'https://api.github.com/user' );
+    ```
+  </TabItem>
+</Tabs>
 
 #### Cookie Management
 
 Handle cookies for stateful requests using `clear_cookies()`, `with_cookies()`, and `with_cookie()` methods:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Set multiple cookies at once
+    Http::with_cookies( [
+    	'session_id' => 'abc123',
+    	'preference' => 'dark_mode',
+    	'language' => 'en',
+    ] )->get( 'https://example.org' );
 
-// Set multiple cookies at once
-$http->with_cookies( [
-	'session_id' => 'abc123',
-	'preference' => 'dark_mode',
-	'language' => 'en',
-] )->get( 'https://example.org' );
+    // Add a single cookie using WP_Http_Cookie
+    $cookie = new \WP_Http_Cookie( [
+    	'name' => 'user_session',
+    	'value' => 'xyz789',
+    	'domain' => '.example.com',
+    	'path' => '/',
+    ] );
 
-// Add a single cookie using WP_Http_Cookie
-$cookie = new \WP_Http_Cookie( [
-	'name' => 'user_session',
-	'value' => 'xyz789',
-	'domain' => '.example.com',
-	'path' => '/',
-] );
+    Http::with_cookie( $cookie )->get( 'https://api.example.com/user' );
 
-$http->with_cookie( $cookie )->get( 'https://api.example.com/user' );
+    // Clear all cookies before making a request
+    Http::with_cookies( [
+    	'old_session' => 'previous_value',
+    	'temp_data' => 'some_data',
+    ] )
+    	->clear_cookies()
+    	->get( 'https://example.org' ); // Request made without any cookies
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Clear all cookies before making a request
-$http->with_cookies( [
-	'old_session' => 'previous_value',
-	'temp_data' => 'some_data',
-] )
-	->clear_cookies()
-	->get( 'https://example.org' ); // Request made without any cookies
-```
+    $http = new Factory();
+
+    // Set multiple cookies at once
+    $http->with_cookies( [
+    	'session_id' => 'abc123',
+    	'preference' => 'dark_mode',
+    	'language' => 'en',
+    ] )->get( 'https://example.org' );
+
+    // Add a single cookie using WP_Http_Cookie
+    $cookie = new \WP_Http_Cookie( [
+    	'name' => 'user_session',
+    	'value' => 'xyz789',
+    	'domain' => '.example.com',
+    	'path' => '/',
+    ] );
+
+    $http->with_cookie( $cookie )->get( 'https://api.example.com/user' );
+
+    // Clear all cookies before making a request
+    $http->with_cookies( [
+    	'old_session' => 'previous_value',
+    	'temp_data' => 'some_data',
+    ] )
+    	->clear_cookies()
+    	->get( 'https://example.org' ); // Request made without any cookies
+    ```
+  </TabItem>
+</Tabs>
 
 #### Request Body Methods
 
 Configure the request body content using `with_body()`, `with_json()`, `body()`, and `body_format()` methods:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Send raw body with content type
+    Http::with_body(
+    	'{"custom": "json", "data": true}',
+    	'application/json'
+    )->post( 'https://api.example.com/webhook' );
 
-// Send raw body with content type
-$http->with_body(
-	'{"custom": "json", "data": true}',
-	'application/json'
-)->post( 'https://api.example.com/webhook' );
+    // Send XML data
+    Http::with_body(
+    	'<user><name>John</name></user>',
+    	'application/xml'
+    )->post( 'https://api.example.com/users' );
 
-// Send XML data
-$http->with_body(
-	'<user><name>John</name></user>',
-	'application/xml'
-)->post( 'https://api.example.com/users' );
+    // Send JSON data (alternative to as_json)
+    Http::with_json( [
+    	'user' => [
+    		'name' => 'John Doe',
+    		'email' => 'john@example.com',
+    	],
+    ] )->post( 'https://api.example.com/users' );
 
-// Send JSON data (alternative to as_json)
-$http->with_json( [
-	'user' => [
-		'name' => 'John Doe',
-		'email' => 'john@example.com',
-	],
-] )->post( 'https://api.example.com/users' );
+    // Get the current body content
+    $body = Http::with_json( ['test' => 'data'] )->body();
 
-// Get the current body content
-$body = $http->with_json( ['test' => 'data'] )->body();
+    // Set body format
+    Http::body_format( 'form' )->post( 'https://example.org', [
+    	'name' => 'John',
+    ] );
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Set body format
-$http->body_format( 'form' )->post( 'https://example.org', [
-	'name' => 'John',
-] );
-```
+    $http = new Factory();
+
+    // Send raw body with content type
+    $http->with_body(
+    	'{"custom": "json", "data": true}',
+    	'application/json'
+    )->post( 'https://api.example.com/webhook' );
+
+    // Send XML data
+    $http->with_body(
+    	'<user><name>John</name></user>',
+    	'application/xml'
+    )->post( 'https://api.example.com/users' );
+
+    // Send JSON data (alternative to as_json)
+    $http->with_json( [
+    	'user' => [
+    		'name' => 'John Doe',
+    		'email' => 'john@example.com',
+    	],
+    ] )->post( 'https://api.example.com/users' );
+
+    // Get the current body content
+    $body = $http->with_json( ['test' => 'data'] )->body();
+
+    // Set body format
+    $http->body_format( 'form' )->post( 'https://example.org', [
+    	'name' => 'John',
+    ] );
+    ```
+  </TabItem>
+</Tabs>
 
 #### Request Options
 
@@ -863,62 +1102,119 @@ $response->xml( string $xpath = null, $default = null )
 
 Check for successful HTTP responses using `ok()` and `successful()`:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Check for successful responses (2xx status codes) using ok() and successful()
+    $response = Http::get( 'https://httpbin.org/status/200' );
+    $response->ok(); // true for 200 status
+    $response->successful(); // true for 200-299 status codes
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Check for successful responses (2xx status codes) using ok() and successful()
-$response = $http->get( 'https://httpbin.org/status/200' );
-$response->ok(); // true for 200 status
-$response->successful(); // true for 200-299 status codes
-```
+    $http = new Factory();
+
+    // Check for successful responses (2xx status codes) using ok() and successful()
+    $response = $http->get( 'https://httpbin.org/status/200' );
+    $response->ok(); // true for 200 status
+    $response->successful(); // true for 200-299 status codes
+    ```
+  </TabItem>
+</Tabs>
 
 ##### Error Status Checks
 
 Check for HTTP errors using `failed()`, `client_error()`, and `server_error()`:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Check for error responses using failed(), client_error(), and server_error()
+    $response = Http::get( 'https://httpbin.org/status/404' );
+    $response->failed(); // true for 400-599 status codes
+    $response->client_error(); // true for 400-499 status codes
+    $response->server_error(); // true for 500-599 status codes
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Check for error responses using failed(), client_error(), and server_error()
-$response = $http->get( 'https://httpbin.org/status/404' );
-$response->failed(); // true for 400-599 status codes
-$response->client_error(); // true for 400-499 status codes
-$response->server_error(); // true for 500-599 status codes
-```
+    $http = new Factory();
+
+    // Check for error responses using failed(), client_error(), and server_error()
+    $response = $http->get( 'https://httpbin.org/status/404' );
+    $response->failed(); // true for 400-599 status codes
+    $response->client_error(); // true for 400-499 status codes
+    $response->server_error(); // true for 500-599 status codes
+    ```
+  </TabItem>
+</Tabs>
 
 ##### Specific Status Checks
 
 Check for specific HTTP status codes using `unauthorized()`, `forbidden()`, and `redirect()`:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Check for specific status codes using unauthorized(), forbidden(), and redirect()
+    $response = Http::get( 'https://httpbin.org/status/401' );
+    $response->unauthorized(); // true for 401 status
+    $response->forbidden(); // true for 403 status
+    $response->redirect(); // true for 300-399 status codes
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Check for specific status codes using unauthorized(), forbidden(), and redirect()
-$response = $http->get( 'https://httpbin.org/status/401' );
-$response->unauthorized(); // true for 401 status
-$response->forbidden(); // true for 403 status
-$response->redirect(); // true for 300-399 status codes
-```
+    $http = new Factory();
+
+    // Check for specific status codes using unauthorized(), forbidden(), and redirect()
+    $response = $http->get( 'https://httpbin.org/status/401' );
+    $response->unauthorized(); // true for 401 status
+    $response->forbidden(); // true for 403 status
+    $response->redirect(); // true for 300-399 status codes
+    ```
+  </TabItem>
+</Tabs>
 
 ##### Status Code Retrieval
 
 Get the exact HTTP status code using `status()`:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Get the exact status code using status()
+    $response = Http::get( 'https://httpbin.org/status/200' );
+    $status = $response->status(); // Returns integer status code
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Get the exact status code using status()
-$response = $http->get( 'https://httpbin.org/status/200' );
-$status = $response->status(); // Returns integer status code
-```
+    $http = new Factory();
+
+    // Get the exact status code using status()
+    $response = $http->get( 'https://httpbin.org/status/200' );
+    $status = $response->status(); // Returns integer status code
+    ```
+  </TabItem>
+</Tabs>
 
 #### Response Body Methods
 
@@ -926,118 +1222,230 @@ $status = $response->status(); // Returns integer status code
 
 Get the raw response body content using `body()`:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Get raw response body using body()
+    $response = Http::get( 'https://httpbin.org/json' );
+    $body = $response->body(); // Returns string
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Get raw response body using body()
-$response = $http->get( 'https://httpbin.org/json' );
-$body = $response->body(); // Returns string
-```
+    $http = new Factory();
+
+    // Get raw response body using body()
+    $response = $http->get( 'https://httpbin.org/json' );
+    $body = $response->body(); // Returns string
+    ```
+  </TabItem>
+</Tabs>
 
 ##### JSON Parsing
 
 Parse JSON responses and access specific data using `json()` and `object()`:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Parse JSON responses using json()
+    $response = Http::get( 'https://httpbin.org/json' );
+    $json = $response->json(); // Returns array
+    $value = $response->json( 'slideshow.author' ); // Get specific JSON path
+    $default = $response->json( 'nonexistent.key', 'default' ); // With default value
 
-// Parse JSON responses using json()
-$response = $http->get( 'https://httpbin.org/json' );
-$json = $response->json(); // Returns array
-$value = $response->json( 'slideshow.author' ); // Get specific JSON path
-$default = $response->json( 'nonexistent.key', 'default' ); // With default value
+    // Parse as object using object()
+    $object = $response->object(); // Returns stdClass object
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Parse as object using object()
-$object = $response->object(); // Returns stdClass object
-```
+    $http = new Factory();
+
+    // Parse JSON responses using json()
+    $response = $http->get( 'https://httpbin.org/json' );
+    $json = $response->json(); // Returns array
+    $value = $response->json( 'slideshow.author' ); // Get specific JSON path
+    $default = $response->json( 'nonexistent.key', 'default' ); // With default value
+
+    // Parse as object using object()
+    $object = $response->object(); // Returns stdClass object
+    ```
+  </TabItem>
+</Tabs>
 
 ##### XML Parsing
 
 Parse XML responses with optional XPath queries using `xml()`:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Parse XML responses using xml()
+    $response = Http::get( 'https://httpbin.org/xml' );
+    $xml = $response->xml(); // Returns array
+    $nodes = $response->xml( '/slideshow/slide' ); // With XPath query
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Parse XML responses using xml()
-$response = $http->get( 'https://httpbin.org/xml' );
-$xml = $response->xml(); // Returns array
-$nodes = $response->xml( '/slideshow/slide' ); // With XPath query
-```
+    $http = new Factory();
+
+    // Parse XML responses using xml()
+    $response = $http->get( 'https://httpbin.org/xml' );
+    $xml = $response->xml(); // Returns array
+    $nodes = $response->xml( '/slideshow/slide' ); // With XPath query
+    ```
+  </TabItem>
+</Tabs>
 
 ##### Collection Access
 
 Access response data as a Mantle Collection using `collect()`:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Get as Collection using collect()
+    $response = Http::get( 'https://httpbin.org/json' );
+    $collection = $response->collect(); // Returns Mantle\Support\Collection
+    $specific = $response->collect( 'data' ); // Collect specific key
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Get as Collection using collect()
-$response = $http->get( 'https://httpbin.org/json' );
-$collection = $response->collect(); // Returns Mantle\Support\Collection
-$specific = $response->collect( 'data' ); // Collect specific key
-```
+    $http = new Factory();
+
+    // Get as Collection using collect()
+    $response = $http->get( 'https://httpbin.org/json' );
+    $collection = $response->collect(); // Returns Mantle\Support\Collection
+    $specific = $response->collect( 'data' ); // Collect specific key
+    ```
+  </TabItem>
+</Tabs>
 
 ##### Feed Parsing
 
 Parse RSS/Atom feeds and get a SimplePie object using `feed()`:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Parse RSS/Atom feeds using feed()
+    $response = Http::get( 'https://example.org/feed/' );
+    $feed = $response->feed(); // Returns SimplePie object
 
-// Parse RSS/Atom feeds using feed()
-$response = $http->get( 'https://example.org/feed/' );
-$feed = $response->feed(); // Returns SimplePie object
+    // Access feed data through SimplePie methods
+    $title = $feed->get_title();
+    $description = $feed->get_description();
+    $items = $feed->get_items();
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Access feed data through SimplePie methods
-$title = $feed->get_title();
-$description = $feed->get_description();
-$items = $feed->get_items();
-```
+    $http = new Factory();
+
+    // Parse RSS/Atom feeds using feed()
+    $response = $http->get( 'https://example.org/feed/' );
+    $feed = $response->feed(); // Returns SimplePie object
+
+    // Access feed data through SimplePie methods
+    $title = $feed->get_title();
+    $description = $feed->get_description();
+    $items = $feed->get_items();
+    ```
+  </TabItem>
+</Tabs>
 
 #### Header Methods
 
 Access response headers and metadata using `header()` and `headers()`:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
-$response = $http->get( 'https://httpbin.org/headers' );
+    $response = Http::get( 'https://httpbin.org/headers' );
 
-// Get specific header using header()
-$contentType = $response->header( 'Content-Type' );
-$customHeader = $response->header( 'X-Custom-Header' );
+    // Get specific header using header()
+    $contentType = $response->header( 'Content-Type' );
+    $customHeader = $response->header( 'X-Custom-Header' );
 
-// Get all headers using headers()
-$headers = $response->headers(); // Returns array of all headers
-```
+    // Get all headers using headers()
+    $headers = $response->headers(); // Returns array of all headers
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
+
+    $http = new Factory();
+    $response = $http->get( 'https://httpbin.org/headers' );
+
+    // Get specific header using header()
+    $contentType = $response->header( 'Content-Type' );
+    $customHeader = $response->header( 'X-Custom-Header' );
+
+    // Get all headers using headers()
+    $headers = $response->headers(); // Returns array of all headers
+    ```
+  </TabItem>
+</Tabs>
 
 #### Cookie Methods
 
 Work with response cookies using `cookie()` and `cookies()`:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
-$response = $http->get( 'https://httpbin.org/cookies/set/session/abc123' );
+    $response = Http::get( 'https://httpbin.org/cookies/set/session/abc123' );
 
-// Get specific cookie using cookie()
-$cookie = $response->cookie( 'session' ); // Returns WP_HTTP_Cookie or null
+    // Get specific cookie using cookie()
+    $cookie = $response->cookie( 'session' ); // Returns WP_HTTP_Cookie or null
 
-// Get all cookies using cookies()
-$cookies = $response->cookies(); // Returns array of WP_HTTP_Cookie objects
-```
+    // Get all cookies using cookies()
+    $cookies = $response->cookies(); // Returns array of WP_HTTP_Cookie objects
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
+
+    $http = new Factory();
+    $response = $http->get( 'https://httpbin.org/cookies/set/session/abc123' );
+
+    // Get specific cookie using cookie()
+    $cookie = $response->cookie( 'session' ); // Returns WP_HTTP_Cookie or null
+
+    // Get all cookies using cookies()
+    $cookies = $response->cookies(); // Returns array of WP_HTTP_Cookie objects
+    ```
+  </TabItem>
+</Tabs>
 
 #### Content Type Detection Methods
 
@@ -1045,108 +1453,210 @@ $cookies = $response->cookies(); // Returns array of WP_HTTP_Cookie objects
 
 Detect JSON and XML content types using `is_json()` and `is_xml()`:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Check content types using is_json() and is_xml()
+    $response = Http::get( 'https://httpbin.org/json' );
+    $response->is_json(); // true for JSON responses
 
-// Check content types using is_json() and is_xml()
-$response = $http->get( 'https://httpbin.org/json' );
-$response->is_json(); // true for JSON responses
+    $response = Http::get( 'https://httpbin.org/xml' );
+    $response->is_xml(); // true for XML responses
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-$response = $http->get( 'https://httpbin.org/xml' );
-$response->is_xml(); // true for XML responses
-```
+    $http = new Factory();
+
+    // Check content types using is_json() and is_xml()
+    $response = $http->get( 'https://httpbin.org/json' );
+    $response->is_json(); // true for JSON responses
+
+    $response = $http->get( 'https://httpbin.org/xml' );
+    $response->is_xml(); // true for XML responses
+    ```
+  </TabItem>
+</Tabs>
 
 ##### Binary Content Detection
 
 Detect file and binary content using `is_file()` and `is_blob()`:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Check for file content using is_file() and is_blob()
+    $response = Http::get( 'https://httpbin.org/image/png' );
+    $response->is_file(); // true for file downloads
+    $response->is_blob(); // true for binary/file content
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Check for file content using is_file() and is_blob()
-$response = $http->get( 'https://httpbin.org/image/png' );
-$response->is_file(); // true for file downloads
-$response->is_blob(); // true for binary/file content
-```
+    $http = new Factory();
+
+    // Check for file content using is_file() and is_blob()
+    $response = $http->get( 'https://httpbin.org/image/png' );
+    $response->is_file(); // true for file downloads
+    $response->is_blob(); // true for binary/file content
+    ```
+  </TabItem>
+</Tabs>
 
 ##### Feed Detection
 
 Detect and parse RSS/Atom feeds using `is_feed()` and `feed()`:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Check for RSS/Atom feeds using is_feed() and feed()
+    $response = Http::get( 'https://example.org/feed/' );
+    $response->is_feed(); // true for RSS/Atom feeds
+    $feed = $response->feed(); // Returns SimplePie object
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Check for RSS/Atom feeds using is_feed() and feed()
-$response = $http->get( 'https://example.org/feed/' );
-$response->is_feed(); // true for RSS/Atom feeds
-$feed = $response->feed(); // Returns SimplePie object
-```
+    $http = new Factory();
+
+    // Check for RSS/Atom feeds using is_feed() and feed()
+    $response = $http->get( 'https://example.org/feed/' );
+    $response->is_feed(); // true for RSS/Atom feeds
+    $feed = $response->feed(); // Returns SimplePie object
+    ```
+  </TabItem>
+</Tabs>
 
 ##### Error Detection
 
 Check for WordPress errors using `is_wp_error()`:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Check for WordPress errors using is_wp_error()
+    $response = Http::get( 'https://httpbin.org/status/404' );
+    $response->is_wp_error(); // true if response is a WP_Error
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Check for WordPress errors using is_wp_error()
-$response = $http->get( 'https://httpbin.org/status/404' );
-$response->is_wp_error(); // true if response is a WP_Error
-```
+    $http = new Factory();
+
+    // Check for WordPress errors using is_wp_error()
+    $response = $http->get( 'https://httpbin.org/status/404' );
+    $response->is_wp_error(); // true if response is a WP_Error
+    ```
+  </TabItem>
+</Tabs>
 
 #### Raw Response Methods
 
 Access underlying WordPress HTTP API response using `response()`:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
-$response = $http->get( 'https://httpbin.org/get' );
+    $response = Http::get( 'https://httpbin.org/get' );
 
-// Get the raw WordPress HTTP response array using response()
-$raw = $response->response(); // Returns array from wp_remote_get()
-```
+    // Get the raw WordPress HTTP response array using response()
+    $raw = $response->response(); // Returns array from wp_remote_get()
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
+
+    $http = new Factory();
+    $response = $http->get( 'https://httpbin.org/get' );
+
+    // Get the raw WordPress HTTP response array using response()
+    $raw = $response->response(); // Returns array from wp_remote_get()
+    ```
+  </TabItem>
+</Tabs>
 
 #### Debugging Methods
 
 Debug and inspect responses during development using `dump()` and `dd()`:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
-$response = $http->get( 'https://httpbin.org/json' );
+    $response = Http::get( 'https://httpbin.org/json' );
 
-// Dump response for debugging using dump()
-$response->dump(); // Outputs response details and continues
+    // Dump response for debugging using dump()
+    $response->dump(); // Outputs response details and continues
 
-// Dump and die (stops execution) using dd()
-$response->dd(); // Outputs response details and stops
-```
+    // Dump and die (stops execution) using dd()
+    $response->dd(); // Outputs response details and stops
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
+
+    $http = new Factory();
+    $response = $http->get( 'https://httpbin.org/json' );
+
+    // Dump response for debugging using dump()
+    $response->dump(); // Outputs response details and continues
+
+    // Dump and die (stops execution) using dd()
+    $response->dd(); // Outputs response details and stops
+    ```
+  </TabItem>
+</Tabs>
 
 ### Array Access Support
 
 The `Mantle\Http_Client\Response` object implements `ArrayAccess`, allowing you to access JSON/XML response properties directly:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$http = new Factory();
+    // Access JSON properties like an array
+    $response = Http::get( 'https://httpbin.org/json' );
+    $slideshow = $response['slideshow']; // Equivalent to $response->json('slideshow')
+    $author = $response['slideshow']['author']; // Nested access
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
 
-// Access JSON properties like an array
-$response = $http->get( 'https://httpbin.org/json' );
-$slideshow = $response['slideshow']; // Equivalent to $response->json('slideshow')
-$author = $response['slideshow']['author']; // Nested access
-```
+    $http = new Factory();
+
+    // Access JSON properties like an array
+    $response = $http->get( 'https://httpbin.org/json' );
+    $slideshow = $response['slideshow']; // Equivalent to $response->json('slideshow')
+    $author = $response['slideshow']['author']; // Nested access
+    ```
+  </TabItem>
+</Tabs>
 
 
 
@@ -1186,49 +1696,100 @@ Requests can have middleware applied to them to allow the request and the
 response to be modified. One use case is to calculate a checksum header based on
 body of the request and pass that along with the request:
 
-```php
-use Closure;
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Closure;
+    use Mantle\Facade\Http;
 
-$client = Factory::base_url( 'https://api.github.com' )
-  ->middleware( function ( Http_Client $client, Closure $next ) {
-    $client->with_header( 'Authorization', md5( $client->url() . $client->body() ) );
+    $client = Http::base_url( 'https://api.github.com' )
+      ->middleware( function ( Http_Client $client, Closure $next ) {
+        $client->with_header( 'Authorization', md5( $client->url() . $client->body() ) );
 
-    // You can also run the callback and then modify the response.
-    return $next( $client );
-  } );
-```
+        // You can also run the callback and then modify the response.
+        return $next( $client );
+      } );
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Closure;
+    use Mantle\Http_Client\Factory;
+
+    $client = Factory::base_url( 'https://api.github.com' )
+      ->middleware( function ( Http_Client $client, Closure $next ) {
+        $client->with_header( 'Authorization', md5( $client->url() . $client->body() ) );
+
+        // You can also run the callback and then modify the response.
+        return $next( $client );
+      } );
+    ```
+  </TabItem>
+</Tabs>
 
 ## Caching
 
 Requests can be cached using the `cached` method. The method can be used when
 chaining together your HTTP request:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$response = Factory::create()->cached()->get( 'https://example.org' );
-```
+    $response = Http::cached()->get( 'https://example.org' );
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
+
+    $response = Factory::create()->cached()->get( 'https://example.org' );
+    ```
+  </TabItem>
+</Tabs>
 
 The `cached` method accepts a single argument of the number of seconds to
 cache the response for. It also supports a `DateTime` object and defaults to one
 hour:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$response = Factory::create()
-  ->cached( now()->addDay() )
-  ->get( 'https://example.org' );
-```
+    $response = Http::cached( now()->addDay() )->get( 'https://example.org' );
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
+
+    $response = Factory::create()
+      ->cached( now()->addDay() )
+      ->get( 'https://example.org' );
+    ```
+  </TabItem>
+</Tabs>
 
 Purging the cache can be done using the `purge` method:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-Factory::create()->url( 'https://example.org' )->purge();
-```
+    Http::url( 'https://example.org' )->purge();
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
+
+    Factory::create()->url( 'https://example.org' )->purge();
+    ```
+  </TabItem>
+</Tabs>
 
 ### Flexible Caching (SWR)
 
@@ -1245,18 +1806,34 @@ browser, so it won't impact the user experience.
 
 To use SWR caching, use the `cache_flexible()` method:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-use function Mantle\Support\Helpers\now;
+    use function Mantle\Support\Helpers\now;
 
-$response = Factory::create(
-  ->cache_flexible(
-    stale: now()->addMinutes( 30 ),
-    expire: now()->addHours( 3 ),
-  )
-  ->get( 'https://example.org' );
-```
+    $response = Http::cache_flexible(
+      stale: now()->addMinutes( 30 ),
+      expire: now()->addHours( 3 ),
+    )->get( 'https://example.org' );
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
+
+    use function Mantle\Support\Helpers\now;
+
+    $response = Factory::create()
+      ->cache_flexible(
+        stale: now()->addMinutes( 30 ),
+        expire: now()->addHours( 3 ),
+      )
+      ->get( 'https://example.org' );
+    ```
+  </TabItem>
+</Tabs>
 
 The `cache_flexible` method accepts two arguments:
 
@@ -1268,16 +1845,30 @@ The `cache_flexible` method accepts two arguments:
 Here is an example of passing a number of seconds to the `cache_flexible`
 method:
 
-```php
-use Mantle\Http_Client\Factory;
+<Tabs groupId="use-preference">
+  <TabItem value="framework" label="Framework Use" default>
+    ```php
+    use Mantle\Facade\Http;
 
-$response = Factory::create()
-  ->cache_flexible(
-    stale: HOUR_IN_SECONDS, // 1 hour
-    expire: DAY_IN_SECONDS, // 24 hours
-  )
-  ->get( 'https://example.org' );
-```
+    $response = Http::cache_flexible(
+      stale: HOUR_IN_SECONDS, // 1 hour
+      expire: DAY_IN_SECONDS, // 24 hours
+    )->get( 'https://example.org' );
+    ```
+  </TabItem>
+  <TabItem value="standalone" label="Standalone Use">
+    ```php
+    use Mantle\Http_Client\Factory;
+
+    $response = Factory::create()
+      ->cache_flexible(
+        stale: HOUR_IN_SECONDS, // 1 hour
+        expire: DAY_IN_SECONDS, // 24 hours
+      )
+      ->get( 'https://example.org' );
+    ```
+  </TabItem>
+</Tabs>
 
 ## Concurrent Requests (HTTP Pooling)
 
