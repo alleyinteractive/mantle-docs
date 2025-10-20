@@ -3,6 +3,9 @@ title: "Testing: HTTP Tests"
 sidebar_label: HTTP Tests
 description: Mantle provides a fluent HTTP Request interface to make it easier to write feature/integration tests using PHPUnit and WordPress.
 ---
+
+import TOCInlineWrapped from '@site/src/components/TOCInlineWrapped';
+
 # Testing: HTTP Tests
 
 ## Introduction
@@ -425,6 +428,17 @@ class Example_Callback_Test extends Test_Case {
 
 `Mantle\Testing\Test_Response` provides many assertions to confirm aspects of the response
 return as expected.
+
+<TOCInlineWrapped
+  toc={toc.filter((item) => {
+    // Filter to only include items after "Available Assertions" heading
+    const allItems = toc.map((tocItem) => tocItem.value);
+    const indexStart = allItems.findIndex((value) => value.includes('Available Assertions'));
+    return !indexStart || allItems.indexOf(item.value) > indexStart;
+  })}
+  minHeadingLevel={3}
+  maxHeadingLevel={5}
+/>
 
 ### HTTP Status Assertions
 
