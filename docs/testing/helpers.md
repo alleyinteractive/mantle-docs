@@ -45,7 +45,7 @@ The HTML string helper returns a [HTML](../features/support/html.mdx) object.
 
 ## Getting Output
 
-The [`capture()`](../features/support/helpers.mdx#capture) helper can be used to capture output
+The [`capture()`](../features/support/helpers.md#capture) helper can be used to capture output
 from a callable. It is a replacement for the core's
 [`get_echo()` function](https://github.com/WordPress/wordpress-develop/blob/cf5898957e68d4d9fa63b5e89e2bee272391aa92/tests/phpunit/includes/utils.php#L432-L436).
 
