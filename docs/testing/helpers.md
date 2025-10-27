@@ -45,12 +45,12 @@ The HTML string helper returns a [HTML](../features/support/html.mdx) object.
 
 ## Getting Output
 
-`\Mantle\Testing\Utils::get_echo()` is a replacement for the core WordPress test suite's [`get_echo()` function](https://github.com/WordPress/wordpress-develop/blob/cf5898957e68d4d9fa63b5e89e2bee272391aa92/tests/phpunit/includes/utils.php#L432-L436). It takes a callable, starts an output buffer, calls the given callable, and returns the contents of the output buffer. Example:
+The [`capture()`](../features/support/helpers.mdx#capture) helper can be used to capture output
+from a callable. It is a replacement for the core's
+[`get_echo()` function](https://github.com/WordPress/wordpress-develop/blob/cf5898957e68d4d9fa63b5e89e2bee272391aa92/tests/phpunit/includes/utils.php#L432-L436).
 
 ```php
-use Mantle\Testing\Utils;
+use function Mantle\Support\Helpers\capture;
 
-$demo   = Utils::get_echo( fn ( $subject ) => echo "Hello {$subject}!", 'world' );
-$title  = Utils::get_echo( 'the_title' );
-$method = Utils::get_echo( [ 'My_Class', 'method_that_outputs' ] );
+$output = capture( fn () => the_title() );
 ```
