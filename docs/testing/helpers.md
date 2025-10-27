@@ -14,7 +14,7 @@ project.
 The `Mantle\Testing\html_string` helper is used to create a DOMDocument object
 from an HTML string. This can be useful when you need to test a function that
 returns HTML output and want to make assertions about the generated HTML. You
-can use the same methods as the [Element Assertions](./requests.md#element-assertions)
+can use the same methods as the [Element Assertions](./requests.mdx#element-assertions)
 feature to make assertions about the HTML string.
 
 ```php
