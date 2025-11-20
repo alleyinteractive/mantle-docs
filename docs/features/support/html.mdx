@@ -150,46 +150,46 @@ foreach ( $elements as $element ) {
 Access node by its position on the list:
 
 ```php
-$crawler->filter( 'body > p' )->eq( 0 );
+$html->filter( 'body > p' )->eq( 0 );
 ```
 
 Get the first or last node of the current selection:
 
 ```php
-$crawler->filter( 'body > p' )->first();
-$crawler->filter( 'body > p' )->last();
+$html->filter( 'body > p' )->first();
+$html->filter( 'body > p' )->last();
 ```
 
 Get the nodes of the same level as the current selection:
 
 ```php
-$crawler->filter( 'body > p' )->siblings();
+$html->filter( 'body > p' )->siblings();
 ```
 
 Get the same level nodes after or before the current selection:
 
 ```php
-$crawler->filter( 'body > p' )->nextAll();
-$crawler->filter( 'body > p' )->previousAll();
+$html->filter( 'body > p' )->nextAll();
+$html->filter( 'body > p' )->previousAll();
 ```
 
 Get all the child or ancestor nodes:
 
 ```php
-$crawler->filter( 'body' )->children();
-$crawler->filter( 'body > p' )->ancestors();
+$html->filter( 'body' )->children();
+$html->filter( 'body > p' )->ancestors();
 ```
 
 Get all the direct child nodes matching a CSS selector:
 
 ```php
-$crawler->filter( 'body' )->children( 'p.lorem' );
+$html->filter( 'body' )->children( 'p.lorem' );
 ```
 
 Get the first parent (heading toward the document root) of the element that matches the provided selector:
 
 ```php
-$crawler->closest( 'p.lorem' );
+$html->closest( 'p.lorem' );
 ```
 
 ### Accessing Node Values
@@ -287,6 +287,24 @@ $html->filter( 'p' )->modify(
 />
 
 ### Retrieving Nodes
+
+#### `count`
+
+Returns the number of nodes in the current selection.
+
+```php
+use function Mantle\Support\Helpers\html_string;
+
+$html = <<<'HTML'
+<div id="test">
+    <p class="example">Hello World</p>
+    <p class="example">Hello Universe</p>
+</div>
+HTML;
+
+$elements = html_string( $html )->filter( '.example' );
+$elements->count(); // Outputs: 2
+```
 
 #### `filter/get_by_selector`
 
