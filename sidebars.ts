@@ -123,7 +123,6 @@ const sidebars: SidebarsConfig = {
         id: 'testing/index',
       },
       items: [
-        'testing/getting-started',
         'testing/testkit',
         'testing/installation-manager',
         'testing/requests',
