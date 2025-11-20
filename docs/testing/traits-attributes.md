@@ -107,6 +107,8 @@ attribute for details on how to use it.
 
 ### Preserve Object Cache
 
+<!-- Remove with 2.0. -->
+
 When making HTTP requests in tests, the object cache will be cleared before each
 request. If you want to preserve the object cache between requests, you can use
 the `Mantle\Testing\Attributes\PreserveObjectCache` attribute on your test class or
