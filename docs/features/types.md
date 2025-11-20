@@ -130,6 +130,23 @@ $group->boot();
 The `Example_Feature` will only be booted if the `Example_Validator` returns
 true.
 
+## Validator Attribute
+
+A validator attribute is a PHP attribute that implements the
+`Mantle\Types\Validator` interface. The attribute's `validate` method is called
+when the class is being initialized to determine if the feature should be
+booted.
+
+Here's an example of a custom validator attribute:
+
+```php
+class Example_Validator implements \Mantle\Types\Validator {
+  public function validate(): bool {
+    // Return true to boot the feature, false to skip it.
+  }
+}
+```
+
 ### Available Validators
 
 The following validator attributes are available:

@@ -87,7 +87,7 @@ class Example_Provider extends Service_Provider {
 }
 ```
 
-### Automatic Registration with WordPress Events
+## Automatic Registration with WordPress Events
 
 Service providers are the heart of your application. They can register services
 and add event listeners that are fired when specific events/actions happen in
@@ -137,3 +137,27 @@ class Example_Provider extends Service_Provider {
 ```
 
 See [Hookable](../features/support/hookable.md) for more information.
+
+## Conditional Loading of a Service Provider
+
+A service provider can be conditionally using a [validator attribute](../features/types.md#validator-attribute)
+on the service provider class. If the service provider uses a validator attribute,
+the provider will only be loaded if the validator's `validate` method passes.
+
+```php
+namespace App;
+
+use Mantle\Support\Service_Provider;
+use Mantle\Types\Attributes\Environment;
+
+/**
+ * Example Provider that only loads in production environment.
+ */
+#[Environment('production')]
+class Example_Provider extends Service_Provider {
+	// Provider code...
+}
+```
+
+For more information on creating custom validator attributes, see
+[Validator Attribute](../features/types.md#validator-attribute).
