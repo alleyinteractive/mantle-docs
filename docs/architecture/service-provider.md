@@ -140,7 +140,7 @@ See [Hookable](../features/support/hookable.md) for more information.
 
 ## Conditional Loading of a Service Provider
 
-A service provider can be conditionally using a [validator attribute](../features/types.md#validator-attribute)
+A service provider can be conditionally loaded using a [validator attribute](../features/types.md#validator-attribute)
 on the service provider class. If the service provider uses a validator attribute,
 the provider will only be loaded if the validator's `validate` method passes.
 
