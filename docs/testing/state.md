@@ -13,28 +13,67 @@ you to modify or inspect the state of WordPress. These methods are available on
 the default `Test_Case` included with the framework or Testkit. Many of these
 methods are used between tests to reset the state of WordPress.
 
-## Setting Permalink Structure
+## Preserving Globals
 
-The WordPress permalink structure can be quickly changed using the `set_permalink_structure`
-method. This method accepts a string that represents the permalink structure to
-use. The method will automatically flush the rewrite rules after setting the
-structure.
+By default, the testing framework will preserve select global variables between
+tests. This means that if a test modifies a global variable that manages the
+registered post types, the modified state will be reset before the next test
+runs.
 
-By default the permalink structure of `/%year%/%monthnum%/%day%/%postname%/` is used.
+Let's look at an example:
 
 ```php
 namespace App\Tests;
 
-use App\Tests\Test_Case;
+use App\Tests\TestCase;
 
-class Example_Test extends Test_Case {
-  public function test_permalink_structure() {
-    $this->set_permalink_structure( '/%postname%/' );
+class ExampleTest extends TestCase {
+  public static function setUpBeforeClass(): void {
+    parent::setUpBeforeClass();
 
-    // ...
+    register_post_type( 'custom', [
+      'label' => 'Custom',
+    ] );
+  }
+
+  public function test_post_type_exists() {
+    // The post type 'custom' was registered in setUpBeforeClass. We know it exists for this test case.
+    $this->assertTrue( post_type_exists( 'custom' ) );
   }
 }
 ```
+
+In another test case, the `custom` post type will not exist because the
+framework resets the registered post types between tests.
+
+```php
+namespace App\Tests;
+
+use App\Tests\TestCase;
+
+class AnotherExampleTest extends TestCase {
+  public function test_post_type_does_not_exist() {
+    // The post type 'custom' does not exist in this test case.
+    $this->assertFalse( post_type_exists( 'custom' ) );
+  }
+}
+```
+
+The framework will create a copy of the globals before all tests run and another
+after the test's `setUpBeforeClass` method is called. For each test run, the
+local copy is restored before the test's `setUp` method is called. After all
+tests have run, the original copy is restored.
+
+The following globals are preserved between tests:
+
+- `wp_meta_keys`: Custom meta keys registered via `register_meta()`.
+- `wp_post_statuses`: Post statuses registered via `register_post_status()`.
+- `wp_post_types`: Post types registered via `register_post_type()`.
+- `wp_taxonomies`: Taxonomies registered via `register_taxonomy()`.
+
+If you'd like to disable the global preservation for a specific test case, you
+can use the `Mantle\Testing\Attributes\DisableGlobalPreservation` attribute on
+your test class or method.
 
 ## Updating the Post Modified Time
 

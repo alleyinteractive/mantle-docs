@@ -188,6 +188,28 @@ class ExampleTest extends TestCase {
 }
 ```
 
+### Permalink Structure
+
+The WordPress permalink structure can be quickly changed using the
+`Mantle\Testing\Attributes\PermalinkStructure` attribute. This attribute accepts
+a string that represents the permalink structure to use. The attribute will
+automatically flush the rewrite rules after setting the structure.
+
+By default the permalink structure of `/%year%/%monthnum%/%day%/%postname%/` is used.
+
+```php
+namespace App\Tests;
+
+use Mantle\Testing\Attributes\PermalinkStructure;
+
+class Example_Test extends Test_Case {
+  #[PermalinkStructure( '/%postname%/' )]
+  public function test_permalink_structure() {
+    // ...
+  }
+}
+```
+
 ### Adding Your Own Attributes
 
 You can create side effects for your own attributes using the
