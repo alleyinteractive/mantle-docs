@@ -368,7 +368,7 @@ You can also set the `MANTLE_INSTALL_OBJECT_CACHE` environmental variable to
 ### Installing Additional Plugins
 
 If you'd like to install additional plugins to the testing installation, you can
-use the `install_plugin()` method. This method accepts an string of the plugin
+use the `install_plugin()` method. This method accepts a string of the plugin
 name and a version or URL to a zip file.
 
 ```php
