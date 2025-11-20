@@ -83,9 +83,7 @@ for a post. This method accepts the post ID and the new timestamp to use.
 ```php
 namespace App\Tests;
 
-use App\Tests\Test_Case;
-
-class Example_Test extends Test_Case {
+class Example_Test extends TestCase {
   public function test_update_post_modified() {
     $post_id = $this->factory()->post->create();
 
@@ -106,9 +104,7 @@ default values.
 ```php
 namespace App\Tests;
 
-use App\Tests\Test_Case;
-
-class Example_Test extends Test_Case {
+class Example_Test extends TestCase {
   public function test_reset_post_statuses() {
     register_post_status( 'custom', [
       'label' => 'Custom',
@@ -129,9 +125,7 @@ default values.
 ```php
 namespace App\Tests;
 
-use App\Tests\Test_Case;
-
-class Example_Test extends Test_Case {
+class Example_Test extends TestCase {
   public function test_reset_post_types() {
     register_post_type( 'custom', [
       'label' => 'Custom',
@@ -152,9 +146,7 @@ default values.
 ```php
 namespace App\Tests;
 
-use App\Tests\Test_Case;
-
-class Example_Test extends Test_Case {
+class Example_Test extends TestCase {
   public function test_reset_taxonomies() {
     register_taxonomy( 'custom', 'post', [
       'label' => 'Custom',
@@ -175,9 +167,7 @@ method is called automatically between tests.
 ```php
 namespace App\Tests;
 
-use App\Tests\Test_Case;
-
-class Example_Test extends Test_Case {
+class Example_Test extends TestCase {
   public function test_flush_cache() {
     wp_cache_set( 'foo', 'bar' );
 
@@ -196,15 +186,63 @@ user ID to delete.
 ```php
 namespace App\Tests;
 
-use App\Tests\Test_Case;
-
-class Example_Test extends Test_Case {
+class Example_Test extends TestCase {
   public function test_delete_user() {
     $user_id = $this->factory()->user->create();
 
     $this->delete_user( $user_id );
 
     $this->assertFalse( get_user_by( 'id', $user_id ) );
+  }
+}
+```
+
+## Setting Front Page / Blog Page
+
+The `set_show_posts_on_front()` and `set_show_page_on_front()` methods can be
+used to set the front page display settings. This mirrors what is controlled in
+WordPress via `Settings > Reading`.
+
+```php
+namespace App\Tests;
+
+class Example_Test extends Test_Case {
+  public function test_front_page_shows_posts() {
+    $this->set_show_posts_on_front();
+
+    $this->assertEquals( 'posts', get_option( 'show_on_front' ) );
+
+    // Create a post.
+    $post = static::factory()->post->create_and_get();
+
+    // Verify that the front page shows the latest posts.
+    $this->get( '/' )->assertSee( $post->post_title );
+  }
+
+  public function test_front_page_shows_a_specific_page() {
+    $page = $this->factory()->page->create_and_get();
+
+    $this->set_show_page_on_front( front: $page );
+
+    // Verify that the front page shows the specific page.
+    $this->get( '/' )->assertQueriedObject( $page );
+  }
+
+  public function test_front_page_shows_a_specific_page_with_separate_posts_page(): void {
+    $page       = $this->factory()->page->create_and_get();
+    $posts_page = $this->factory()->page->create_and_get();
+
+    $this->set_show_page_on_front( front: $page, posts: $posts_page );
+
+    // Verify that the front page shows the specific page.
+    $this->get( '/' )
+      ->assertQueriedObject( $page )
+      ->assertQueryTrue( 'is_front_page', 'is_page', 'is_singular' );
+
+    // Verify that the posts page shows the latest posts.
+    $this->get( get_permalink( $posts_page ) )
+      ->assertQueriedObject( $posts_page )
+      ->assertQueryTrue( 'is_home' ); // is_home is true for the posts page.
   }
 }
 ```
