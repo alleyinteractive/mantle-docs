@@ -5,7 +5,7 @@ description: "Learn how to use the Mantle Testing Framework to test your WordPre
 
 import DocCardList from '@theme/DocCardList';
 
-# Testing: Getting Started
+# Testing
 
 <div className="lead">
 Mantle provides a powerful testing framework to help you write and run tests
@@ -55,15 +55,6 @@ objects interact with each other or even a full HTTP request to a JSON endpoint.
 provide the most confidence that your system as a whole is functioning as
 intended.**
 
-### Getting Started
-
-After installing a Mantle application, unit tests can be run directly or via
-Composer:
-
-```bash
-./vendor/bin/phpunit
-```
-
 :::info Interested in using the testing framework outside of a Mantle application?
 
 [Mantle Testkit](./testkit.md) is a standalone package that can be used to run
@@ -72,22 +63,19 @@ Mantle's testing framework in any WordPress project. [Learn more about Mantle Te
 
 ## Supported PHPUnit Versions
 
-Mantle supports PHPUnit 9-12 with 12 being the default version for new projects.
-For usage with PHPUnit 9, see [Migrating to Mantle Testing Framework 1.x and
-PHPUnit 10.x](#migrating-to-mantle-testing-framework-1x-and-phpunit-10x).
+Mantle supports PHPUnit 10-12 with 12 being the default version for new
+projects. Tests should be written using PSR-4 file/class naming conventions to ensure
+compatibility with PHPUnit 10 and later (e.g. `tests/Feature/ExampleTest.php`).
 
-## Creating Tests
+:::note Mantle < 1.14 supported PHPUnit 9.x
+Mantle versions prior to 1.14 supported PHPUnit 9.x. If you are using PHPUnit 9.x,
+you will need to use Mantle 1.13.x or earlier. When you are ready, you can
+[migrate to PHPUnit 10+](./migration-phpunit-9.md).
+:::
 
-To create a new test case, use the `make:test` command. By default, the tests
-will be placed in the `tests` directory.
+## Background
 
-```bash
-bin/mantle make:test Namespace\Test_Name>
-
-wp mantle make:test <Namespace\Test_Name>
-```
-
-## Why This Instead of WordPress Core's Test Suite?
+### Why This Instead of WordPress Core's Test Suite?
 
 We hope nobody interprets Mantle's Test Framework as a slight against WordPress
 Core's test suite. We :heart: WordPress Core's test suite and Mantle's Test
@@ -101,13 +89,20 @@ to incorporate the best parts of WordPress Core's test suite, but remove the
 unnecessary bits. Without having to worry about older versions of PHP, that also
 allows Mantle's Test Framework to use the latest versions of PHPUnit itself.
 
-## Drop-in Support for Core Test Suite
+### Drop-in Support for Core Test Suite
 
 The Mantle Test Framework includes support for WordPress core's test suite
 methods, including `go_to()` and `$this->factory()` among others. Projects are
 able to switch to the Mantle Test Framework without needing to rewrite any
 existing unit tests. See the [Mantle Test Kit](./testkit.md) for more
 information.
+
+### Future Plans
+
+Mantle's Test Framework is actively being developed. Our future plans are to
+continue making the testing framework the best possible experience for testing
+WordPress projects. Testing is a critical part of building high-quality software,
+and we want to make that as easy as possible for WordPress developers.
 
 ## Using the Testing Framework
 
@@ -190,18 +185,6 @@ to rsync your project to the WordPress installation:
 ```
 
 For more information, read more about the [Installation Manager](./installation-manager.md).
-
-## Migrating to Mantle Testing Framework 1.x and PHPUnit 10.x
-
-Mantle's Test Framework 1.0 upgrades the PHPUnit version to 10.x. This is a
-major upgrade and may require some changes to your existing tests. The most
-common change is the need for projects to use PSR-4 file/class naming
-conventions. This is a breaking change from PHPUnit 9.x that allowed for classic
-WordPress-style file/class naming conventions in your tests.
-
-Mantle 1.x does support PHPUnit 9.x if you want to continue using that version
-of PHPUnit and not migrate your codebase. For more information, see the
-[1.x CHANGELOG note about the PHPUnit 10 Migration](https://github.com/alleyinteractive/mantle-framework/blob/1.x/CHANGELOG.md#phpunit-10-migration) for more information.
 
 ## More Reading
 
