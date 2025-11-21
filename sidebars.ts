@@ -141,6 +141,7 @@ const sidebars: SidebarsConfig = {
         'testing/parallel',
         'testing/pest',
         'testing/environmental-variables',
+        'testing/migration-phpunit-9',
       ],
     },
     // TODO: Enable this again when packages are ready.

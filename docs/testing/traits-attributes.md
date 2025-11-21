@@ -107,6 +107,8 @@ attribute for details on how to use it.
 
 ### Preserve Object Cache
 
+<!-- Remove with 2.0. -->
+
 When making HTTP requests in tests, the object cache will be cleared before each
 request. If you want to preserve the object cache between requests, you can use
 the `Mantle\Testing\Attributes\PreserveObjectCache` attribute on your test class or
@@ -185,6 +187,28 @@ class ExampleTest extends TestCase {
         $this->get('/some-endpoint')
             ->assertOk();
     }
+}
+```
+
+### Permalink Structure
+
+The WordPress permalink structure can be quickly changed using the
+`Mantle\Testing\Attributes\PermalinkStructure` attribute. This attribute accepts
+a string that represents the permalink structure to use. The attribute will
+automatically flush the rewrite rules after setting the structure.
+
+By default the permalink structure of `/%year%/%monthnum%/%day%/%postname%/` is used.
+
+```php
+namespace App\Tests;
+
+use Mantle\Testing\Attributes\PermalinkStructure;
+
+class Example_Test extends Test_Case {
+  #[PermalinkStructure( '/%postname%/' )]
+  public function test_permalink_structure() {
+    // ...
+  }
 }
 ```
 

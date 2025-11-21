@@ -32,13 +32,14 @@ composer require --dev mantle-framework/testkit
 
 ### Change Test Case
 
-Unit Tests should extend themselves from Testkit's `Test_Case` class
+Unit Tests should extend themselves from Testkit's `Mantle\Testkit\TestCase` class
 in place of core's `WP_UnitTestCase` class.
 
-```php
-use Mantle\Testkit\TestCase as Testkit;
+```diff
+use Mantle\Testkit\TestCase;
 
-class Test_Case extends Testkit {
+-abstract class ExampleTest extends WP_UnitTestCase {
++abstract class ExampleTest extends TestCase {
 
 	public function test_example() {
 		$this->go_to( home_url( '/' ) );
@@ -59,15 +60,23 @@ Commonly unit tests live inside of plugins or themes. For this use case, we're
 going to adjust a theme's unit test bootstrap file to load the test framework.
 Mantle will already be loaded from PHPUnit.
 
-```php
+```php title="tests/bootstrap.php"
 /**
  * Testing using Mantle Framework
  */
 
-// Install Mantle Testing Framework normally.
+// Install Mantle Testing Framework normally with no modifications.
 \Mantle\Testing\install();
+```
 
-// Install Mantle Testing Framework with some callbacks.
+If you need to customize the installation of the Testing Framework (e.g.,
+setting the theme, adding plugins, etc.), you can use the Installation Manager:
+
+```php title="tests/bootstrap.php"
+/**
+ * Testing using Mantle Framework
+ */
+
 \Mantle\Testing\manager()
 	->before( ... )
 	->after( ... )
@@ -86,4 +95,4 @@ For more information, read more about the [Installation Manager](./installation-
 ### Running Tests
 
 Run your tests using `./vendor/bin/phpunit` or add a Composer script to allow
-for `composer phpunit`.
+for `composer phpunit`. You do not need any additional bash script to run the tests.
