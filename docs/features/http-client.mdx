@@ -1869,9 +1869,13 @@ To use SWR caching, use the `cache_flexible()` method:
 The `cache_flexible` method accepts two arguments:
 
 - `stale`: The amount of time to keep the cached response stale. Accepts a
-  number of seconds or a `DateTime` instance.
+  number of seconds or a `DateTime` instance. Also accepts a `Closure` that is
+  passed a request and response instance to dynamically determine the stale
+  time.
 - `expire`: The amount of time to keep the cached response before it is
-  considered expired. Accepts a number of seconds or a `DateTime` instance.
+  considered expired. Accepts a number of seconds or a `DateTime` instance. Also
+  accepts a `Closure` that is passed a request and response instance to
+  dynamically determine the expire time.
 
 Here is an example of passing a number of seconds to the `cache_flexible`
 method:
