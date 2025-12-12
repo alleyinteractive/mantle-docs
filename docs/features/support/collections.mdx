@@ -54,6 +54,19 @@ The `add` method adds an item to the collection.
 $collection = collect( [ 1, 2, 3 ] )->add( 4 );
 ```
 
+### after
+
+Get the item after the given item in the collection. You can pass a value or a callback to determine the target item. Returns null if the item is the last in the collection or not found.
+
+```php
+$collection = collect( [ 'a', 'b', 'c', 'd' ] );
+$after = $collection->after( 'b' ); // 'c'
+
+$after = $collection->after( function( $item ) {
+    return $item === 'c';
+} ); // 'd'
+```
+
 ### all
 
 The `all` method gets all of the items in the collection.
@@ -77,6 +90,19 @@ $average = collect( [
     [ 'name' => 'John', 'age' => 30 ],
     [ 'name' => 'Jane', 'age' => 25 ],
 ] )->average( 'age' );
+```
+
+### before
+
+Get the item before the given item in the collection. You can pass a value or a callback to determine the target item. Returns null if the item is the first in the collection or not found.
+
+```php
+$collection = collect( [ 'a', 'b', 'c', 'd' ] );
+$before = $collection->before( 'c' ); // 'b'
+
+$before = $collection->before( function( $item ) {
+    return $item === 'b';
+} ); // 'a'
 ```
 
 ### chunk
@@ -842,6 +868,36 @@ Skip the first n items.
 
 ```php
 $collection = collect( [ 1, 2, 3 ] )->skip( 2 );
+```
+
+### skip_until
+
+Skip items in the collection until the given condition is met.
+
+```php
+$collection = collect( [ 1, 2, 3, 4, 5 ] )->skip_until( function( $value ) {
+	return $value >= 3;
+} );
+// [3, 4, 5]
+
+$collection = collect( [ 1, 2, 3, 4, 5 ] )->skip_until( 3 );
+// [3, 4, 5]
+```
+
+### skip_while
+
+Skip items in the collection while the given condition is met.
+
+```php
+$collection = collect( [ 1, 2, 3, 4, 5 ] )->skip_while( function( $value ) {
+	return $value <= 3;
+} );
+// [4, 5]
+
+$collection = collect( [ 1, 2, 3, 4, 5 ] )->skip_while( function( $value ) {
+	return $value < 3;
+} );
+// [3, 4, 5]
 ```
 
 ### slice
