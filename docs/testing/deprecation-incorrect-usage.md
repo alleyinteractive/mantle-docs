@@ -302,10 +302,20 @@ class ExampleMethodTest extends Test_Case {
 As with in `WP_UnitTestCase`, you can add PHPDoc annotations to a test method that will
 flag a test as expecting a deprecation or incorrect usage notice.
 
-:::warning
-This format of declaring expected deprecations or incorrect usage is still supported
-but is not preferred. You should use [attributes](#declaring-expectations-with-attributes) or
-[methods](#declaring-expectations-with-methods) to declare expected deprecations or incorrect usage.
+:::warning Using Annotations is Deprecated
+
+This format of declaring expected deprecations or incorrect usage was deprecated
+in PHPUnit 11 and removed with PHPUnit 12. While framework does support PHPUnit
+10 still, this format of declaring expected deprecations or incorrect usage will
+not work if you are using a newer version of PHPUnit. Mantle 2.0 will be
+dropping support for PHPUnit 10 and this format will no longer work.
+
+You should use [attributes](#declaring-expectations-with-attributes) or
+[methods](#declaring-expectations-with-methods) to declare expected deprecations
+or incorrect usage.
+
+**Do not write new code using this format.**
+
 :::
 
 :::note
