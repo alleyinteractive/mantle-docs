@@ -345,6 +345,21 @@ $object = (object) [
 $name = object_get( $object, 'user.name' ); // returns 'John Doe'
 ```
 
+### `now`
+
+The `now` helper returns an instance of `Mantle\Support\Carbon` representing
+the current date and time. 
+
+```php
+use function Mantle\Support\Helpers\now;
+
+$current_time = now(); // returns current date and time as a Carbon instance
+$future = now()->addDays( 10 ); // returns date and time 10 days from now
+```
+
+You can mock the current time using [Time Mocking](../../testing/helpers.md#time-mocking)
+when testing.
+
 ### `retry`
 
 The `retry` helper attempts to execute a given callback a specified number of

@@ -6,6 +6,11 @@ fluent way keeping the action/filter registration close to the method that
 implements the hook. Underneath it calls the core `add_action`/`add_filter`
 methods.
 
+:::tip
+The Hookable trait pairs well with feature classes. See [Hookable Feature](../types.md#hookable-feature)
+for more information.
+:::
+
 ## Usage With Attributes
 
 To use the `Hookable` trait, you can use the following pattern:
