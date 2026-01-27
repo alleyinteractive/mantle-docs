@@ -49,6 +49,11 @@ requests from being made during tests. This is useful for testing code that
 makes remote requests, but you don't want to actually make the requests or fake
 them.
 
+### Warn Remote Requests
+
+The `Mantle\Testing\Concerns\Warn_Remote_Requests` trait will warn when a test
+makes a remote request without providing a default response.
+
 ### Reset Data Structures
 
 The `Mantle\Testing\Concerns\Reset_Data_Structures` trait will reset data
