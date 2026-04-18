@@ -88,6 +88,29 @@ const config: Config = {
     ],
   ],
 
+  plugins: [
+    [
+      '@signalwire/docusaurus-plugin-llms-txt',
+      {
+        runOnPostBuild: true,
+        onRouteError: 'warn',
+        content: {
+          enableMarkdownFiles: true,
+          enableLlmsFullTxt: false,
+          includeBlog: false,
+          includePages: false,
+          includeDocs: true,
+          includeVersionedDocs: false,
+          excludeRoutes: [
+            '/docs/0.12.x/**',
+            '/next/**',
+          ],
+        },
+      },
+    ],
+  ],
+  themes: ['@signalwire/docusaurus-theme-llms-txt'],
+
   themeConfig: {
     algolia: {
       appId: 'Y3WWPYIIL4',
