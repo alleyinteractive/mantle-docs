@@ -10,6 +10,43 @@
 
 ---
 
+## Post-implementation note (2026-04-17)
+
+The plugin config shape in Task 2 below was based on the theme's README (which documents an
+as-yet-unreleased plugin API). The installed plugin v1.2.2 uses a simpler flat schema. The
+implementation used the **actual v1.2.2 shape**, verified against the plugin's
+`lib/types/public.d.ts`:
+
+```ts
+plugins: [
+  [
+    '@signalwire/docusaurus-plugin-llms-txt',
+    {
+      runOnPostBuild: true,
+      onRouteError: 'warn',
+      content: {
+        enableMarkdownFiles: true,
+        enableLlmsFullTxt: false,
+        includeBlog: false,
+        includePages: false,
+        includeDocs: true,
+        includeVersionedDocs: false,
+        excludeRoutes: ['/docs/0.12.x/**', '/next/**'],
+      },
+    },
+  ],
+],
+themes: ['@signalwire/docusaurus-theme-llms-txt'],
+```
+
+Intent is preserved (current-docs-only scope, homepage excluded, per-page `.md` generated,
+llms.txt generated, build not broken on one-off route errors). The plan's `ui.copyPageContent`
+block was dropped — that option doesn't exist in v1.2.2; the theme falls back to built-in
+defaults (button labeled "Copy Page" with Markdown / ChatGPT / Claude actions). The plan's
+`onSectionError` key was also dropped — it doesn't exist in v1.2.2 either.
+
+---
+
 ## File Structure
 
 | File | Change | Responsibility |
