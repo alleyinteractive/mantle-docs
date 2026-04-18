@@ -74,6 +74,9 @@ const config: Config = {
             '/tags/**',
             '/docs/0.12.x/**',
             '/next/**',
+            '/llms.txt',
+            '/llms-full.txt',
+            '**/*.md',
           ],
           filename: 'sitemap.xml',
         },
@@ -87,6 +90,54 @@ const config: Config = {
       },
     ],
   ],
+
+  plugins: [
+    [
+      '@signalwire/docusaurus-plugin-llms-txt',
+      {
+        runOnPostBuild: true,
+        onRouteError: 'warn',
+        onSectionError: 'warn',
+        markdown: {
+          enableFiles: true,
+          includeDocs: true,
+          includeBlog: false,
+          includePages: false,
+          includeVersionedDocs: false,
+          excludeRoutes: ['/docs/0.12.x/**', '/next/**'],
+        },
+        llmsTxt: {
+          enableLlmsFullTxt: false,
+          enableDescriptions: true,
+          siteTitle: 'Mantle by Alley',
+          siteDescription:
+            'Mantle is a Laravel-inspired framework for building large, robust websites and applications with WordPress. These docs cover installation, architecture, routing and HTTP, Eloquent-style models, queues, templating, and testing.',
+          includeDocs: true,
+          includeBlog: false,
+          includePages: false,
+          includeVersionedDocs: false,
+          excludeRoutes: ['/docs/0.12.x/**', '/next/**'],
+        },
+        ui: {
+          copyPageContent: {
+            buttonLabel: 'Copy as Markdown',
+            contentStrategy: 'prefer-markdown',
+            display: {
+              docs: true,
+            },
+            actions: {
+              viewMarkdown: true,
+              ai: {
+                chatGPT: true,
+                claude: true,
+              },
+            },
+          },
+        },
+      },
+    ],
+  ],
+  themes: ['@signalwire/docusaurus-theme-llms-txt'],
 
   themeConfig: {
     algolia: {
