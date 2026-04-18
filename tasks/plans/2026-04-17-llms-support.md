@@ -12,10 +12,16 @@
 
 ## Post-implementation note (2026-04-17)
 
-The plugin config shape in Task 2 below was based on the theme's README (which documents an
-as-yet-unreleased plugin API). The installed plugin v1.2.2 uses a simpler flat schema. The
-implementation used the **actual v1.2.2 shape**, verified against the plugin's
-`lib/types/public.d.ts`:
+Initial implementation landed on plugin `@1.2.2` + theme `@canary`. That pair was a mismatch —
+the canary theme is designed for a newer plugin API that `1.2.2` does not publish. We then
+upgraded both packages to the paired `@alpha` track:
+
+- `@signalwire/docusaurus-plugin-llms-txt@2.0.0-alpha.7`
+- `@signalwire/docusaurus-theme-llms-txt@1.0.0-alpha.9`
+
+The alpha plugin validates the config shape the plan originally specified (`markdown`,
+`llmsTxt`, and `ui.copyPageContent` blocks), plus supports `onSectionError`. Final shape
+committed to `docusaurus.config.ts`:
 
 ```ts
 plugins: [
@@ -24,14 +30,33 @@ plugins: [
     {
       runOnPostBuild: true,
       onRouteError: 'warn',
-      content: {
-        enableMarkdownFiles: true,
-        enableLlmsFullTxt: false,
+      onSectionError: 'warn',
+      markdown: {
+        enableFiles: true,
+        includeDocs: true,
         includeBlog: false,
         includePages: false,
-        includeDocs: true,
         includeVersionedDocs: false,
         excludeRoutes: ['/docs/0.12.x/**', '/next/**'],
+      },
+      llmsTxt: {
+        enableLlmsFullTxt: false,
+        includeDocs: true,
+        includeBlog: false,
+        includePages: false,
+        includeVersionedDocs: false,
+        excludeRoutes: ['/docs/0.12.x/**', '/next/**'],
+      },
+      ui: {
+        copyPageContent: {
+          buttonLabel: 'Copy as Markdown',
+          contentStrategy: 'prefer-markdown',
+          display: { docs: true },
+          actions: {
+            viewMarkdown: true,
+            ai: { chatGPT: true, claude: true },
+          },
+        },
       },
     },
   ],
@@ -39,11 +64,8 @@ plugins: [
 themes: ['@signalwire/docusaurus-theme-llms-txt'],
 ```
 
-Intent is preserved (current-docs-only scope, homepage excluded, per-page `.md` generated,
-llms.txt generated, build not broken on one-off route errors). The plan's `ui.copyPageContent`
-block was dropped — that option doesn't exist in v1.2.2; the theme falls back to built-in
-defaults (button labeled "Copy Page" with Markdown / ChatGPT / Claude actions). The plan's
-`onSectionError` key was also dropped — it doesn't exist in v1.2.2 either.
+The plugin is on an alpha track — expect API shifts before 1.0. Pin exact versions when
+upgrading and re-check the config shape against `lib/src/types/public.d.ts` on each bump.
 
 ---
 
