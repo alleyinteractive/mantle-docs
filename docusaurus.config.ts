@@ -97,17 +97,38 @@ const config: Config = {
       {
         runOnPostBuild: true,
         onRouteError: 'warn',
-        content: {
-          enableMarkdownFiles: true,
-          enableLlmsFullTxt: false,
+        onSectionError: 'warn',
+        markdown: {
+          enableFiles: true,
+          includeDocs: true,
           includeBlog: false,
           includePages: false,
-          includeDocs: true,
           includeVersionedDocs: false,
-          excludeRoutes: [
-            '/docs/0.12.x/**',
-            '/next/**',
-          ],
+          excludeRoutes: ['/docs/0.12.x/**', '/next/**'],
+        },
+        llmsTxt: {
+          enableLlmsFullTxt: false,
+          includeDocs: true,
+          includeBlog: false,
+          includePages: false,
+          includeVersionedDocs: false,
+          excludeRoutes: ['/docs/0.12.x/**', '/next/**'],
+        },
+        ui: {
+          copyPageContent: {
+            buttonLabel: 'Copy as Markdown',
+            contentStrategy: 'prefer-markdown',
+            display: {
+              docs: true,
+            },
+            actions: {
+              viewMarkdown: true,
+              ai: {
+                chatGPT: true,
+                claude: true,
+              },
+            },
+          },
         },
       },
     ],
