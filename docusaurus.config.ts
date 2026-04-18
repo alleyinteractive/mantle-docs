@@ -108,6 +108,10 @@ const config: Config = {
         },
         llmsTxt: {
           enableLlmsFullTxt: false,
+          enableDescriptions: true,
+          siteTitle: 'Mantle by Alley',
+          siteDescription:
+            'Mantle is a Laravel-inspired framework for building large, robust websites and applications with WordPress. These docs cover installation, architecture, routing and HTTP, Eloquent-style models, queues, templating, and testing.',
           includeDocs: true,
           includeBlog: false,
           includePages: false,
