@@ -66,3 +66,12 @@ pre {
 .lead p {
   font-size: 20px;
 }
+
+.footer--dark .footer__copyright a {
+  color: var(--ifm-footer-link-color);
+  text-decoration: underline;
+}
+
+.footer--dark .footer__copyright a:hover {
+  color: var(--ifm-footer-link-hover-color);
+}
