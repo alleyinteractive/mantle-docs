@@ -107,7 +107,7 @@ const config: Config = {
           excludeRoutes: ['/docs/0.12.x/**', '/next/**'],
         },
         llmsTxt: {
-          enableLlmsFullTxt: false,
+          enableLlmsFullTxt: true,
           enableDescriptions: true,
           siteTitle: 'Mantle by Alley',
           siteDescription:
@@ -188,17 +188,7 @@ const config: Config = {
     },
     footer: {
       style: 'dark',
-      links: [
-        {
-          items: [
-            {
-              label: 'llms.txt',
-              href: '/llms.txt',
-            },
-          ],
-        },
-      ],
-      copyright: `Copyright &copy; ${new Date().getFullYear()} <a href="https://alley.com/">Alley</a>. Built with Docusaurus.`,
+      copyright: `Copyright &copy; ${new Date().getFullYear()} <a href="https://alley.com/">Alley</a>. Built with Docusaurus. For AI agents: <a href="/llms.txt">llms.txt</a> &middot; <a href="/llms-full.txt">llms-full.txt</a>.`,
     },
     prism: {
       additionalLanguages: ['bash', 'json', 'php', 'diff'],
