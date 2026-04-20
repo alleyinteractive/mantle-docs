@@ -84,6 +84,6 @@ export default async (request: Request, context: Context): Promise<Response> => 
 };
 
 export const config: Config = {
-  path: '/*',
+  path: '/docs/*',
   cache: 'manual',
 };
