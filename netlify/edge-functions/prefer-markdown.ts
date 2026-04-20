@@ -53,6 +53,16 @@ export default async (request: Request, context: Context): Promise<Response> => 
   const plainQ = acceptQuality(accept, 'text/plain');
   const markdownQ = acceptQuality(accept, 'text/markdown');
 
+  if (accept && htmlQ === 0 && plainQ === 0 && markdownQ === 0) {
+    return new Response('Not Acceptable', {
+      status: 406,
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        Vary: 'Accept',
+      },
+    });
+  }
+
   if (Math.max(plainQ, markdownQ) <= htmlQ) {
     return withVary(await context.next());
   }
