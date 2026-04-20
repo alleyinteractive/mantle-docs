@@ -188,6 +188,16 @@ const config: Config = {
     },
     footer: {
       style: 'dark',
+      links: [
+        {
+          items: [
+            {
+              label: 'llms.txt',
+              href: '/llms.txt',
+            },
+          ],
+        },
+      ],
       copyright: `Copyright &copy; ${new Date().getFullYear()} <a href="https://alley.com/">Alley</a>. Built with Docusaurus.`,
     },
     prism: {
