@@ -117,6 +117,13 @@ const config: Config = {
           includePages: false,
           includeVersionedDocs: false,
           excludeRoutes: ['/docs/0.12.x/**', '/next/**'],
+          optionalLinks: [
+            {
+              title: 'Mantle Framework on GitHub',
+              url: 'https://github.com/alleyinteractive/mantle-framework',
+              description: 'Source code for the Mantle Framework.',
+            },
+          ],
         },
         ui: {
           copyPageContent: {
