@@ -12,7 +12,7 @@ export default function LayoutWrapper(props: Props): JSX.Element {
   const { metadata } = useDoc();
   const { siteConfig } = useDocusaurusContext();
   const markdownUrl = new URL(
-    `${metadata.permalink}.md`,
+    `${metadata.permalink.replace(/\/$/, '')}.md`,
     siteConfig.url,
   ).toString();
 
