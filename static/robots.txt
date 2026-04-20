@@ -1,4 +1,5 @@
 User-agent: *
 Disallow: /docs/0.12.x
 Disallow: /docs/next
+Content-Signal: ai-train=yes, search=yes, ai-input=yes
 Sitemap: https://mantle.alley.com/sitemap.xml
