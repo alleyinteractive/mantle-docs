@@ -82,6 +82,8 @@ export default async (request: Request, context: Context): Promise<Response> => 
     if (mdResponse.ok) {
       const headers = new Headers(mdResponse.headers);
       headers.append('Vary', 'Accept');
+      const preferred = markdownQ >= plainQ ? 'text/markdown' : 'text/plain';
+      headers.set('Content-Type', `${preferred}; charset=utf-8`);
       return new Response(mdResponse.body, {
         status: mdResponse.status,
         statusText: mdResponse.statusText,
