@@ -68,7 +68,9 @@ export default async (request: Request, context: Context): Promise<Response> => 
   }
 
   const mdUrl = new URL(url);
-  mdUrl.pathname = `${url.pathname.replace(/\/$/, '')}.md`;
+  mdUrl.pathname = url.pathname === '/'
+    ? '/llms.txt'
+    : `${url.pathname.replace(/\/$/, '')}.md`;
 
   try {
     const mdResponse = await fetch(new Request(mdUrl.toString(), {
@@ -94,6 +96,6 @@ export default async (request: Request, context: Context): Promise<Response> => 
 };
 
 export const config: Config = {
-  path: '/docs/*',
+  path: ['/', '/docs/*'],
   cache: 'manual',
 };
