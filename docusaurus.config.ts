@@ -80,7 +80,7 @@ const config: Config = {
           ],
           filename: 'sitemap.xml',
         },
-        googleAnalytics: {
+        gtag: {
           trackingID: 'G-G4HGJSHN3S',
           anonymizeIP: true,
         },
