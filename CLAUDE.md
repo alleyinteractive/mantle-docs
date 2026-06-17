@@ -31,12 +31,22 @@ Broken links fail the build (`onBrokenLinks: 'throw'` in `docusaurus.config.ts`)
 - **`versioned_docs/version-<X>/`** — snapshots of older doc versions. `versions.json` lists them. Do not edit current docs and expect old versions to update; each version is an independent copy.
 - **`versioned_sidebars/`** — sidebar configuration frozen at each version snapshot.
 - **`sidebars.ts`** — sidebar config for the current docs. All top-level pages must be listed here or under a `generated-index` category to appear in navigation.
-- **`docusaurus.config.ts`** — site config. Notable: `lastVersion: 'current'`, Algolia search (`indexName: 'mantle'`), GA tracking, Prism languages (`bash, json, php, diff`).
+- **`docusaurus.config.ts`** — site config. Notable: `lastVersion: 'current'`, Algolia search (`indexName: 'mantle'`), `gtag` analytics, Prism languages (`bash, json, php, diff`), and the `@signalwire/docusaurus-plugin-llms-txt` plugin + theme (see AI-agent docs below).
 - **`src/theme.ts`** — custom Prism light/dark themes imported by `docusaurus.config.ts`.
 - **`src/pages/index.tsx`** — custom homepage (not a doc page).
 - **`src/components/`** — React components used in MDX pages (`HomepageFeatures`, `HomepageExamples`, `Features`, `TOCInlineWrapped`).
 - **`netlify.toml`** — build config + URL redirects. When renaming/moving a doc page, add a 301 redirect here rather than leaving broken inbound links.
+- **`netlify/edge-functions/prefer-markdown.ts`** — Netlify edge function on `/` and `/docs/*` that does `Accept`-header content negotiation: clients preferring `text/markdown`/`text/plain` over `text/html` get the `.md` source (or `/llms.txt` for `/`) instead of the rendered page.
 - **`static/`** — served at site root (images, favicon, etc.).
+
+## AI-agent docs (llms.txt)
+
+The site is built to be consumed by LLMs/agents, not just browsers:
+
+- `@signalwire/docusaurus-plugin-llms-txt` generates `/llms.txt` (index) and `/llms-full.txt` (full corpus) at build time, plus per-page `.md` files. Configured in `docusaurus.config.ts` to include current docs only — versioned docs (`/docs/0.12.x/**`) and `/next/**` are excluded.
+- `@signalwire/docusaurus-theme-llms-txt` adds the "Copy as Markdown" / "Open in ChatGPT/Claude" UI on doc pages.
+- These generated files are excluded from `sitemap.xml` (see `sitemap.ignorePatterns`) and the edge function serves them via content negotiation.
+- When adding plugins or changing the docs structure, keep these exclusion lists in sync so versioned/draft content doesn't leak into the LLM corpus.
 
 ## Adding or editing documentation
 
