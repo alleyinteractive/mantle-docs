@@ -46,3 +46,8 @@
   to = "/docs/models/database-factory"
   status = 301
   force = true
+[[redirects]]
+  from = "/schema/meta.json"
+  to = "https://raw.githubusercontent.com/alleyinteractive/mantle-framework/HEAD/src/Mantle/Support/schema/meta.json"
+  status = 302
+  force = true
