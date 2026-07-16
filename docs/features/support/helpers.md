@@ -525,7 +525,7 @@ like this:
 
 ```php title="post-meta.json"
 {
-  "$schema": "https://raw.githubusercontent.com/alleyinteractive/mantle-framework/HEAD/src/mantle/support/schema/meta.json",
+  "$schema": "https://mantle.alley.com/schema/meta.json",
   "example_meta_key": {
     "post_types": "article",
     "type": "string"
