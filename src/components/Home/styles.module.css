@@ -276,7 +276,23 @@
   color: var(--mantle-ink-dim);
 }
 
+.windowPanes {
+  display: grid;
+}
+
+.windowPane {
+  display: flex;
+  grid-area: 1 / 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.windowPaneHidden {
+  visibility: hidden;
+}
+
 .window :global(.theme-code-block) {
+  flex: 1;
   margin: 0;
   border: 0;
   border-radius: 0;

@@ -28,6 +28,8 @@ Route::rest_api('namespace/v1', '/route-to-use', function () {
 
 const TEST_EXAMPLE = `class UploadTest extends TestCase {
     public function test_upload_file(): void {
+        $this->acting_as('author');
+
         $post = static::factory()->post->create_and_get();
 
         $this->get($post)
@@ -35,7 +37,10 @@ const TEST_EXAMPLE = `class UploadTest extends TestCase {
             ->assertSee($post->post_title);
 
         $this->post('/upload', [ 'image' => [ ... ] ])
-            ->assertStatus(201);
+            ->assertStatus(201)
+            ->assertJsonPathExists('attachment_id');
+
+        $this->assertJobQueued(Generate_Thumbnails::class);
     }
 }`;
 

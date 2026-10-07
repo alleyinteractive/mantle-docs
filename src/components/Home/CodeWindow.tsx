@@ -44,7 +44,17 @@ export default function CodeWindow({ files, chrome = false, className }: Props):
           <span className={styles.windowTitle}>{files[0].name}</span>
         )}
       </div>
-      <CodeBlock language="php">{files[active].code}</CodeBlock>
+      <div className={styles.windowPanes}>
+        {files.map((file, index) => (
+          <div
+            key={file.name}
+            className={clsx(styles.windowPane, index !== active && styles.windowPaneHidden)}
+            aria-hidden={index !== active}
+          >
+            <CodeBlock language="php">{file.code}</CodeBlock>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
