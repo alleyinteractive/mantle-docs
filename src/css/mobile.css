@@ -37,6 +37,7 @@
 
   .navbar__toggle {
     order: 3;
+    align-self: center;
     display: flex;
     align-items: center;
     justify-content: center;
