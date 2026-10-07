@@ -1,0 +1,324 @@
+.mantle-drawer-tools,
+.mantle-drawer-links,
+.mantle-toc-mobile__progress {
+  display: none;
+}
+
+@media (max-width: 996px) {
+  .navbar {
+    padding: 0 8px 0 16px;
+  }
+
+  .navbar__inner > .navbar__items:first-child {
+    display: contents;
+  }
+
+  .navbar__inner .navbar__brand {
+    order: 1;
+    margin-right: auto;
+  }
+
+  .navbar__logo {
+    height: 28px;
+  }
+
+  .navbar__title {
+    font-size: 17px;
+  }
+
+  .navbar__items--right {
+    order: 2;
+    flex: none;
+  }
+
+  .navbar__items--right [class*='navbarSearchContainer_'] {
+    position: static;
+  }
+
+  .navbar__toggle {
+    order: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+    color: var(--mantle-ink-text-2);
+  }
+
+  .navbar .DocSearch-Button {
+    width: 44px;
+    min-width: 0;
+    height: 44px;
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    border: 0;
+    background: transparent;
+  }
+
+  .navbar .DocSearch-Button-Placeholder,
+  .navbar .DocSearch-Button-Keys {
+    display: none;
+  }
+
+  :root {
+    --ifm-navbar-sidebar-width: min(390px, 100vw);
+  }
+
+  .navbar-sidebar {
+    display: flex;
+    flex-direction: column;
+    background: var(--mantle-ink);
+    color: var(--mantle-ink-text);
+  }
+
+  .navbar-sidebar__brand {
+    flex: none;
+    padding: 0 8px 0 16px;
+    border-bottom: 1px solid var(--mantle-ink-line);
+    box-shadow: none;
+  }
+
+  .navbar-sidebar__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-left: 0;
+  }
+
+  .navbar-sidebar__brand [class*='colorModeToggle'] button {
+    width: 44px;
+    height: 44px;
+    color: var(--mantle-ink-text-2);
+  }
+
+  .mantle-drawer-tools {
+    display: flex;
+    flex: none;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 16px;
+    border-bottom: 1px solid var(--mantle-ink-line);
+  }
+
+  .mantle-drawer-tools .DocSearch-Button {
+    flex: 1 1 100%;
+    width: auto;
+    height: 46px;
+    margin: 0;
+    padding: 0 16px;
+    justify-content: flex-start;
+    border: 1px solid var(--mantle-ink-line-strong);
+    background: var(--mantle-ink-raised);
+  }
+
+  .mantle-drawer-tools .DocSearch-Button-Placeholder {
+    display: inline;
+  }
+
+  .mantle-drawer-tools .DocSearch-Button-Keys {
+    display: none;
+  }
+
+  .mantle-drawer-tools .dropdown {
+    display: block;
+    padding: 0;
+    flex: 1 1 100%;
+  }
+
+  .mantle-drawer-tools .dropdown > .navbar__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 44px;
+    padding: 0 16px;
+    border: 1px solid var(--mantle-ink-line-strong);
+    border-radius: 999px;
+    font-family: var(--mantle-font-mono);
+    font-size: 13px;
+    color: var(--mantle-ink-text-2);
+  }
+
+  .navbar-sidebar__items {
+    flex: 1;
+    height: auto;
+    min-height: 0;
+  }
+
+  .navbar-sidebar__item {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    padding: 16px 12px 0;
+  }
+
+  .navbar-sidebar__item > .menu__list {
+    flex: 1;
+  }
+
+  .navbar-sidebar .menu__link {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    font-size: 15.5px;
+    color: var(--mantle-ink-text-3);
+  }
+
+  .navbar-sidebar .menu__link--active:not(.menu__link--sublist) {
+    background: var(--mantle-ink-active);
+    color: #ffffff;
+  }
+
+  .navbar-sidebar__back {
+    width: 100%;
+    margin: 0 0 12px;
+    padding: 0 12px;
+    min-height: 44px;
+    border-radius: 10px;
+    background: var(--mantle-ink-raised);
+    color: var(--mantle-ink-text-2);
+    font-size: 14px;
+  }
+
+  .mantle-drawer-links {
+    display: flex;
+    gap: 8px;
+    margin: 16px -12px 0;
+    padding: 14px 16px 20px;
+    border-top: 1px solid var(--mantle-ink-line);
+    background: var(--mantle-ink);
+  }
+
+  .mantle-drawer-links::after {
+    content: none;
+  }
+
+  .mantle-drawer-links a {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    border: 1px solid var(--mantle-ink-line-strong);
+    border-radius: 999px;
+    color: var(--mantle-ink-text);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .mantle-drawer-links a[data-mono] {
+    font-family: var(--mantle-font-mono);
+    font-size: 13px;
+    font-weight: 400;
+  }
+
+  .mantle-toc {
+    display: none;
+  }
+
+  .mantle-toc-mobile {
+    position: sticky;
+    top: var(--ifm-navbar-height);
+    z-index: 2;
+    margin: 0 calc(-1 * var(--ifm-spacing-horizontal)) 1rem;
+    border-bottom: 1px solid var(--mantle-line);
+    background: var(--ifm-background-surface-color);
+  }
+
+  .mantle-toc-mobile .theme-doc-toc-mobile {
+    margin: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .mantle-toc-mobile .theme-doc-toc-mobile > button {
+    min-height: 46px;
+    padding: 0 16px;
+    font-size: 14px;
+    color: var(--ifm-font-color-base);
+  }
+
+  .mantle-toc-mobile .table-of-contents {
+    padding: 0 16px 12px;
+  }
+
+  .mantle-toc-mobile .table-of-contents__link {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .mantle-toc-mobile__progress {
+    display: block;
+    height: 2px;
+    background: var(--mantle-line);
+  }
+
+  .mantle-toc-mobile__progress span {
+    display: block;
+    height: 100%;
+    background: var(--mantle-accent);
+    transform-origin: left;
+  }
+
+  .markdown h1 {
+    font-size: 56px;
+    line-height: 0.95;
+  }
+
+  .markdown h2 {
+    font-size: 28px;
+    line-height: 1.12;
+  }
+
+  .markdown h3 {
+    font-size: 21px;
+  }
+
+  .markdown {
+    font-size: 16.5px;
+    line-height: 1.7;
+  }
+
+  .lead p {
+    font-size: 19px;
+  }
+
+  .theme-doc-markdown > .theme-code-block,
+  .theme-doc-markdown > .tabs-container {
+    margin-left: calc(-1 * var(--ifm-spacing-horizontal));
+    margin-right: calc(-1 * var(--ifm-spacing-horizontal));
+  }
+
+  .theme-doc-markdown > .theme-code-block,
+  .theme-doc-markdown > .tabs-container > .tabs,
+  .theme-doc-markdown > .tabs-container .theme-code-block {
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0 !important;
+  }
+
+  .theme-code-block pre {
+    font-size: 12.5px;
+  }
+
+  .table-of-contents__link,
+  .pagination-nav__link {
+    min-height: 44px;
+  }
+
+  .pagination-nav {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  [class*='copyButton_'] [class*='mainButton_'],
+  [class*='copyButton_'] [class*='dropdownButton_'] {
+    min-height: 44px;
+  }
+
+  .footer__links .footer__col {
+    margin-bottom: 1.5rem;
+  }
+}

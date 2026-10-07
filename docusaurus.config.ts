@@ -1,5 +1,5 @@
 import type {Config} from '@docusaurus/types';
-import { darkTheme, lightTheme } from './src/theme';
+import { codeTheme } from './src/theme';
 
 const config: Config = {
   title: 'Mantle by Alley',
@@ -43,7 +43,7 @@ const config: Config = {
       tagName: 'link',
       attributes: {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Schibsted+Grotesk:wght@400;500;600;700;800&display=swap',
       },
     },
   ],
@@ -147,6 +147,7 @@ const config: Config = {
   themes: ['@signalwire/docusaurus-theme-llms-txt'],
 
   themeConfig: {
+    image: 'img/og-image.png',
     algolia: {
       appId: 'Y3WWPYIIL4',
       apiKey: 'c92c3230a91695a1b01b2d74ed79d959',
@@ -156,16 +157,15 @@ const config: Config = {
     },
     colorMode: {
       defaultMode: 'dark',
-      respectPrefersColorScheme: true,
+      respectPrefersColorScheme: false,
     },
     metadata: [
       { name: 'google-site-verification', content: '9j6GWEdJJsL1zqzPRBMYahbaFg0NNj-NVglppOfGyJE' },
       { name: 'apple-mobile-web-app-capable', content: 'yes' },
       { name: 'apple-mobile-web-app-status-bar-style', content: 'black' },
-      { property: 'og:image', content: 'https://repository-images.githubusercontent.com/261240189/e61bc280-2d73-11eb-92d0-249447854ca0' },
     ],
     navbar: {
-      title: 'Mantle by Alley',
+      title: 'Mantle',
       logo: {
         alt: 'Mantle by Alley',
         src: 'img/logo-no-text.svg',
@@ -176,6 +176,18 @@ const config: Config = {
           docId: 'getting-started/index',
           position: 'left',
           label: 'Docs',
+        },
+        {
+          type: 'doc',
+          docId: 'testing/index',
+          position: 'left',
+          label: 'Testing',
+        },
+        {
+          type: 'doc',
+          docId: 'testing/testkit',
+          position: 'left',
+          label: 'Testkit',
         },
         {
           type: 'docsVersionDropdown',
@@ -195,12 +207,44 @@ const config: Config = {
     },
     footer: {
       style: 'dark',
-      copyright: `Copyright &copy; ${new Date().getFullYear()} <a href="https://alley.com/">Alley</a>. Built with Docusaurus. For AI agents: <a href="/llms.txt">llms.txt</a> &middot; <a href="/llms-full.txt">llms-full.txt</a>.`,
+      links: [
+        {
+          items: [
+            {
+              html: '<div class="footer-brand"><span class="footer-brand__name"><img src="/img/logo-no-text.svg" alt="" width="28" height="28" />Mantle <span>by Alley</span></span><p>A Laravel-inspired framework for WordPress. Open source, made by Alley.</p></div>',
+            },
+          ],
+        },
+        {
+          title: 'Docs',
+          items: [
+            { label: 'Getting Started', to: '/docs/getting-started' },
+            { label: 'Architecture', to: '/docs/architecture' },
+            { label: 'Testing', to: '/docs/testing' },
+          ],
+        },
+        {
+          title: 'Community',
+          items: [
+            { label: 'GitHub', href: 'https://github.com/alleyinteractive/mantle' },
+            { label: 'Framework Monorepo', href: 'https://github.com/alleyinteractive/mantle-framework' },
+            { label: 'Alley', href: 'https://alley.com/' },
+          ],
+        },
+        {
+          title: 'For agents',
+          items: [
+            { label: '/llms.txt', href: 'pathname:///llms.txt' },
+            { label: '/llms-full.txt', href: 'pathname:///llms-full.txt' },
+          ],
+        },
+      ],
+      copyright: `Copyright &copy; ${new Date().getFullYear()} <a href="https://alley.com/">Alley</a>. Built with Docusaurus.`,
     },
     prism: {
       additionalLanguages: ['bash', 'json', 'php', 'diff'],
-      theme: lightTheme,
-      darkTheme: darkTheme,
+      theme: codeTheme,
+      darkTheme: codeTheme,
     },
   },
 };
