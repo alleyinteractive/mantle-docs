@@ -1,7 +1,12 @@
 ---
 title: Getting Started
 description: Learn about Mantle and how it can help you build enterprise-level WordPress applications.
+numbered_headings: true
 ---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import { Card, CardGrid } from '@site/src/components/CardGrid';
 
 # Mantle
 
@@ -17,6 +22,13 @@ Mantle always uses the same underlying WordPress APIs and functions you know and
 love. It doesn't replace WordPress, but rather enhances it with modern
 development practices and tools.
 </div>
+
+<CardGrid>
+  <Card index="01" title="Models" href="#provides-models-for-interacting-with-data">Data without wp_insert_post() quirks</Card>
+  <Card index="02" title="Blade Templating" href="#adds-blade-templating">Clean views, no PHP tag clutter</Card>
+  <Card index="03" title="Better Routing" href="#better-routing">Fluent web and REST routes</Card>
+  <Card index="04" title="Testing" href="#independent-testing-framework">An independent test framework</Card>
+</CardGrid>
 
 ## What is Mantle?
 
@@ -65,6 +77,9 @@ Mantle allows you to use Blade templating in your WordPress project. Blade is a
 powerful templating engine that allows you to write clean, concise templates
 without the clutter of PHP tags.
 
+<Tabs>
+<TabItem value="controller" label="ExampleController.php">
+
 ```php title="ExampleController.php"
 class ExampleController extends Controller {
     public function index() {
@@ -74,6 +89,9 @@ class ExampleController extends Controller {
     }
 }
 ```
+
+</TabItem>
+<TabItem value="view" label="posts.blade.php" default>
 
 ```php title="resources/views/posts.blade.php"
 <div class="posts">
@@ -91,6 +109,9 @@ class ExampleController extends Controller {
     @endforeach
 </div>
 ```
+
+</TabItem>
+</Tabs>
 
 For more information about blade and other templating, see the
 [documentation](../basics/templating.md).
@@ -111,7 +132,7 @@ Route::get( '/post/{post}', function ( Post $post ) {
   return view( 'post' )->with( 'post', $post );
 } );
 
-Route::post( '/upload/', function ( Request $post ) {
+Route::post( '/upload/', function ( Request $request ) {
   $attachment_id = $request->file( 'uploaded_image' )->store_as_attachment();
 
   return response()->json( [
@@ -163,13 +184,11 @@ your project involves complex data modeling, customized RESTful APIs, advanced
 caching, or intricate frontend requirements, Mantle equips you with the tools to
 build with confidence.
 
-- Agencies and In-House Development Teams building bespoke WordPress
-  applications for enterprise clients. Mantle can be used to build new projects
-  from scratch or to enhance existing ones.
-- Advanced WordPress Developers seeking a cleaner, more organized framework for
-  handling complex applications with DRY and MVP principles.
-- Product Owners looking to streamline development processes, reduce technical
-  debt, and ensure maintainable codebases.
+<CardGrid columns={3}>
+  <Card title="Agencies and in-house teams">Building bespoke WordPress applications for enterprise clients, from scratch or on top of existing ones.</Card>
+  <Card title="Advanced WordPress developers">Seeking a cleaner, more organized framework for handling complex applications with DRY and MVP principles.</Card>
+  <Card title="Product owners">Looking to streamline development processes, reduce technical debt, and ensure maintainable codebases.</Card>
+</CardGrid>
 
 ## How can I get started with Mantle?
 
