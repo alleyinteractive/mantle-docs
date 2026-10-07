@@ -24,6 +24,13 @@ const config: Config = {
     locales: ['en'],
   },
   headTags: [
+    // Define window.gtag before Google's async script loads so early route changes don't throw.
+    {
+      tagName: 'script',
+      attributes: { type: 'text/javascript' },
+      innerHTML:
+        'window.dataLayer=window.dataLayer||[];window.gtag=window.gtag||function(){window.dataLayer.push(arguments)};',
+    },
     {
       tagName: 'link',
       attributes: {
