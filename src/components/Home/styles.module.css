@@ -105,8 +105,17 @@
 
 .heroActions {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
   gap: 12px;
+}
+
+.heroActions .command {
+  flex: 1 1 auto;
+}
+
+.heroActions .buttonAccent {
+  flex-shrink: 0;
 }
 
 .command {
@@ -135,7 +144,10 @@
 
 .commandText {
   flex-grow: 1;
+  min-width: 0;
   overflow-x: auto;
+  scrollbar-width: none;
+  mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
   padding: 0;
   border: 0;
   background: none;
@@ -614,7 +626,7 @@
 
   .heroActions {
     flex-direction: column-reverse;
-    width: 100%;
+    align-items: stretch;
     gap: 10px;
   }
 

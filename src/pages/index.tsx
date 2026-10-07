@@ -73,7 +73,7 @@ export default function Home(): JSX.Element {
                 Mantle is a Laravel-inspired framework for building large, robust websites and applications with WordPress.
               </p>
               <div className={styles.heroActions}>
-                <CopyCommand command="mantle new my-site" />
+                <CopyCommand command="composer require alleyinteractive/mantle-framework" />
                 <Link to="/docs/getting-started" className={styles.buttonAccent}>
                   Get started <Arrow />
                 </Link>
