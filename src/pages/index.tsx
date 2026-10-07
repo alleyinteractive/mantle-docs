@@ -39,6 +39,24 @@ const TEST_EXAMPLE = `class UploadTest extends TestCase {
     }
 }`;
 
+const PEST_EXAMPLE = `use function Pest\\PestPluginWordPress\\{
+    fakeRequest,
+    fetchPost,
+};
+
+it('renders a post', function () {
+    fetchPost(['post_title' => 'Hello Pest'])
+        ->assertOk()
+        ->assertSee('Hello Pest');
+});
+
+it('syncs with the API', function () {
+    fakeRequest('https://api.example.com/*')
+        ->with_json(['synced' => true]);
+
+    expect(sync_posts())->toBeTrue();
+});`;
+
 const BUILT_ON = ['WordPress', 'Composer', 'Symfony Routing', 'Blade', 'PHPUnit', 'Pest'];
 
 const PRINCIPLES = [
@@ -85,6 +103,7 @@ export default function Home(): JSX.Element {
               files={[
                 { name: 'routes/web.php', code: ROUTES_EXAMPLE },
                 { name: 'tests/UploadTest.php', code: TEST_EXAMPLE },
+                { name: 'tests/PostTest.php', code: PEST_EXAMPLE },
               ]}
             />
           </div>
