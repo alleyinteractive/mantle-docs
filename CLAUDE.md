@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is the documentation site for the [Mantle Framework](https://github.com/alleyinteractive/mantle-framework) — a Laravel-inspired framework for building applications with WordPress. The site is built with Docusaurus 3 and deployed to https://mantle.alley.com via Netlify.
+This is the documentation site for the [Mantle Framework](https://github.com/alleyinteractive/mantle-framework) — a Laravel-inspired framework for building applications with WordPress. The site is built with Docusaurus 3 and hosted at https://mantle.alley.com on Cloudflare Pages, deployed by GitHub Actions (`.github/workflows/deploy.yml`): pushes to `main` deploy to production and same-repo PRs get a preview deploy.
 
 ## Commands
 
@@ -35,8 +35,10 @@ Broken links fail the build (`onBrokenLinks: 'throw'` in `docusaurus.config.ts`)
 - **`src/theme.ts`** — custom Prism light/dark themes imported by `docusaurus.config.ts`.
 - **`src/pages/index.tsx`** — custom homepage (not a doc page).
 - **`src/components/`** — React components used in MDX pages (`HomepageFeatures`, `HomepageExamples`, `Features`, `TOCInlineWrapped`).
-- **`netlify.toml`** — build config + URL redirects. When renaming/moving a doc page, add a 301 redirect here rather than leaving broken inbound links.
-- **`netlify/edge-functions/prefer-markdown.ts`** — Netlify edge function on `/` and `/docs/*` that does `Accept`-header content negotiation: clients preferring `text/markdown`/`text/plain` over `text/html` get the `.md` source (or `/llms.txt` for `/`) instead of the rendered page.
+- **`wrangler.toml`** — Cloudflare Pages project config (name, build output dir, compatibility date). `wrangler pages deploy` (run by the Deploy workflow) and `wrangler pages dev` both read it.
+- **`static/_redirects`** — Cloudflare Pages redirects (Netlify-compatible syntax, default status 302). When renaming/moving a doc page, add a 301 redirect here rather than leaving broken inbound links.
+- **`static/_headers`** — response headers (e.g. the `Link` / `X-Llms-Txt` discovery headers on `/`).
+- **`functions/_middleware.ts`** — Pages Function on `/` and `/docs/*` (scoped by `static/_routes.json`) that does `Accept`-header content negotiation: clients preferring `text/markdown`/`text/plain` over `text/html` get the `.md` source (or `/llms.txt` for `/`) instead of the rendered page. Test locally with `npm run build && npx wrangler pages dev`.
 - **`static/`** — served at site root (images, favicon, etc.).
 
 ## AI-agent docs (llms.txt)
@@ -51,9 +53,9 @@ The site is built to be consumed by LLMs/agents, not just browsers:
 ## Adding or editing documentation
 
 - Current docs live in `docs/`. Use `.md` for plain Markdown, `.mdx` when you need React/JSX (e.g., `<Tabs>`, custom components).
-- When moving or renaming a doc page, update `sidebars.ts` AND add a `[[redirects]]` entry to `netlify.toml`.
+- When moving or renaming a doc page, update `sidebars.ts` AND add a 301 entry to `static/_redirects`.
 - When changing code snippets, also update the equivalent page in `versioned_docs/version-0.12.x/` only if the fix is a correction that applies to that released version. Feature additions should land in current docs only.
-- Redirect-only URL rewrites belong in `netlify.toml`, not in Docusaurus config.
+- Redirect-only URL rewrites belong in `static/_redirects`, not in Docusaurus config.
 
 ## Documentation style (from .github/copilot-instructions.md)
 

@@ -1,0 +1,101 @@
+interface Context {
+  request: Request;
+  next: () => Promise<Response>;
+  env: { ASSETS: { fetch: (input: URL | Request) => Promise<Response> } };
+}
+
+function acceptQuality(accept: string, mediaType: string): number {
+  if (!accept) return 0;
+  const [mainType] = mediaType.split('/');
+  let bestSpecificity = 0;
+  let quality = 0;
+
+  for (const raw of accept.split(',')) {
+    const parts = raw.trim().split(';').map((s) => s.trim());
+    const type = parts.shift()?.toLowerCase();
+    if (!type) continue;
+
+    let specificity = 0;
+    if (type === mediaType) specificity = 3;
+    else if (type === `${mainType}/*`) specificity = 2;
+    else if (type === '*/*') specificity = 1;
+    else continue;
+
+    if (specificity < bestSpecificity) continue;
+
+    let q = 1;
+    for (const p of parts) {
+      const [k, v] = p.split('=').map((s) => s.trim());
+      if (k === 'q') {
+        const n = parseFloat(v);
+        if (!Number.isNaN(n)) q = n;
+      }
+    }
+
+    if (specificity > bestSpecificity || q > quality) {
+      bestSpecificity = specificity;
+      quality = q;
+    }
+  }
+  return quality;
+}
+
+function withVary(response: Response): Response {
+  const headers = new Headers(response.headers);
+  headers.append('Vary', 'Accept');
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers,
+  });
+}
+
+/**
+ * Accept-header content negotiation for `/` and `/docs/*` (scoped by
+ * `static/_routes.json`): clients preferring `text/markdown` or `text/plain`
+ * over HTML get the page's `.md` sibling from the llms-txt plugin, or
+ * `/llms.txt` for the homepage.
+ */
+export const onRequest = async ({ request, next, env }: Context): Promise<Response> => {
+  const url = new URL(request.url);
+
+  if (/\.[a-z0-9]+$/i.test(url.pathname)) {
+    return withVary(await next());
+  }
+
+  const accept = request.headers.get('accept') ?? '';
+  const htmlQ = acceptQuality(accept, 'text/html');
+  const plainQ = acceptQuality(accept, 'text/plain');
+  const markdownQ = acceptQuality(accept, 'text/markdown');
+
+  if (accept && htmlQ === 0 && plainQ === 0 && markdownQ === 0) {
+    return new Response('Not Acceptable', {
+      status: 406,
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        Vary: 'Accept',
+      },
+    });
+  }
+
+  if (Math.max(plainQ, markdownQ) <= htmlQ) {
+    return withVary(await next());
+  }
+
+  const mdUrl = new URL(url);
+  mdUrl.pathname = url.pathname === '/'
+    ? '/llms.txt'
+    : `${url.pathname.replace(/\/$/, '')}.md`;
+
+  const mdResponse = await env.ASSETS.fetch(new Request(mdUrl, { method: request.method }));
+
+  if (!mdResponse.ok) {
+    return withVary(await next());
+  }
+
+  const headers = new Headers(mdResponse.headers);
+  headers.append('Vary', 'Accept');
+  const preferred = markdownQ >= plainQ ? 'text/markdown' : 'text/plain';
+  headers.set('Content-Type', `${preferred}; charset=utf-8`);
+  return new Response(mdResponse.body, { status: 200, headers });
+};

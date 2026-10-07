@@ -1,53 +1,8 @@
 [build]
   publish = "build/"
   command = "npm run build"
-[[headers]]
-  for = "/"
-  [headers.values]
-    Link = '''</docs/>; rel="service-doc"; type="text/html"; title="Mantle Framework documentation", </sitemap.xml>; rel="sitemap"; type="application/xml", </llms.txt>; rel="describedby"; type="text/plain"; title="llms.txt", </llms-full.txt>; rel="alternate"; type="text/plain"; title="llms-full.txt"'''
-    X-Llms-Txt = "/llms.txt"
 [[redirects]]
   from = "https://mantle.alley.co/*"
   to = "https://mantle.alley.com/:splat"
   status = 301
-  force = true
-[[redirects]]
-  from = "/testing-started/test-framework.html"
-  to = "/docs/testing"
-  status = 301
-  force = true
-[[redirects]]
-  from = "/docs/testing/test-framework.html"
-  to = "/docs/testing"
-  status = 301
-  force = true
-[[redirects]]
-  from = "/docs/next/models/querying-models"
-  to = "/docs/next/models/query-builder"
-  status = 301
-  force = true
-[[redirects]]
-  from = "/docs/models/querying-models"
-  to = "/docs/models/query-builder"
-  status = 301
-  force = true
-[[redirects]]
-  from = "/docs/features/support/options-object-metadata"
-  to = "/docs/features/support/mixed-data"
-  status = 301
-  force = true
-[[redirects]]
-  from = "/docs/testing/traits"
-  to = "/docs/testing/traits-attributes"
-  status = 301
-  force = true
-[[redirects]]
-  from = "/docs/models/model-factory"
-  to = "/docs/models/database-factory"
-  status = 301
-  force = true
-[[redirects]]
-  from = "/schema/meta.json"
-  to = "https://raw.githubusercontent.com/alleyinteractive/mantle-framework/HEAD/src/Mantle/Support/schema/meta.json"
-  status = 302
   force = true

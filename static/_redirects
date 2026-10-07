@@ -4,3 +4,13 @@
 /features/*         /docs/features/:splat
 /models/*           /docs/models/:splat
 /testing/*          /docs/testing/:splat
+
+/testing-started/test-framework.html            /docs/testing                  301
+/docs/testing/test-framework.html               /docs/testing                  301
+/docs/next/models/querying-models               /docs/next/models/query-builder 301
+/docs/models/querying-models                    /docs/models/query-builder     301
+/docs/features/support/options-object-metadata  /docs/features/support/mixed-data 301
+/docs/testing/traits                            /docs/testing/traits-attributes 301
+/docs/models/model-factory                      /docs/models/database-factory  301
+
+/schema/meta.json  https://raw.githubusercontent.com/alleyinteractive/mantle-framework/HEAD/src/Mantle/Support/schema/meta.json  302
