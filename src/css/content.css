@@ -9,10 +9,11 @@
 }
 
 .markdown h1 {
+  font-family: var(--mantle-font-serif);
   font-size: clamp(2.75rem, 1.5rem + 3.4vw, 5rem);
-  line-height: 0.98;
-  font-weight: 800;
-  letter-spacing: -0.055em;
+  line-height: 1.02;
+  font-weight: 500;
+  letter-spacing: -0.025em;
 }
 
 .markdown h2 {

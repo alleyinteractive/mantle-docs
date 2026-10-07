@@ -57,32 +57,35 @@
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 7px 14px;
-  border: 1px solid var(--mantle-ink-line-strong);
-  border-radius: 999px;
-  background: rgba(13, 27, 42, 0.85);
-  font-family: var(--mantle-font-mono);
-  font-size: 13px;
+  gap: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .home a.badge {
-  color: var(--mantle-ink-muted);
+  color: var(--mantle-ink-text-3);
+  text-decoration: none;
 }
 
-.badgeDot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
+.home a.badge:hover {
+  color: #ffffff;
+}
+
+.badgeRule {
+  width: 28px;
+  height: 1px;
   background: var(--mantle-accent);
 }
 
 .heroTitle {
   margin: 0;
-  font-size: 70px;
-  line-height: 0.98;
-  font-weight: 800;
-  letter-spacing: -0.048em;
+  font-family: var(--mantle-font-serif);
+  font-size: 72px;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: -0.025em;
   color: #ffffff;
 }
 
@@ -91,7 +94,7 @@
   padding-top: 12px;
   font-size: 44px;
   line-height: 1.05;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.015em;
   color: var(--mantle-ink-faint);
 }
 
@@ -352,10 +355,11 @@
 .sectionTitle {
   flex: 1 1 480px;
   margin: 0;
-  font-size: 52px;
-  line-height: 1.02;
-  font-weight: 800;
-  letter-spacing: -0.045em;
+  font-family: var(--mantle-font-serif);
+  font-size: 54px;
+  line-height: 1.04;
+  font-weight: 500;
+  letter-spacing: -0.02em;
   color: #ffffff;
 }
 
@@ -492,10 +496,11 @@
 
 .calloutTitle {
   margin: 0;
-  font-size: 32px;
+  font-family: var(--mantle-font-serif);
+  font-size: 34px;
   line-height: 1.1;
-  font-weight: 800;
-  letter-spacing: -0.03em;
+  font-weight: 500;
+  letter-spacing: -0.015em;
   color: #ffffff;
 }
 
@@ -574,10 +579,11 @@
 .closingTitle {
   margin: 0;
   max-width: 900px;
-  font-size: 60px;
-  line-height: 1;
-  font-weight: 800;
-  letter-spacing: -0.05em;
+  font-family: var(--mantle-font-serif);
+  font-size: 62px;
+  line-height: 1.02;
+  font-weight: 500;
+  letter-spacing: -0.02em;
   color: #ffffff;
 }
 
@@ -603,21 +609,20 @@
   }
 
   .badge {
-    padding: 6px 12px;
-    font-size: 11.5px;
+    font-size: 11px;
   }
 
   .heroTitle {
-    font-size: 44px;
-    line-height: 1;
-    letter-spacing: -0.045em;
+    font-size: 46px;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
   }
 
   .heroTitleMuted {
     padding-top: 10px;
     font-size: 27px;
     line-height: 1.1;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.01em;
   }
 
   .heroLead {
@@ -686,9 +691,9 @@
   .sectionTitle,
   .splitCopy .sectionTitle {
     flex-basis: auto;
-    font-size: 34px;
-    line-height: 1.04;
-    letter-spacing: -0.04em;
+    font-size: 36px;
+    line-height: 1.06;
+    letter-spacing: -0.015em;
   }
 
   .sectionText {
@@ -787,9 +792,9 @@
   }
 
   .closingTitle {
-    font-size: 34px;
-    line-height: 1.04;
-    letter-spacing: -0.04em;
+    font-size: 36px;
+    line-height: 1.06;
+    letter-spacing: -0.015em;
   }
 
   .closingTitle .muted {

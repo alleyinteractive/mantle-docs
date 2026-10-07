@@ -36,6 +36,7 @@
   --mantle-link-underline: #9db4cb;
 
   --mantle-font-sans: 'Schibsted Grotesk', system-ui, -apple-system, sans-serif;
+  --mantle-font-serif: 'Newsreader', Georgia, 'Times New Roman', serif;
   --mantle-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   --mantle-dot-grid: radial-gradient(circle, #15263a 1px, transparent 1.2px);
 

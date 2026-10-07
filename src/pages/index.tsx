@@ -79,9 +79,9 @@ export default function Home(): JSX.Element {
         <section className={styles.hero}>
           <div className={styles.heroInner}>
             <div className={styles.heroCopy}>
-              <Link to="/docs/getting-started" className={styles.badge}>
-                <span className={styles.badgeDot} aria-hidden="true" />
-                Laravel-inspired · Built on WordPress <Arrow />
+              <Link href="https://github.com/alleyinteractive" className={styles.badge}>
+                <span className={styles.badgeRule} aria-hidden="true" />
+                Open source from Alley
               </Link>
               <h1 className={styles.heroTitle}>
                 WordPress, with the structure of a framework.
