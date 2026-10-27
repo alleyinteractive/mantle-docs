@@ -1,0 +1,373 @@
+---
+title: Arr
+description: Static helpers for reading, writing, and transforming arrays, including "dot" notation access.
+---
+
+import TOCInlineWrapped from '@site/src/components/TOCInlineWrapped';
+
+# Arr
+
+The `Mantle\Support\Arr` class provides static methods for working with arrays.
+Many of the methods support "dot" notation to read and write nested arrays.
+
+For more information see the [Laravel docs](https://laravel.com/docs/master/helpers#arrays-and-objects-method-list).
+
+## Usage
+
+```php
+use Mantle\Support\Arr;
+
+$array = [ 'post' => [ 'title' => 'Hello World' ] ];
+
+Arr::get( $array, 'post.title' ); // Hello World
+```
+
+## Available Methods
+
+<TOCInlineWrapped
+	toc={toc.filter((item) => !item.value.includes('Usage'))}
+	minHeadingLevel={3}
+	maxHeadingLevel={6}
+/>
+
+### `accessible`
+
+Determine if the given value is array accessible.
+
+```php
+use Mantle\Support\Arr;
+use Mantle\Support\Collection;
+
+Arr::accessible( [ 'a' => 1 ] ); // true
+Arr::accessible( new Collection() ); // true
+Arr::accessible( 'string' ); // false
+```
+
+### `add`
+
+Add a key/value pair to an array using "dot" notation if the key doesn't exist
+or is `null`.
+
+```php
+use Mantle\Support\Arr;
+
+Arr::add( [ 'name' => 'Desk' ], 'price', 100 );
+// [ 'name' => 'Desk', 'price' => 100 ]
+```
+
+### `collapse`
+
+Collapse an array of arrays into a single array.
+
+```php
+use Mantle\Support\Arr;
+
+Arr::collapse( [ [ 1, 2 ], [ 3, 4 ], [ 5 ] ] );
+// [ 1, 2, 3, 4, 5 ]
+```
+
+### `cross_join`
+
+Cross join the given arrays, returning all possible permutations.
+
+```php
+use Mantle\Support\Arr;
+
+Arr::cross_join( [ 1, 2 ], [ 'a', 'b' ] );
+// [ [ 1, 'a' ], [ 1, 'b' ], [ 2, 'a' ], [ 2, 'b' ] ]
+```
+
+### `divide`
+
+Divide an array into two arrays: one with the keys and one with the values.
+
+```php
+use Mantle\Support\Arr;
+
+[ $keys, $values ] = Arr::divide( [ 'name' => 'Desk' ] );
+// $keys: [ 'name' ], $values: [ 'Desk' ]
+```
+
+### `dot`
+
+Flatten a multi-dimensional array into a single level array using "dot"
+notation keys.
+
+```php
+use Mantle\Support\Arr;
+
+Arr::dot( [ 'post' => [ 'title' => 'Hello', 'status' => 'publish' ] ] );
+// [ 'post.title' => 'Hello', 'post.status' => 'publish' ]
+```
+
+### `except`
+
+Get all of the array except for the given keys.
+
+```php
+use Mantle\Support\Arr;
+
+Arr::except( [ 'name' => 'Desk', 'price' => 100 ], [ 'price' ] );
+// [ 'name' => 'Desk' ]
+```
+
+### `exists`
+
+Determine if the given key exists in the array. Does not support "dot"
+notation.
+
+```php
+use Mantle\Support\Arr;
+
+Arr::exists( [ 'name' => 'Desk' ], 'name' ); // true
+```
+
+### `first`
+
+Return the first element in an array passing a given truth test. The callback
+receives the value and key. A default value can be passed as the third
+argument.
+
+```php
+use Mantle\Support\Arr;
+
+Arr::first( [ 100, 200, 300 ], fn ( $value, $key ) => $value >= 150 ); // 200
+
+Arr::first( [], null, 'default' ); // default
+```
+
+### `flatten`
+
+Flatten a multi-dimensional array into a single level, optionally to a given
+depth.
+
+```php
+use Mantle\Support\Arr;
+
+Arr::flatten( [ 'name' => 'Joe', 'languages' => [ 'PHP', 'JavaScript' ] ] );
+// [ 'Joe', 'PHP', 'JavaScript' ]
+```
+
+### `forget`
+
+Remove one or many items from an array using "dot" notation. The array is
+modified by reference.
+
+```php
+use Mantle\Support\Arr;
+
+$array = [ 'post' => [ 'title' => 'Hello', 'status' => 'publish' ] ];
+
+Arr::forget( $array, 'post.status' );
+// [ 'post' => [ 'title' => 'Hello' ] ]
+```
+
+### `get`
+
+Get an item from an array using "dot" notation, with an optional default value.
+
+```php
+use Mantle\Support\Arr;
+
+$array = [ 'post' => [ 'title' => 'Hello' ] ];
+
+Arr::get( $array, 'post.title' ); // Hello
+Arr::get( $array, 'post.author', 'Unknown' ); // Unknown
+```
+
+### `has`
+
+Check if one or many items exist in an array using "dot" notation. All of the
+keys must exist.
+
+```php
+use Mantle\Support\Arr;
+
+$array = [ 'post' => [ 'title' => 'Hello', 'status' => 'publish' ] ];
+
+Arr::has( $array, 'post.title' ); // true
+Arr::has( $array, [ 'post.title', 'post.author' ] ); // false
+```
+
+### `has_any`
+
+Determine if any of the keys exist in an array using "dot" notation.
+
+```php
+use Mantle\Support\Arr;
+
+$array = [ 'post' => [ 'title' => 'Hello' ] ];
+
+Arr::has_any( $array, [ 'post.title', 'post.author' ] ); // true
+```
+
+### `is_assoc`
+
+Determine if an array is associative (does not have sequential numeric keys
+starting from zero).
+
+```php
+use Mantle\Support\Arr;
+
+Arr::is_assoc( [ 'a' => 1, 'b' => 2 ] ); // true
+Arr::is_assoc( [ 1, 2, 3 ] ); // false
+```
+
+### `last`
+
+Return the last element in an array passing a given truth test. A default value
+can be passed as the third argument.
+
+```php
+use Mantle\Support\Arr;
+
+Arr::last( [ 100, 200, 300 ], fn ( $value, $key ) => $value < 250 ); // 200
+```
+
+### `only`
+
+Get a subset of the items from the given array.
+
+```php
+use Mantle\Support\Arr;
+
+Arr::only( [ 'name' => 'Desk', 'price' => 100, 'orders' => 10 ], [ 'name', 'price' ] );
+// [ 'name' => 'Desk', 'price' => 100 ]
+```
+
+### `pluck`
+
+Pluck an array of values from an array, optionally keyed by another value.
+Supports "dot" notation.
+
+```php
+use Mantle\Support\Arr;
+
+$array = [
+	[ 'id' => 1, 'author' => [ 'name' => 'Jane' ] ],
+	[ 'id' => 2, 'author' => [ 'name' => 'John' ] ],
+];
+
+Arr::pluck( $array, 'author.name' ); // [ 'Jane', 'John' ]
+Arr::pluck( $array, 'author.name', 'id' ); // [ 1 => 'Jane', 2 => 'John' ]
+```
+
+### `prepend`
+
+Push an item onto the beginning of an array, optionally with a key.
+
+```php
+use Mantle\Support\Arr;
+
+Arr::prepend( [ 'two', 'three' ], 'one' ); // [ 'one', 'two', 'three' ]
+Arr::prepend( [ 'price' => 100 ], 'Desk', 'name' ); // [ 'name' => 'Desk', 'price' => 100 ]
+```
+
+### `pull`
+
+Get a value from the array and remove it. The array is modified by reference.
+
+```php
+use Mantle\Support\Arr;
+
+$array = [ 'name' => 'Desk', 'price' => 100 ];
+
+$name = Arr::pull( $array, 'name' );
+// $name: 'Desk', $array: [ 'price' => 100 ]
+```
+
+### `query`
+
+Convert the array into a URL query string.
+
+```php
+use Mantle\Support\Arr;
+
+Arr::query( [ 'name' => 'Desk', 'order' => [ 'by' => 'price' ] ] );
+// name=Desk&order%5Bby%5D=price
+```
+
+### `random`
+
+Get one or a specified number of random values from an array.
+
+```php
+use Mantle\Support\Arr;
+
+Arr::random( [ 1, 2, 3, 4, 5 ] ); // 4
+Arr::random( [ 1, 2, 3, 4, 5 ], 2 ); // [ 2, 5 ]
+```
+
+### `set`
+
+Set an array item to a given value using "dot" notation. The array is modified
+by reference.
+
+```php
+use Mantle\Support\Arr;
+
+$array = [ 'post' => [ 'title' => 'Hello' ] ];
+
+Arr::set( $array, 'post.status', 'publish' );
+// [ 'post' => [ 'title' => 'Hello', 'status' => 'publish' ] ]
+```
+
+### `shuffle`
+
+Shuffle the given array, optionally with a seed for a repeatable result.
+
+```php
+use Mantle\Support\Arr;
+
+Arr::shuffle( [ 1, 2, 3, 4, 5 ] ); // [ 3, 1, 5, 2, 4 ]
+```
+
+### `sort`
+
+Sort the array by its values, a callback, or a key.
+
+```php
+use Mantle\Support\Arr;
+
+Arr::sort( [ 'Desk', 'Chair', 'Bookcase' ] );
+// [ 2 => 'Bookcase', 1 => 'Chair', 0 => 'Desk' ]
+
+Arr::sort( [ [ 'name' => 'Desk' ], [ 'name' => 'Chair' ] ], fn ( $value ) => $value['name'] );
+// [ 1 => [ 'name' => 'Chair' ], 0 => [ 'name' => 'Desk' ] ]
+```
+
+### `sort_recursive`
+
+Recursively sort an array by keys and values.
+
+```php
+use Mantle\Support\Arr;
+
+Arr::sort_recursive( [ 'b' => [ 3, 1, 2 ], 'a' => 1 ] );
+// [ 'a' => 1, 'b' => [ 1, 2, 3 ] ]
+```
+
+### `where`
+
+Filter the array using the given callback. The callback receives the value and
+key.
+
+```php
+use Mantle\Support\Arr;
+
+Arr::where( [ 100, '200', 300 ], fn ( $value, $key ) => is_string( $value ) );
+// [ 1 => '200' ]
+```
+
+### `wrap`
+
+Wrap the given value in an array if it isn't one already. `null` returns an
+empty array.
+
+```php
+use Mantle\Support\Arr;
+
+Arr::wrap( 'Desk' ); // [ 'Desk' ]
+Arr::wrap( [ 'Desk' ] ); // [ 'Desk' ]
+Arr::wrap( null ); // []
+```
