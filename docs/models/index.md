@@ -98,6 +98,22 @@ class Example_Model extends Term {
 }
 ```
 
+### Primary Key
+
+Models use `id` as their primary key. To use a different attribute, override
+the static `$primary_key` property:
+
+```php
+protected static string $primary_key = 'example_id';
+```
+
+:::warning
+Before Mantle 1.8, `$primary_key` was an instance property. A model that still
+declares `protected $primary_key` will cause a fatal error ("Cannot redeclare
+static ... as non static") on Mantle 1.8 and later. Change the declaration to
+`protected static string $primary_key`.
+:::
+
 ## Creating a Dynamic Model
 
 A dynamic model is a model that is not defined in the application but is
