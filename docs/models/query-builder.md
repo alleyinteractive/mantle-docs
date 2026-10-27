@@ -328,11 +328,22 @@ $posts = Post::query()
 
 ### Limit Results
 
-You can limit the number of results returned by using the `take()` method.
+You can limit the number of results returned by using the `take()` method. By
+default, queries are limited to 100 results.
 
 ```php
 // Get the first 10 posts.
 Example_Post::where( 'title', 'example' )->take( 10 )->get();
+```
+
+### Offset Results
+
+You can skip a number of results by using the `offset()` method (or its alias,
+`skip()`). When combined with `page()`, the offset is applied after the page.
+
+```php
+// Get 10 posts, skipping the first 5.
+Example_Post::where( 'title', 'example' )->skip( 5 )->take( 10 )->get();
 ```
 
 ### Pages
@@ -468,27 +479,18 @@ Post::where( 'status', 'publish' )->each_by_id( function ( Post $post ) {
 } );
 ```
 
-#### Map/Map By ID
+#### Map
 
-If you need to map the results of a query, you can use the `map()`/`map_by_id()`
-methods. These methods will map the results of the query performantly without
-loading all of the models into memory. `map_by_id()` is useful if you need to
-process results in batches and potentially delete/modify them in a way that can
-break the sorting of the query.
+If you need to map the results of a query, you can use the `map()` method. This
+method will map the results of the query performantly without loading all of the
+models into memory at once.
 
 ```php
 use App\Models\Post;
 
-// Map the results using normal pagination chunking.
 $posts = Post::where( 'status', 'publish' )->map( function ( Post $post ) {
-  // Perform some additional processing here.
-  return [ $post->id => $post->title ];
-} );
-
-// Map the results using ID-based pagination chunking.
-$posts = Post::where( 'status', 'publish' )->map_by_id( function ( Post $post ) {
-  // Perform some additional processing here.
-  return [ $post->id => $post->title ];
+	// Perform some additional processing here.
+	return [ $post->id => $post->title ];
 } );
 ```
 
@@ -507,16 +509,16 @@ Post::query()->where( 'name', 'example' )->dump()->get();
 Post::query()->where( 'name', 'example' )->dd();
 ```
 
-You can dump the raw SQL query by using the `dump_sql()`/`dd_sql()` methods.
+You can dump the raw SQL query by using the `dumpSql()`/`ddSql()` methods.
 
 ```php
 use App\Models\Post;
 
 // Dump the raw SQL query.
-Post::query()->where( 'name', 'example' )->dump_sql();
+Post::query()->where( 'name', 'example' )->dumpSql();
 
 // Dump the raw SQL query and end the script.
-Post::query()->where( 'name', 'example' )->dd_sql();
+Post::query()->where( 'name', 'example' )->ddSql();
 ```
 
 ### Advanced: Querying Against Database Columns
@@ -705,9 +707,9 @@ probably expect from a paginator: previous / next links as well as links to a
 few pages before and after the current one.
 
 ```php
-use App\Models\Posts;
+use App\Models\Post;
 
-$posts = Posts::paginate( 20 );
+$posts = Post::paginate( 20 );
 ```
 
 ### Basic Pagination
@@ -717,9 +719,9 @@ page. It also sets `'no_found_rows' => true` on the query to help performance fo
 large data sets.
 
 ```php
-use App\Model\Posts;
+use App\Models\Post;
 
-$posts = Posts::simple_paginate( 20 );
+$posts = Post::simple_paginate( 20 );
 ```
 
 ### Displaying Paginator Results
@@ -789,7 +791,7 @@ The paginator supports being returned directly as a route's response.
 
 ```php
 Route::get( '/posts', function() {
-	return App\Posts::paginate( 20 );
+	return App\Models\Post::paginate( 20 );
 } );
 ```
 

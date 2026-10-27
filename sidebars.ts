@@ -39,6 +39,7 @@ const sidebars: SidebarsConfig = {
         'architecture/bootloader',
         'architecture/service-provider',
         'architecture/configuration',
+        'architecture/package-development',
       ],
     },
     {
@@ -54,6 +55,8 @@ const sidebars: SidebarsConfig = {
         'basics/blade',
         'basics/helpers',
         'basics/commands',
+        'basics/logging',
+        'basics/error-handling',
       ],
     },
     {
@@ -98,6 +101,7 @@ const sidebars: SidebarsConfig = {
             id: 'features/support/support',
           },
           items: [
+            'features/support/arr',
             'features/support/classname',
             'features/support/collections',
             'features/support/conditionable',

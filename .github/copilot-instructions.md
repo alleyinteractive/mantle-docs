@@ -10,7 +10,7 @@ The goal is to create clear, helpful, and consistent documentation that aligns w
 - **Follow WordPress coding standards** for all PHP code examples EXCEPT for tests
 - **For test files or testing related code**: Use PSR-4 file/class naming conventions but maintain tab indentation
 - Do not include `<?php` or `?>` tags in documentation.
-- Target PHP 8.2 or higher.
+- Target PHP 8.3 or higher.
 - Always include the `use` statement you would need to import the class or function being demonstrated for each code snippet.
 - Examples should include the method names in the description where possible to improve searchability.
 

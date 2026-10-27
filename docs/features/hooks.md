@@ -44,18 +44,13 @@ protected $listen = [
 ];
 ```
 
-### Generating Events and Listeners
+### Generating Listeners
 
-Events can be manually written or generated for you:
+Listeners can be automatically generated for you by passing the listener's name
+and the event it listens to:
 
-```
-wp mantle make:event
-```
-
-Listeners can also be automatically generated for you:
-
-```
-wp mantle make:listener <name> [<event>]
+```bash
+bin/mantle make:listener <name> <event>
 ```
 
 The `make:listener` command supports passing a specific event to automatically
@@ -258,7 +253,7 @@ Here's an example of a safe type-hinted callback:
 
 ```php
 use WP_Query;
-use function Mantle\Framework\Helpers\add_action;
+use function Mantle\Support\Helpers\add_action;
 
 add_action(
 	'pre_get_posts',
@@ -270,7 +265,7 @@ add_action(
 
 ```php
 use Mantle\Support\Collection;
-use function Mantle\Framework\Helpers\add_filter;
+use function Mantle\Support\Helpers\add_filter;
 
 add_filter(
 	'the_posts',
@@ -294,8 +289,8 @@ apply_filters( 'the_filter_to_apply', [ 1, 2, 3 ] );
 Mantle's wrapper on top of actions/filters can be accessed by using these helper
 methods:
 
-* `Mantle\Framework\Helpers\add_action()`
-* `Mantle\Framework\Helpers\add_filter()`
+* `Mantle\Support\Helpers\add_action()`
+* `Mantle\Support\Helpers\add_filter()`
 * `Mantle\Facade\Event::listen()`
 * `Event::listen()`
 

@@ -1,5 +1,6 @@
 ---
 title: Relationships
+description: Define, store, and query relationships between Mantle models.
 ---
 
 # Model Relationships
@@ -15,93 +16,150 @@ ease.
 Relationships are defined as methods on the model. Since, like models
 themselves, relationships also serve as powerful query builders, defining
 relationships as methods provides powerful method chaining and querying
-capabilities. For example, we may chain additional constraints on this posts
-relationship:
+capabilities. For example, we may chain additional constraints on a sponsor's
+posts relationship:
 
 ```php
-$post->sponsors()->whereMeta( 'active', '1' )->get();
+$sponsor->posts()->whereMeta( 'active', '1' )->get();
 ```
 
-Models can exist between posts as well as between posts and term models.
-Relationships between posts will use an underlying meta query while
-relationships between posts and terms will use a taxonomy query.
-### Has One/Has Many
+Relationships can exist between posts as well as between posts and terms.
+Relationships between posts use post meta (or an [internal
+taxonomy](#post-to-post-relationships)) while relationships between posts and
+terms use a taxonomy query.
 
-Relationships defined as having one or many will have references to the current
-model stored on other models. One common example would be a 'post -> sponsor'
-relationship. The sponsor's ID will be stored on one or many post objects.
+### Which Side Stores the Relationship?
+
+The difference between "has" and "belongs to" relationships is which model
+stores the reference to the other. Consider a `post -> sponsor` relationship
+where each post can have one sponsor and a sponsor can have many posts. The
+sponsor's ID is stored in a `sponsor_id` meta key on each post:
+
+| Model | Relationship | Stores the meta? |
+| --- | --- | --- |
+| `Post` | `belongs_to( Sponsor::class )` | Yes, the post stores `sponsor_id`. |
+| `Sponsor` | `has_many( Post::class )` | No, it queries posts by their `sponsor_id`. |
+
+Put another way: the model with the meta key **belongs to** the other model, and
+the other model **has one** or **has many** of it.
+
+By default, the meta key is derived from the snake-cased class name of the model
+without the meta key, followed by `_id`. A `Sponsor` model will use `sponsor_id`
+and a `Blog_Post` model will use `blog_post_id`.
+
+### Has One / Has Many
+
+A has one or has many relationship is defined on the model whose ID is stored on
+the other models. Continuing the example, the sponsor's ID is stored on one or
+many posts:
 
 ```php
+use Mantle\Database\Model\Post;
+
 class Sponsor extends Post {
-  // ...
+	public function posts() {
+		// Queries posts with a 'sponsor_id' meta value matching this sponsor's ID.
+		return $this->has_many( Post::class );
+	}
 
-  public function posts() {
-    // Uses the 'sponsor_id' meta field on the post to retrieve the sponsor.
-    return $this->has_many( Post::class );
-  }
-
-  public function special_post() {
-    return $this->has_one( Post::class )->whereMeta( 'special-meta', '1' );
-  }
+	public function featured_post() {
+		return $this->has_one( Post::class )->whereMeta( 'featured', '1' );
+	}
 }
+```
+
+The meta key and the key it is compared against can be customized by passing
+the `$foreign_key` and `$local_key` arguments:
+
+```php
+// Query posts by their 'related_sponsor' meta value.
+return $this->has_many( Post::class, foreign_key: 'related_sponsor' );
 ```
 
 #### Storing
 
-The relationship can automatically setup the proper meta values to define a
-relationship.
+Saving a model through the relationship will set the proper meta value on it.
+Unsaved models will be saved automatically.
 
 ```php
-$sponsor->save( $post );
+$sponsor->posts()->save( $post );
 
-$sponsor->remove( $post );
+$sponsor->posts()->save_many( [ $post_a, $post_b ] );
+
+$sponsor->posts()->remove( $post );
 ```
 
 ### Belongs To / Belongs To Many
 
-Relationships can be define as belong to another model will have the reference
-stored on the other model. In the example of a  `post -> sponsor` relationship,
-the sponsor's ID will be stored as meta on the post object.
+A belongs to relationship is defined on the model that stores the meta value. In
+the `post -> sponsor` example, the post stores its sponsor's ID:
 
 ```php
+use Mantle\Database\Model\Post as Base_Post;
+
 class Post extends Base_Post {
-  // ...
+	public function sponsor() {
+		// Uses the 'sponsor_id' meta value on this post to find the sponsor.
+		return $this->belongs_to( Sponsor::class );
+	}
+}
+```
 
-  public function sponsor() {
-    // Uses the 'sponsor_id' meta field on the post to retrieve the sponsor.
-    return $this->belongs_to( Sponsor::class );
-  }
+The meta key can be customized with the `$local_key` argument. Mantle uses this
+for the `thumbnail` relationship that is included on every post model, which
+uses the WordPress `_thumbnail_id` meta key to retrieve the post's featured
+image:
 
-  public function tags() {
-    return $this->belongs_to( Sponsor::class );
-  }
+```php
+use Mantle\Database\Model\Attachment;
+
+public function thumbnail() {
+	return $this->belongs_to( Attachment::class, local_key: '_thumbnail_id' );
+}
+```
+
+```php
+$post = Post::find( 123 );
+
+echo $post->thumbnail?->url();
+```
+
+A belongs to many relationship works the same way but stores each related ID as
+a separate meta value on the model, allowing a post to belong to many sponsors.
+
+```php
+public function sponsors() {
+	return $this->belongs_to_many( Sponsor::class );
 }
 ```
 
 #### Storing
 
-The relationship can automatically setup the proper meta values on the model to
-define a relationship.
+Associating a model through the relationship will set the meta value on the
+current model. Dissociating will remove it.
 
 ```php
-$sponsor->associate( $post );
+$post->sponsor()->associate( $sponsor );
 
-$sponsor->dissociate( $post );
+$post->sponsor()->dissociate();
 ```
+
+For belongs to many relationships, `associate()` will add an additional meta
+value rather than replacing the existing one.
 
 ### Post-to-Post Relationships
 
 Posts can define relationships between other posts using meta keys by default.
 However, this can result in poor query performance when querying against the
-relationship. Mantle supports defining relationships between posts using a
+relationship. Mantle supports defining relationships between posts using an
 internal taxonomy. This will result in better query performance when loading the
 post's relationships.
 
 ```php
 class Sponsor extends Post {
-  public function posts() {
-    return $this->has_many( Post::class )->uses_terms();
-  }
+	public function posts() {
+		return $this->has_many( Post::class )->uses_terms();
+	}
 }
 ```
 
@@ -109,9 +167,9 @@ On the flip side, the belongs-to relationship needs to use terms as well.
 
 ```php
 class Post extends Base_Post {
-  public function sponsor() {
-    return $this->belongs_to( Sponsor::class )->uses_terms();
-  }
+	public function sponsor() {
+		return $this->belongs_to( Sponsor::class )->uses_terms();
+	}
 }
 ```
 
@@ -122,26 +180,74 @@ directions since post and terms in WordPress are bidirectional. Attempting to
 define a relation between a post and a term using Belongs To will result in an
 error being thrown.
 
-## Querying Relationships
-
-Relationships can be queried by using the method on the model (which uses a
-[query builder](./query-builder.md) to construct the query).
-
 ```php
-$post->sponsors()->get();
+use Mantle\Database\Model\Post as Base_Post;
+use Mantle\Database\Model\Term;
 
-$post->sponsors()->first();
-```
+class Post extends Base_Post {
+	public function tags() {
+		return $this->has_many( Tag::class );
+	}
+}
 
-Relationships can also be access as magic properties on the model instance.
-
-```php
-echo $post->sponsor->title;
-
-foreach ( $post->sponsors as $sponsor ) {
-  echo $sponsor->title;
+class Tag extends Term {
+	public function posts() {
+		return $this->has_many( Post::class );
+	}
 }
 ```
+
+## Querying Relationships
+
+Relationships can be queried by calling the method on the model, which returns a
+[query builder](./query-builder.md) to construct the query. Relationships will
+return every related model unless a limit is set with `take()`.
+
+```php
+$sponsor->posts()->get();
+
+$sponsor->posts()->take( 5 )->get();
+
+$sponsor->posts()->first();
+```
+
+Relationships can also be accessed as properties on the model instance. Has one
+and belongs to relationships return a single model or `null`. Has many and
+belongs to many relationships return a collection of models.
+
+```php
+echo $post->sponsor?->title;
+
+foreach ( $sponsor->posts as $post ) {
+	echo $post->title;
+}
+```
+
+### Querying Relationship Existence
+
+You may query for models that have or don't have a belongs to relationship by
+using the `has()` and `doesnt_have()` methods. Both methods accept the name of
+the relationship and an optional ID of the related model to compare against.
+
+```php
+// Posts that have a sponsor.
+$posts = Post::has( 'sponsor' )->get();
+
+// Posts sponsored by a specific sponsor.
+$posts = Post::has( 'sponsor', $sponsor->id )->get();
+
+// Posts without a sponsor.
+$posts = Post::doesnt_have( 'sponsor' )->get();
+
+// Posts not sponsored by a specific sponsor.
+$posts = Post::doesnt_have( 'sponsor', $sponsor->id )->get();
+```
+
+:::note
+Relationship existence queries are only supported on belongs to relationships
+that use meta. Relationships defined with `uses_terms()` will throw an
+exception.
+:::
 
 ## Eager Loading Relationships
 
@@ -162,9 +268,9 @@ blog posts in a collection at once. Here is an example model:
 
 ```php
 class Blog_Post extends Post {
-  public function sponsor() {
-    return $this->has_one( Sponsor::class );
-  }
+	public function sponsor() {
+		return $this->belongs_to( Sponsor::class );
+	}
 }
 ```
 
@@ -174,9 +280,9 @@ Now, let's retrieve all the blog posts and the sponsors:
 $posts = Blog_Post::with( 'sponsor' )->get();
 
 foreach ( $posts as $post ) {
-  echo $post->title;
+	echo $post->title;
 
-  echo $post->sponsor->title;
+	echo $post->sponsor?->title;
 }
 ```
 
@@ -190,11 +296,11 @@ property on the model.
 
 ```php
 class Blog_Post extends Post {
-  /**
-   * The relations to eager load on every query.
-   *
-   * @var string[]
-   */
-  protected $with = [ 'sponsor' ];
+	/**
+	 * The relations to eager load on every query.
+	 *
+	 * @var string[]
+	 */
+	protected $with = [ 'sponsor' ];
 }
 ```

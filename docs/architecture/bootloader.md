@@ -100,11 +100,11 @@ is provided.
 
 ```php
 bootloader()
-  ->with_kernel(
-    console: Custom\Console\Kernel::class,
-    http: Custom\Http\Kernel::class,
-  )
-  ->boot();
+	->with_kernels(
+		console: Custom\Console\Kernel::class,
+		http: Custom\Http\Kernel::class,
+	)
+	->boot();
 ```
 
 The console kernel must implement `Mantle\Contracts\Console\Kernel` and the HTTP kernel
@@ -118,11 +118,11 @@ path to the bootloader to load routes from.
 
 ```php
 bootloader()
-  ->with_routes(
-      web: __DIR__ . '/../routes/web.php',
-		  rest_api: __DIR__ . '/../routes/rest-api.php',
-  )
-  ->boot();
+	->with_routing(
+		web: __DIR__ . '/../routes/web.php',
+		rest_api: __DIR__ . '/../routes/rest-api.php',
+	)
+	->boot();
 ```
 
 Mantle also supports passing a closure to the bootloader to register routes
@@ -132,12 +132,12 @@ dynamically:
 use Mantle\Contracts\Http\Routing\Router;
 
 bootloader()
-  ->with_routes( function ( Router $router ): void {
-    $router->get( '/example', function () {
-      return 'Hello, World!';
-    } );
-  } )
-  ->boot();
+	->with_routing( function ( Router $router ): void {
+		$router->get( '/example', function () {
+			return 'Hello, World!';
+		} );
+	} )
+	->boot();
 ```
 
 ## Registering Custom Bindings
