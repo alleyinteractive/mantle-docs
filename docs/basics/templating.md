@@ -121,6 +121,45 @@ Route::get( '/article/{article}', function ( App\Article $article ) {
 </article>
 ```
 
+## Layouts
+
+Responses from [routes](./requests.md) are automatically wrapped in the theme's
+header and footer (or the theme's template parts for block themes). To wrap
+responses in a custom layout instead, return the name of a view from the
+`mantle_wrap_template` filter. The layout view should call
+`render_main_template()` where the response's contents should be output:
+
+```php
+add_filter( 'mantle_wrap_template', fn () => 'layouts/app' );
+```
+
+```php title="views/layouts/app.php"
+<?php get_header(); ?>
+
+<main class="site-main">
+	<?php render_main_template(); ?>
+</main>
+
+<?php get_footer(); ?>
+```
+
+:::caution
+The view returned from `mantle_wrap_template` must exist in one of the
+[view locations](#view-file-locations). If it can't be found, rendering the
+request will throw an exception.
+:::
+
+Responses for JSON requests are never wrapped. To disable the wrapper for a
+single route, use the `without_wrap_template()` method on the route:
+
+```php
+use Mantle\Facade\Route;
+
+Route::get( '/feed', function () {
+	// ...
+} )->without_wrap_template();
+```
+
 ## View File Locations
 
 By default WordPress will only load a template part from the active theme and
