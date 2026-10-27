@@ -39,6 +39,7 @@ const sidebars: SidebarsConfig = {
         'architecture/bootloader',
         'architecture/service-provider',
         'architecture/configuration',
+        'architecture/package-development',
       ],
     },
     {
