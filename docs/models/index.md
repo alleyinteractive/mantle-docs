@@ -31,6 +31,9 @@ Site | `Mantle\Database\Model\Site`
 Term | `Mantle\Database\Model\Term`
 User | `Mantle\Database\Model\User`
 
+Models can also represent rows in a custom database table. See
+[Database Table Models](./database-table-models.md).
+
 ## Generating a Model
 
 Models can be generated through the command:

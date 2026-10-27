@@ -191,6 +191,39 @@ Assert if a post does not have a specific term (aliased to `assertPostsDoesNotHa
 $this->assertPostNotHasTerm( $post, $term );
 ```
 
+## Database Assertions
+
+Assert against the rows in any database table, including WordPress core tables
+and the custom tables behind [database table models](../models/database-table-models.md).
+Pass the table name with or without the `$wpdb->prefix`.
+
+### assertDatabaseHas
+
+Assert that a table has at least one row matching a set of column values.
+
+```php
+$this->assertDatabaseHas( 'posts', [
+	'post_title' => 'Example',
+] );
+```
+
+Pass a `$count` to assert the exact number of matching rows:
+
+```php
+$this->assertDatabaseHas( 'terms', [ 'slug' => 'example-tag' ], count: 1 );
+```
+
+### assertDatabaseDoesNotHave
+
+Assert that a table has no rows matching a set of column values (aliased to
+`assertDatabaseMissing()`).
+
+```php
+$this->assertDatabaseDoesNotHave( 'posts', [
+	'post_title' => 'Example',
+] );
+```
+
 ## Asset Assertions
 
 Assets that are registered and/or enqueued with WordPress can be asserted

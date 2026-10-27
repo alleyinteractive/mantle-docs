@@ -68,6 +68,7 @@ const sidebars: SidebarsConfig = {
         'models/query-builder',
         'models/model-registration',
         'models/model-relationships',
+        'models/database-table-models',
         'models/serialization',
         'models/database-factory',
         'models/seeding',
