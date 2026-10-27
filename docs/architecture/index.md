@@ -175,6 +175,79 @@ class Example_Controller extends Controller {
 }
 ```
 
+#### Method Injection
+
+The `call` method will invoke a closure or class method and inject any
+type-hinted dependencies from the container. Additional parameters can be passed
+by name:
+
+```php
+use App\Services\Example_Service;
+
+$result = $this->app->call(
+	function ( Example_Service $service, string $name ) {
+		return $service->greet( $name );
+	},
+	[ 'name' => 'Mantle' ],
+);
+
+// Call a method on a class.
+$this->app->call( [ $controller, 'index' ] );
+```
+
+### Binding Instances
+
+An existing object can be bound into the container with the `instance` method.
+The same instance will be returned on every subsequent call to the container:
+
+```php
+$service = new Example_Service( 'api-key' );
+
+$this->app->instance( Example_Service::class, $service );
+```
+
+### Extending Bindings
+
+The `extend` method allows a resolved service to be modified or decorated. The
+closure receives the resolved instance and the container and should return the
+modified instance:
+
+```php
+$this->app->extend( Example_Service::class, function ( Example_Service $service, $app ) {
+	return new Decorated_Example_Service( $service );
+} );
+```
+
+### Aliases
+
+An alias allows a binding to be resolved by another name. Mantle uses aliases to
+allow the core services to be resolved by both a short name and their class or
+interface:
+
+```php
+$this->app->alias( Example_Service::class, 'example' );
+
+$this->app->make( 'example' ); // Example_Service
+```
+
+### Container Events
+
+The container fires an event each time it resolves an object. You may listen to
+this event using the `resolving` method, or `after_resolving` to run after all
+resolving callbacks have run:
+
+```php
+use App\Services\Example_Service;
+
+$this->app->resolving( Example_Service::class, function ( Example_Service $service, $app ) {
+	// Called when the container resolves objects of type "Example_Service"...
+} );
+
+$this->app->resolving( function ( mixed $object, $app ) {
+	// Called when the container resolves an object of any type...
+} );
+```
+
 ## Facades
 
 Facades are a static interface to the instances available from the service
@@ -189,6 +262,32 @@ echo Config::get( 'app.attribute' ); // Mantle\Contracts\Config\Repository
 ```
 
 In this example, the config facade is a wrapper for the `config` singleton instance of `Mantle\Contracts\Config\Repository` instantiated from the service container.
+
+### Facade Class Reference
+
+Below is a list of every facade, the class it wraps, and its service container
+binding key:
+
+| Facade | Class | Container Binding |
+| --- | --- | --- |
+| `App` | `Mantle\Application\Application` | `app` |
+| `Asset` | `Mantle\Assets\Asset_Manager` | `asset.manager` |
+| `Blade` | `Illuminate\View\Compilers\BladeCompiler` | `blade.compiler` |
+| `Cache` | `Mantle\Cache\WordPress_Cache_Repository` | `cache` |
+| `Config` | `Mantle\Config\Repository` | `config` |
+| `Console` | `Mantle\Contracts\Console\Kernel` | |
+| `Event` | `Mantle\Events\Dispatcher` | `events` |
+| `Http` | `Mantle\Http_Client\Factory` | |
+| `Log` | `Mantle\Log\Log_Manager` | `log` |
+| `Queue` | `Mantle\Queue\Queue_Manager` | `queue` |
+| `Request` | `Mantle\Http\Request` | `request` |
+| `Route` | `Mantle\Http\Routing\Router` | `router` |
+| `Schedule` | `Mantle\Scheduling\Schedule` | `scheduler` |
+| `Storage` | `Mantle\Filesystem\Filesystem_Manager` | `filesystem` |
+| `View` | `Mantle\Http\View\Factory` | `view` |
+| `View_Finder` / `View_Loader` | `Mantle\Http\View\View_Finder` | `view.loader` |
+
+All facades exist in the `Mantle\Facade` namespace.
 
 ## Aliases
 
