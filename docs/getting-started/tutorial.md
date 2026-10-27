@@ -51,13 +51,6 @@ Mantle plugin and add `App\Models\project::class` to the array there. It should
 look like this:
 
 ```php
-<?php
-/**
- * Model Configuration
- *
- * @package Mantle
- */
-
 return [
 
 	/*
@@ -95,13 +88,6 @@ create "real" data quickly.
 :::
 
 ```php
-<?php
-/**
- * Project Factory
- *
- * @package Mantle
- */
-
 // phpcs:disable Squiz.Commenting.FunctionComment.MissingParamComment
 
 namespace {{ namespace }};
@@ -145,18 +131,10 @@ By default Mantle includes a seeder in every project in the
 file up and include our new factory.
 
 ```php
-<?php
-/**
- * Database_Seeder class file.
- *
- * @package Mantle
- */
-
 namespace App\Database\Seeds;
 
 use App\Models\Project;
 use Mantle\Database\Seeder;
-use function Mantle\Framework\Helpers\factory;
 
 /**
  * Application Seeder

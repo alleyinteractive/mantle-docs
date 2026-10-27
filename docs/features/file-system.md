@@ -155,8 +155,8 @@ You can store a private file by changing the third argument.
 ```php
 use Mantle\Facade\Storage;
 
-Storage::disk( 's3' )->put( 'file.jpg', $contents, 'private' );
-Storage::disk( 's3' )->put( 'file.jpg', $contents, [ 'visibility' => 'private' ] );
+Storage::drive( 's3' )->put( 'file.jpg', $contents, 'private' );
+Storage::drive( 's3' )->put( 'file.jpg', $contents, [ 'visibility' => 'private' ] );
 ```
 
 ## Retrieving Files
@@ -175,5 +175,5 @@ Private files commonly need to use a temporary URL to retrieve the file. For a
 private file on S3, Mantle can generate a temporary S3 URL.
 
 ```php
-$url = Storage::disk( 's3' )->temporary_url( '/path/to/file.jpg' );
+$url = Storage::drive( 's3' )->temporary_url( '/path/to/file.jpg' );
 ```

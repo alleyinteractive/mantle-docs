@@ -276,8 +276,8 @@ $this->get( '/example' )
   ->assertOk()
 
   // By class name.
-  ->assertElementExistsByClass( 'example-class' )
-  ->assertElementMissingByClass( 'invalid-class' )
+  ->assertElementExistsByClassName( 'example-class' )
+  ->assertElementMissingByClassName( 'invalid-class' )
 
   // By element ID.
   ->assertElementExistsById( 'example-id' )
@@ -621,20 +621,20 @@ Assert that a given XPath does not exist in the response.
 $response->assertElementMissing( string $expression );
 ```
 
-#### assertElementExistsByClass
+#### assertElementExistsByClassName
 
 Assert that a given class exists in the response.
 
 ```php
-$response->assertElementExistsByClass( string $class );
+$response->assertElementExistsByClassName( string $class );
 ```
 
-#### assertElementMissingByClass
+#### assertElementMissingByClassName
 
 Assert that a given class does not exist in the response.
 
 ```php
-$response->assertElementMissingByClass( string $class );
+$response->assertElementMissingByClassName( string $class );
 ```
 
 #### assertElementExistsById

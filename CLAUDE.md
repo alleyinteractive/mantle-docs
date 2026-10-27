@@ -61,7 +61,7 @@ The site is built to be consumed by LLMs/agents, not just browsers:
 
 Authoritative style guide lives at `.github/copilot-instructions.md`. Key rules:
 
-- **PHP code samples**: tabs for indentation, WordPress coding standards, PHP 8.2+, always include the relevant `use` statements, no `<?php` tags.
+- **PHP code samples**: tabs for indentation, WordPress coding standards, PHP 8.3+, always include the relevant `use` statements, no `<?php` tags.
 - **Test code samples**: PSR-4 class naming but keep tab indentation.
 - Use Docusaurus admonitions (`:::tip`, `:::note`, `:::warning`, `:::danger`) for callouts.
 - Use `<Tabs>` / `<TabItem>` (imported from `@theme/Tabs` / `@theme/TabItem`) for multi-variant code examples — this requires `.mdx`.

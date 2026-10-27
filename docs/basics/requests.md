@@ -226,18 +226,29 @@ class Example_Middleware {
 }
 ```
 
-### Authentication Middleware
+### Authorization Middleware
 
-Included with Mantle, a route can check a user's capability before allowing them
-to view a page.
+Included with Mantle, the `can` middleware checks that the current user is
+logged in and has a capability before allowing them to view a page. Multiple
+capabilities can be passed separated by commas; the user must have every one of
+them.
 
 ```php
 use Mantle\Facade\Route;
 
-Route::get('/route-to-protect', function() {
+Route::get( '/route-to-protect', function () {
 	// The current user can 'manage_options'.
-} )->middleware( 'can:manage_options', Example_Middleware::class );
+} )->middleware( 'can:manage_options' );
+
+Route::get( '/another-route', function () {
+	// The current user can 'edit_posts' and 'upload_files'.
+} )->middleware( 'can:edit_posts,upload_files' );
 ```
+
+Users that are not logged in or that are missing a capability will receive a
+`403` response. The error messages can be customized with the
+`mantle_auth_not_logged_in_error` and `mantle_auth_insufficient_permissions_error`
+filters.
 
 ### Removing Middleware
 
@@ -302,7 +313,7 @@ the 'resource' (the model).
 
 | Method | Callback |
 | ------ | ---------|
-| Archive `/product/{slug}/` | `Product_Controller::index()` |
+| Archive `/product/` | `Product_Controller::index()` |
 | Singular `/product/{slug}/` | `Product_Controller::show()` |
 
 ### Registering a Model for Routing
@@ -311,24 +322,48 @@ Route models can be registered like any other route and also supports prefixes,
 middleware, etc.
 
 ```php
+use App\Http\Controllers\Product_Controller;
+use App\Models\Product;
+use Mantle\Facade\Route;
+
 Route::model( Product::class, Product_Controller::class );
 ```
 
 In the above example the `Product` model will have `/product/{slug}` and
-`/product` routes registered.
+`/product` routes registered. An entity controller with `index()` and `show()`
+methods can be generated with the `make:controller` command:
+
+```bash
+bin/mantle make:controller Product_Controller --entity --entity-model="App\Models\Product"
+```
+
+The routes are determined by the model's static `get_route()` and
+`get_archive_route()` methods, which default to `/{object_name}/{slug}` and
+`/{object_name}`, respectively. Override them to customize the routes. The
+`Custom_Post_Permalink` trait will update the post's permalink in WordPress to
+match (models using `Register_Post_Type` include it automatically):
 
 ```php
-use Mantle\Database\Model\Post;
 use Mantle\Database\Model\Concerns\Custom_Post_Permalink;
+use Mantle\Database\Model\Post;
 
 class Product extends Post {
 	use Custom_Post_Permalink;
 
-	public function get_route(): ?string {
-		return '/route/{slug}';
+	public static function get_route(): ?string {
+		return '/shop/{slug}';
+	}
+
+	public static function get_archive_route(): ?string {
+		return '/shop';
 	}
 }
 ```
+
+:::note
+Custom permalinks are only applied when pretty permalinks are enabled in
+WordPress.
+:::
 
 
 ## Route Model Binding

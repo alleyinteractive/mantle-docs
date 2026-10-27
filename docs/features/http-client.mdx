@@ -1760,7 +1760,7 @@ body of the request and pass that along with the request:
 
 ## Caching
 
-Requests can be cached using the `cached` method. The method can be used when
+Requests can be cached using the `cache` method. The method can be used when
 chaining together your HTTP request:
 
 <Tabs groupId="use-preference">
@@ -1768,28 +1768,29 @@ chaining together your HTTP request:
     ```php
     use Mantle\Facade\Http;
 
-    $response = Http::cached()->get( 'https://example.org' );
+    $response = Http::cache()->get( 'https://example.org' );
     ```
   </TabItem>
   <TabItem value="standalone" label="Standalone Use">
     ```php
     use Mantle\Http_Client\Factory;
 
-    $response = Factory::create()->cached()->get( 'https://example.org' );
+    $response = Factory::create()->cache()->get( 'https://example.org' );
     ```
   </TabItem>
 </Tabs>
 
-The `cached` method accepts a single argument of the number of seconds to
-cache the response for. It also supports a `DateTime` object and defaults to one
-hour:
+The `cache` method accepts the number of seconds to cache the response for. It
+also supports a `DateTime` object or a closure that receives the request and
+response and defaults to one hour. A custom cache key can be passed as the
+second argument:
 
 <Tabs groupId="use-preference">
   <TabItem value="framework" label="Framework Use" default>
     ```php
     use Mantle\Facade\Http;
 
-    $response = Http::cached( now()->addDay() )->get( 'https://example.org' );
+    $response = Http::cache( now()->addDay() )->get( 'https://example.org' );
     ```
   </TabItem>
   <TabItem value="standalone" label="Standalone Use">
@@ -1797,7 +1798,7 @@ hour:
     use Mantle\Http_Client\Factory;
 
     $response = Factory::create()
-      ->cached( now()->addDay() )
+      ->cache( now()->addDay() )
       ->get( 'https://example.org' );
     ```
   </TabItem>
