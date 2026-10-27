@@ -135,12 +135,12 @@ Assert if a post exists given a set of arguments.
 $this->assertPostExists( array $args );
 ```
 
-### assertPostDoesNotExists
+### assertPostDoesNotExist
 
 Assert if a post doesn't exist given a set of arguments.
 
 ```php
-$this->assertPostDoesNotExists( array $args );
+$this->assertPostDoesNotExist( array $args );
 ```
 
 ### assertTermExists
@@ -151,12 +151,12 @@ Assert if a term exists given a set of arguments.
 $this->assertTermExists( array $args );
 ```
 
-### assertTermDoesNotExists
+### assertTermDoesNotExist
 
 Assert if a term doesn't exists given a set of arguments.
 
 ```php
-$this->assertTermDoesNotExists( array $args );
+$this->assertTermDoesNotExist( array $args );
 ```
 
 ### assertUserExists
@@ -167,12 +167,12 @@ Assert if a user exists given a set of arguments.
 $this->assertUserExists( array $args );
 ```
 
-### assertUserDoesNotExists
+### assertUserDoesNotExist
 
 Assert if a user doesn't exists given a set of arguments.
 
 ```php
-$this->assertUserDoesNotExists( array $args );
+$this->assertUserDoesNotExist( array $args );
 ```
 
 ### assertPostHasTerm

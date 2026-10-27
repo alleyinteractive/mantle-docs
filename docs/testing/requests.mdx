@@ -347,6 +347,16 @@ $this->get( '/example' )
 $this->get( '/example' )->ddJson();
 ```
 
+The following methods are also available to dump specific parts of the request
+and response:
+
+| Method | Description |
+| --- | --- |
+| `dump_content( ?string $selector )` / `dd_content()` | Dump the response content, optionally filtered by a CSS selector. |
+| `dump_request()` | Dump the request information. |
+| `dump_without_content()` | Dump the request and response headers without the content. |
+| `dump_query()` / `dd_query()` | Dump the current `WP_Query` and queried object. |
+
 ## Testing JSON APIs
 
 Mantle includes several helpers for testing JSON APIs and their responses. For
@@ -573,6 +583,30 @@ status code.
 
 ```php
 $response->assertRedirect( $uri = null );
+```
+
+#### assertClientError
+
+Assert that a response has a client error (>= 400 and < 500) HTTP status code.
+
+```php
+$response->assertClientError();
+```
+
+#### assertServerError
+
+Assert that a response has a server error (>= 500 and < 600) HTTP status code.
+
+```php
+$response->assertServerError();
+```
+
+#### assertNotContent
+
+Assert that the response content does not match the given value.
+
+```php
+$response->assertNotContent( $value );
 ```
 
 ### Element Assertions
@@ -869,6 +903,118 @@ header with `application/json`.
 
 ```php
 $response->assertIsNotJson();
+```
+
+#### assertJsonPathMatches
+
+Assert that the value at the given path matches a regular expression.
+
+```php
+$response->assertJsonPathMatches( string $path, string $pattern );
+```
+
+#### assertJsonPathNotMatches
+
+Assert that the value at the given path does not match a regular expression.
+
+```php
+$response->assertJsonPathNotMatches( string $path, string $pattern );
+```
+
+#### assertJsonPathEmpty
+
+Assert that the value at the given path is empty.
+
+```php
+$response->assertJsonPathEmpty( string $path );
+```
+
+#### assertJsonPathNotEmpty
+
+Assert that the value at the given path is not empty.
+
+```php
+$response->assertJsonPathNotEmpty( string $path );
+```
+
+#### assertJsonPathContains
+
+Assert that the value at the given path contains a string.
+
+```php
+$response->assertJsonPathContains( string $path, string $value );
+```
+
+#### assertJsonPathNotContains
+
+Assert that the value at the given path does not contain a string.
+
+```php
+$response->assertJsonPathNotContains( string $path, string $value );
+```
+
+#### assertJsonPathCallback
+
+Assert that the value at the given path passes a callback. The callback receives the value and should return `true` if the assertion passes.
+
+```php
+$response->assertJsonPathCallback( 'data.count', fn ( $value ) => $value > 5 );
+```
+
+#### assertJsonSimilar
+
+Assert that the response JSON matches the given data, ignoring the order of keys and values.
+
+```php
+$response->assertJsonSimilar( array $data );
+```
+
+#### assertIsHtml
+
+Assert that the response is an HTML response.
+
+```php
+$response->assertIsHtml();
+```
+
+#### assertIsNotHtml
+
+Assert that the response is not an HTML response.
+
+```php
+$response->assertIsNotHtml();
+```
+
+#### assertIsText
+
+Assert that the response is a plain text response.
+
+```php
+$response->assertIsText();
+```
+
+#### assertIsNotText
+
+Assert that the response is not a plain text response.
+
+```php
+$response->assertIsNotText();
+```
+
+#### assertIsXml
+
+Assert that the response is an XML response.
+
+```php
+$response->assertIsXml();
+```
+
+#### assertIsNotXml
+
+Assert that the response is not an XML response.
+
+```php
+$response->assertIsNotXml();
 ```
 
 ### Content Body Assertions

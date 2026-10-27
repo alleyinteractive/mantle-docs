@@ -49,6 +49,13 @@ class Cron_Test extends Test_Case {
 }
 ```
 
+The `assertCronCount()` method asserts the number of events scheduled for a
+cron hook. It does not count queue jobs.
+
+```php
+$this->assertCronCount( 'example', 2 );
+```
+
 ## Queue
 
 The [Mantle Queue](../features/queue.md) can be run and asserted against in unit tests.
