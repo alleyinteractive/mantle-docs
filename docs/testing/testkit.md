@@ -19,6 +19,22 @@ Testkit should only be used on projects that do not use or define a Mantle
 application.
 :::
 
+## Migrating with an AI Agent
+
+The [`migrating-to-mantle-testkit`](https://github.com/alleyinteractive/mantle-docs/blob/main/skills/migrating-to-mantle-testkit/SKILL.md)
+agent skill teaches a coding agent (Claude Code, Codex, Cursor, etc.) how to move
+a project off of core's test suite: dependencies, bootstrap, PHPUnit
+configuration, test file renames, core idioms that need replacing, and CI.
+Install it into your project with the [`skills`](https://github.com/vercel-labs/skills) CLI:
+
+```bash
+npx skills add alleyinteractive/mantle-docs --skill migrating-to-mantle-testkit
+```
+
+Then ask your agent to "migrate this project's tests to Mantle Testkit." The
+skill limits the agent to test infrastructure and has it report bugs in the
+code under test instead of fixing them.
+
 ## Getting Started
 
 This guide assumes that you are working within a `wp-content/`-rooted WordPress
