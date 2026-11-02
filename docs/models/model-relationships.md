@@ -28,6 +28,13 @@ Relationships between posts use post meta (or an [internal
 taxonomy](#post-to-post-relationships)) while relationships between posts and
 terms use a taxonomy query.
 
+:::tip
+
+To let editors set relationships from the block editor, see [Editor
+Relationships](./editor-relationships.md).
+
+:::
+
 ### Which Side Stores the Relationship?
 
 The difference between "has" and "belongs to" relationships is which model
